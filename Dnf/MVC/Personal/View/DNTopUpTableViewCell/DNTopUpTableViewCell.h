@@ -20,8 +20,6 @@
 
 @property(nonatomic,strong)DNTopUpModel * topUpModel;
 
-@property(nonatomic,strong)UILabel * vipTypeLabel;
-
 @property(nonatomic,strong)UILabel * vipTitleLabel;
 @property(nonatomic,strong)UILabel * vipDescLabel;
 

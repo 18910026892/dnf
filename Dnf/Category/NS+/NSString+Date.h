@@ -12,4 +12,6 @@
 
 -(long long)dateStringWithFormateStyle:(NSString *)style;
 
+
++(NSString *)getNowTimeInterval;
 @end

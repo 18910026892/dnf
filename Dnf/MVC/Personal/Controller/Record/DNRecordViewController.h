@@ -7,7 +7,16 @@
 //
 
 #import "DNBaseViewController.h"
+#import "DNSegmentView.h"
+#import "DNRecordListViewController.h"
+@interface DNRecordViewController : DNBaseViewController<UIScrollViewDelegate>
 
-@interface DNRecordViewController : DNBaseViewController
+@property (nonatomic,strong) DNSegmentView * segmentView;
+
+@property (nonatomic,strong) UIButton * clearButton;
+
+@property (nonatomic,strong) UIScrollView * bigScrollView;
+
+@property (nonatomic,assign) NSInteger headerIndex;
 
 @end

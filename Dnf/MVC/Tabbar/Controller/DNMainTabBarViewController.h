@@ -13,6 +13,7 @@
 #import "DNPhotoViewController.h"
 #import "DNVideoViewController.h"
 #import "DNVRViewController.h"
+#import "DNPartyViewController.h"
 @interface DNMainTabBarViewController : UITabBarController<UITabBarControllerDelegate>
 {
     //标签元素

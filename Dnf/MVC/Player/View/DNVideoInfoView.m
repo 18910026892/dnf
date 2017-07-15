@@ -169,6 +169,7 @@
         _openButton.backgroundColor = kThemeColor;
         [_openButton setTitle:@"开通VIP" forState:UIControlStateNormal];
         [_openButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _openButton.titleLabel.font = [UIFont fontWithName:TextFontName_Light size:15];
     }
     return _openButton;
 }

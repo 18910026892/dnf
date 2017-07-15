@@ -9,7 +9,7 @@
 #import "DNBaseViewController.h"
 #import "DNTopUpModel.h"
 #import "DNTopUpTableViewCell.h"
-@interface DNTopUpViewController : DNBaseViewController<UITableViewDelegate,UITableViewDataSource>
+@interface DNTopUpViewController : DNBaseViewController<UITableViewDelegate,UITableViewDataSource,DNTopUpTableViewCellDelegate>
 
 //列表视图
 @property(nonatomic,strong)UITableView * tableView;

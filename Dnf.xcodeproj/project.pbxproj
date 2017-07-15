@@ -18,6 +18,18 @@
 		D225E5741F15D3350075F243 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = D225E56F1F15D3350075F243 /* README.md */; };
 		D225E5751F15D3350075F243 /* RNCachingURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = D225E5711F15D3350075F243 /* RNCachingURLProtocol.m */; };
 		D225E57B1F15D6F10075F243 /* DNSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D225E57A1F15D6F10075F243 /* DNSearchViewController.m */; };
+		D2438C571F19B35100B897D8 /* DNMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2438C561F19B35100B897D8 /* DNMessageTableViewCell.m */; };
+		D2438C5B1F19B3A500B897D8 /* DNMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2438C5A1F19B3A500B897D8 /* DNMessageModel.m */; };
+		D2438C5E1F19B54800B897D8 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = D2438C5D1F19B54800B897D8 /* UIView+Extension.m */; };
+		D2438C621F19B66800B897D8 /* DNTextContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2438C611F19B66800B897D8 /* DNTextContentView.m */; };
+		D2438C691F19BC2D00B897D8 /* NIMKitUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = D2438C681F19BC2D00B897D8 /* NIMKitUtil.m */; };
+		D2438C6D1F19CE1A00B897D8 /* DNSendTimeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2438C6C1F19CE1A00B897D8 /* DNSendTimeTableViewCell.m */; };
+		D2438C711F19E89600B897D8 /* DNPartyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2438C701F19E89600B897D8 /* DNPartyViewController.m */; };
+		D2438C761F19F46D00B897D8 /* DNSegmentView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2438C751F19F46D00B897D8 /* DNSegmentView.m */; };
+		D2438C791F19FD3100B897D8 /* DNRecordListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2438C781F19FD3100B897D8 /* DNRecordListViewController.m */; };
+		D2438C7E1F1A054900B897D8 /* DNRecordCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2438C7D1F1A054900B897D8 /* DNRecordCollectionViewCell.m */; };
+		D2438C811F1A056E00B897D8 /* DNRecordHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2438C801F1A056E00B897D8 /* DNRecordHeaderView.m */; };
+		D2438C851F1A08A100B897D8 /* DNRecordModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2438C841F1A08A100B897D8 /* DNRecordModel.m */; };
 		D2A330AF1F146B7600B78079 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A330AE1F146B7600B78079 /* main.m */; };
 		D2A330BA1F146B7600B78079 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D2A330B91F146B7600B78079 /* Assets.xcassets */; };
 		D2A330BD1F146B7600B78079 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2A330BB1F146B7600B78079 /* LaunchScreen.storyboard */; };
@@ -59,7 +71,6 @@
 		D2E19D301F1731DA00E26126 /* DNMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E19D2F1F1731DA00E26126 /* DNMessageViewController.m */; };
 		D2E19D331F174ED900E26126 /* DNPlayerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E19D321F174ED900E26126 /* DNPlayerViewController.m */; };
 		D2E19D491F177D5500E26126 /* DNVideoInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E19D481F177D5500E26126 /* DNVideoInfoView.m */; };
-		D2E19D4C1F17813E00E26126 /* UIView+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E19D4B1F17813E00E26126 /* UIView+Additions.m */; };
 		E86451BCB5CCE5178AACDBCF /* libPods-Dnf.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BAA4675A2CCEDC3301D9A212 /* libPods-Dnf.a */; };
 /* End PBXBuildFile section */
 
@@ -88,6 +99,30 @@
 		D225E5711F15D3350075F243 /* RNCachingURLProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNCachingURLProtocol.m; sourceTree = "<group>"; };
 		D225E5791F15D6F10075F243 /* DNSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNSearchViewController.h; sourceTree = "<group>"; };
 		D225E57A1F15D6F10075F243 /* DNSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNSearchViewController.m; sourceTree = "<group>"; };
+		D2438C551F19B35100B897D8 /* DNMessageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNMessageTableViewCell.h; sourceTree = "<group>"; };
+		D2438C561F19B35100B897D8 /* DNMessageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNMessageTableViewCell.m; sourceTree = "<group>"; };
+		D2438C591F19B3A500B897D8 /* DNMessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNMessageModel.h; sourceTree = "<group>"; };
+		D2438C5A1F19B3A500B897D8 /* DNMessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNMessageModel.m; sourceTree = "<group>"; };
+		D2438C5C1F19B54800B897D8 /* UIView+Extension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Extension.h"; sourceTree = "<group>"; };
+		D2438C5D1F19B54800B897D8 /* UIView+Extension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Extension.m"; sourceTree = "<group>"; };
+		D2438C601F19B66800B897D8 /* DNTextContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNTextContentView.h; sourceTree = "<group>"; };
+		D2438C611F19B66800B897D8 /* DNTextContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNTextContentView.m; sourceTree = "<group>"; };
+		D2438C671F19BC2D00B897D8 /* NIMKitUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NIMKitUtil.h; sourceTree = "<group>"; };
+		D2438C681F19BC2D00B897D8 /* NIMKitUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NIMKitUtil.m; sourceTree = "<group>"; };
+		D2438C6B1F19CE1A00B897D8 /* DNSendTimeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNSendTimeTableViewCell.h; sourceTree = "<group>"; };
+		D2438C6C1F19CE1A00B897D8 /* DNSendTimeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNSendTimeTableViewCell.m; sourceTree = "<group>"; };
+		D2438C6F1F19E89600B897D8 /* DNPartyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNPartyViewController.h; sourceTree = "<group>"; };
+		D2438C701F19E89600B897D8 /* DNPartyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNPartyViewController.m; sourceTree = "<group>"; };
+		D2438C741F19F46D00B897D8 /* DNSegmentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNSegmentView.h; sourceTree = "<group>"; };
+		D2438C751F19F46D00B897D8 /* DNSegmentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNSegmentView.m; sourceTree = "<group>"; };
+		D2438C771F19FD3100B897D8 /* DNRecordListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNRecordListViewController.h; sourceTree = "<group>"; };
+		D2438C781F19FD3100B897D8 /* DNRecordListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNRecordListViewController.m; sourceTree = "<group>"; };
+		D2438C7C1F1A054900B897D8 /* DNRecordCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNRecordCollectionViewCell.h; sourceTree = "<group>"; };
+		D2438C7D1F1A054900B897D8 /* DNRecordCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNRecordCollectionViewCell.m; sourceTree = "<group>"; };
+		D2438C7F1F1A056E00B897D8 /* DNRecordHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNRecordHeaderView.h; sourceTree = "<group>"; };
+		D2438C801F1A056E00B897D8 /* DNRecordHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNRecordHeaderView.m; sourceTree = "<group>"; };
+		D2438C831F1A08A100B897D8 /* DNRecordModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNRecordModel.h; sourceTree = "<group>"; };
+		D2438C841F1A08A100B897D8 /* DNRecordModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNRecordModel.m; sourceTree = "<group>"; };
 		D2A330AA1F146B7600B78079 /* Dnf.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dnf.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2A330AE1F146B7600B78079 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D2A330B91F146B7600B78079 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -173,8 +208,6 @@
 		D2E19D3D1F175A8300E26126 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		D2E19D471F177D5500E26126 /* DNVideoInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNVideoInfoView.h; sourceTree = "<group>"; };
 		D2E19D481F177D5500E26126 /* DNVideoInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNVideoInfoView.m; sourceTree = "<group>"; };
-		D2E19D4A1F17813E00E26126 /* UIView+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Additions.h"; sourceTree = "<group>"; };
-		D2E19D4B1F17813E00E26126 /* UIView+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Additions.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -210,6 +243,8 @@
 		D225E53F1F15BAFA0075F243 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D2438C821F1A089200B897D8 /* DNRecordModel */,
+				D2438C581F19B39000B897D8 /* DNMessageModel */,
 				D2E19D261F1720FA00E26126 /* DNTopUpModel */,
 			);
 			path = Model;
@@ -218,6 +253,12 @@
 		D225E5401F15BAFA0075F243 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D2438C7A1F1A04A700B897D8 /* DNRecordCellectionHeaderView */,
+				D2438C7B1F1A04A700B897D8 /* DNRecordCollectionCell */,
+				D2438C731F19F44200B897D8 /* DNSegmentView */,
+				D2438C6A1F19CE0800B897D8 /* DNMessageSendTimeCell */,
+				D2438C5F1F19B65100B897D8 /* DNTextContentView */,
+				D2438C541F19B32D00B897D8 /* DNMessageCell */,
 				D2DE2AD11F18C53500401113 /* DatePicker */,
 				D2DE2ACC1F188C6A00401113 /* DNEditTableViewCell */,
 				D2E19D211F1720DE00E26126 /* DNPersonalTableViewCell */,
@@ -370,6 +411,88 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		D2438C541F19B32D00B897D8 /* DNMessageCell */ = {
+			isa = PBXGroup;
+			children = (
+				D2438C551F19B35100B897D8 /* DNMessageTableViewCell.h */,
+				D2438C561F19B35100B897D8 /* DNMessageTableViewCell.m */,
+			);
+			path = DNMessageCell;
+			sourceTree = "<group>";
+		};
+		D2438C581F19B39000B897D8 /* DNMessageModel */ = {
+			isa = PBXGroup;
+			children = (
+				D2438C591F19B3A500B897D8 /* DNMessageModel.h */,
+				D2438C5A1F19B3A500B897D8 /* DNMessageModel.m */,
+			);
+			path = DNMessageModel;
+			sourceTree = "<group>";
+		};
+		D2438C5F1F19B65100B897D8 /* DNTextContentView */ = {
+			isa = PBXGroup;
+			children = (
+				D2438C601F19B66800B897D8 /* DNTextContentView.h */,
+				D2438C611F19B66800B897D8 /* DNTextContentView.m */,
+			);
+			path = DNTextContentView;
+			sourceTree = "<group>";
+		};
+		D2438C6A1F19CE0800B897D8 /* DNMessageSendTimeCell */ = {
+			isa = PBXGroup;
+			children = (
+				D2438C6B1F19CE1A00B897D8 /* DNSendTimeTableViewCell.h */,
+				D2438C6C1F19CE1A00B897D8 /* DNSendTimeTableViewCell.m */,
+			);
+			path = DNMessageSendTimeCell;
+			sourceTree = "<group>";
+		};
+		D2438C6E1F19E88900B897D8 /* Party */ = {
+			isa = PBXGroup;
+			children = (
+				D2438C6F1F19E89600B897D8 /* DNPartyViewController.h */,
+				D2438C701F19E89600B897D8 /* DNPartyViewController.m */,
+			);
+			path = Party;
+			sourceTree = "<group>";
+		};
+		D2438C731F19F44200B897D8 /* DNSegmentView */ = {
+			isa = PBXGroup;
+			children = (
+				D2438C741F19F46D00B897D8 /* DNSegmentView.h */,
+				D2438C751F19F46D00B897D8 /* DNSegmentView.m */,
+			);
+			path = DNSegmentView;
+			sourceTree = "<group>";
+		};
+		D2438C7A1F1A04A700B897D8 /* DNRecordCellectionHeaderView */ = {
+			isa = PBXGroup;
+			children = (
+				D2438C7F1F1A056E00B897D8 /* DNRecordHeaderView.h */,
+				D2438C801F1A056E00B897D8 /* DNRecordHeaderView.m */,
+			);
+			path = DNRecordCellectionHeaderView;
+			sourceTree = "<group>";
+		};
+		D2438C7B1F1A04A700B897D8 /* DNRecordCollectionCell */ = {
+			isa = PBXGroup;
+			children = (
+				D2438C7C1F1A054900B897D8 /* DNRecordCollectionViewCell.h */,
+				D2438C7D1F1A054900B897D8 /* DNRecordCollectionViewCell.m */,
+			);
+			path = DNRecordCollectionCell;
+			sourceTree = "<group>";
+		};
+		D2438C821F1A089200B897D8 /* DNRecordModel */ = {
+			isa = PBXGroup;
+			children = (
+				D2438C831F1A08A100B897D8 /* DNRecordModel.h */,
+				D2438C841F1A08A100B897D8 /* DNRecordModel.m */,
+			);
+			name = DNRecordModel;
+			path = RecordModel;
+			sourceTree = "<group>";
+		};
 		D2A330A11F146B7600B78079 = {
 			isa = PBXGroup;
 			children = (
@@ -449,6 +572,7 @@
 		D2A330C91F146BF900B78079 /* MVC */ = {
 			isa = PBXGroup;
 			children = (
+				D2438C6E1F19E88900B897D8 /* Party */,
 				D225E5631F15CECD0075F243 /* Player */,
 				D225E55F1F15CD6F0075F243 /* Login */,
 				D2A331241F14B03500B78079 /* Personal */,
@@ -475,6 +599,8 @@
 		D2A330CB1F146BF900B78079 /* Tool */ = {
 			isa = PBXGroup;
 			children = (
+				D2438C671F19BC2D00B897D8 /* NIMKitUtil.h */,
+				D2438C681F19BC2D00B897D8 /* NIMKitUtil.m */,
 			);
 			path = Tool;
 			sourceTree = "<group>";
@@ -596,8 +722,8 @@
 		D2A330FB1F14839D00B78079 /* UI+ */ = {
 			isa = PBXGroup;
 			children = (
-				D2E19D4A1F17813E00E26126 /* UIView+Additions.h */,
-				D2E19D4B1F17813E00E26126 /* UIView+Additions.m */,
+				D2438C5C1F19B54800B897D8 /* UIView+Extension.h */,
+				D2438C5D1F19B54800B897D8 /* UIView+Extension.m */,
 				D2A330FC1F1483CD00B78079 /* UIColor+Category.h */,
 				D2A330FD1F1483CD00B78079 /* UIColor+Category.m */,
 			);
@@ -857,6 +983,8 @@
 			children = (
 				D2E19D1B1F171FFA00E26126 /* DNRecordViewController.h */,
 				D2E19D1C1F171FFA00E26126 /* DNRecordViewController.m */,
+				D2438C771F19FD3100B897D8 /* DNRecordListViewController.h */,
+				D2438C781F19FD3100B897D8 /* DNRecordListViewController.m */,
 			);
 			path = Record;
 			sourceTree = "<group>";
@@ -1029,13 +1157,21 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D2438C851F1A08A100B897D8 /* DNRecordModel.m in Sources */,
+				D2438C571F19B35100B897D8 /* DNMessageTableViewCell.m in Sources */,
 				D2DE2ACB1F18740D00401113 /* DNEditNickNameViewController.m in Sources */,
+				D2438C791F19FD3100B897D8 /* DNRecordListViewController.m in Sources */,
+				D2438C5E1F19B54800B897D8 /* UIView+Extension.m in Sources */,
 				D225E5551F15CCDD0075F243 /* DLMessageViewController.m in Sources */,
 				D2A331311F14B60500B78079 /* DNUserDefault.m in Sources */,
+				D2438C691F19BC2D00B897D8 /* NIMKitUtil.m in Sources */,
 				D2A330F21F14760E00B78079 /* DNTabBarItem.m in Sources */,
 				D2A330DC1F14728D00B78079 /* DNBaseViewController.m in Sources */,
+				D2438C711F19E89600B897D8 /* DNPartyViewController.m in Sources */,
 				D2E19D291F17212400E26126 /* DNTopUpModel.m in Sources */,
 				D225E5721F15D3350075F243 /* NSString+Sha1.m in Sources */,
+				D2438C5B1F19B3A500B897D8 /* DNMessageModel.m in Sources */,
+				D2438C7E1F1A054900B897D8 /* DNRecordCollectionViewCell.m in Sources */,
 				D225E5521F15CCC90075F243 /* DNJoinViewController.m in Sources */,
 				D2A331191F14A12400B78079 /* DNVideoViewController.m in Sources */,
 				D2E19D0F1F1718FF00E26126 /* MJPhotoToolbar.m in Sources */,
@@ -1049,6 +1185,7 @@
 				D225E5751F15D3350075F243 /* RNCachingURLProtocol.m in Sources */,
 				D2E19D0E1F1718FF00E26126 /* MJPhotoProgressView.m in Sources */,
 				D2E19D0D1F1718FF00E26126 /* MJPhotoLoadingView.m in Sources */,
+				D2438C6D1F19CE1A00B897D8 /* DNSendTimeTableViewCell.m in Sources */,
 				D2E19D101F1718FF00E26126 /* MJPhotoView.m in Sources */,
 				D225E57B1F15D6F10075F243 /* DNSearchViewController.m in Sources */,
 				D2A3311C1F14A13300B78079 /* DNVRViewController.m in Sources */,
@@ -1065,8 +1202,8 @@
 				D2A331341F14B6B600B78079 /* DNHttpRequest.m in Sources */,
 				D2DE2AD71F18C6FD00401113 /* NSString+Date.m in Sources */,
 				D2A330AF1F146B7600B78079 /* main.m in Sources */,
-				D2E19D4C1F17813E00E26126 /* UIView+Additions.m in Sources */,
 				D225E55B1F15CCF40075F243 /* DLCollecionViewController.m in Sources */,
+				D2438C811F1A056E00B897D8 /* DNRecordHeaderView.m in Sources */,
 				D2E19D251F1720DE00E26126 /* DNPersonalTableViewCell.m in Sources */,
 				D2DE2AD41F18C53500401113 /* FullTimeView.m in Sources */,
 				D2E19D171F171F3600E26126 /* DNPersonalViewController.m in Sources */,
@@ -1074,6 +1211,8 @@
 				D225E5621F15CD790075F243 /* DNLoginViewController.m in Sources */,
 				D2A331231F14AF4700B78079 /* XLSlideMenu.m in Sources */,
 				D2E19D201F17209B00E26126 /* DNHelpViewController.m in Sources */,
+				D2438C761F19F46D00B897D8 /* DNSegmentView.m in Sources */,
+				D2438C621F19B66800B897D8 /* DNTextContentView.m in Sources */,
 				D2A330FE1F1483CD00B78079 /* UIColor+Category.m in Sources */,
 				D225E5731F15D3350075F243 /* Reachability.m in Sources */,
 				D2E19D491F177D5500E26126 /* DNVideoInfoView.m in Sources */,

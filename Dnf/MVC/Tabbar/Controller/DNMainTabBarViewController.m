@@ -61,7 +61,7 @@ static DNMainTabBarViewController* _myTabBarVC = nil;
 
 -(void)initSubView
 {
-    _viewControllerCount = 4;
+    _viewControllerCount = 5;
     
     //首页
     DNHomePageViewController * homePageViewController= [DNHomePageViewController viewController];
@@ -70,6 +70,11 @@ static DNMainTabBarViewController* _myTabBarVC = nil;
     //视频
     DNVideoViewController * videoViewController = [DNVideoViewController viewController];
     [self setupItemWithViewController:videoViewController ItemData:@{@"title":@"视频",@"imageStr":@"tabbar_video_normal",@"imageStr_s":@"tabbar_video_hover"}];
+    
+    //派对
+    DNPartyViewController * partyViewController = [DNPartyViewController viewController];
+    [self setupItemWithViewController:partyViewController ItemData:@{@"title":@"派对",@"imageStr":@"tabbar_party_normal",@"imageStr_s":@"tabbar_party_hover"}];
+    
     
     //写真
     DNPhotoViewController * photoViewController = [DNPhotoViewController viewController];
@@ -90,11 +95,7 @@ static DNMainTabBarViewController* _myTabBarVC = nil;
 
     [self setTabBarSelectedIndex:selectindex];
 
-    
-    
 }
-
-
 
 #pragma mark - Private method
 -(void)setupItemWithViewController:(DNBaseViewController *)vc ItemData:(NSDictionary *)data
@@ -104,7 +105,7 @@ static DNMainTabBarViewController* _myTabBarVC = nil;
  
     [self addChildViewController:vc];
     
-    CGFloat SubItemWidth = self.tabBariew.frame.size.width/4;
+    CGFloat SubItemWidth = self.tabBariew.frame.size.width/5;
     DNTabBarItem *subitem = [[DNTabBarItem alloc]initWithFrame:CGRectMake(SubItemWidth*number, 0,SubItemWidth, 49)];
     subitem.item = item;
     subitem.userInteractionEnabled = YES;

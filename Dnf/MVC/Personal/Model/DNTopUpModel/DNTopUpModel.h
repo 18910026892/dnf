@@ -10,8 +10,6 @@
 
 @interface DNTopUpModel : NSObject
 
-@property(nonatomic,copy)NSString * vipType;
-
 @property(nonatomic,copy)NSString * vipTitle;
 
 @property(nonatomic,copy)NSString * vipDesc;

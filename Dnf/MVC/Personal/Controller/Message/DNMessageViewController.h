@@ -7,7 +7,16 @@
 //
 
 #import "DNBaseViewController.h"
+#import "DNMessageModel.h"
+#import "DNMessageTableViewCell.h"
+#import "DNSendTimeTableViewCell.h"
+#import "DNTopUpViewController.h"
+@interface DNMessageViewController : DNBaseViewController<UITableViewDelegate,UITableViewDataSource>
 
-@interface DNMessageViewController : DNBaseViewController
+//消息
+@property(nonatomic,strong)NSMutableArray<DNMessageModel *> *messageArray;
+
+//消息列表
+@property(nonatomic,strong)UITableView * messageTableView;
 
 @end

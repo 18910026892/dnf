@@ -139,7 +139,8 @@
             break;
             case 2:
         {
-           
+            DNRecordViewController * recordVc = [DNRecordViewController viewController];
+            [self pushController:recordVc];
         }
             break;
             case 3:

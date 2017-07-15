@@ -17,4 +17,12 @@
     
     return interval*1000;
 }
+
++(NSString *)getNowTimeInterval
+{
+    NSDate* date = [NSDate dateWithTimeIntervalSinceNow:0];
+    NSTimeInterval a=[date timeIntervalSince1970]; // *1000 是精确到毫秒，不乘就是精确到秒
+    NSString *timeString = [NSString stringWithFormat:@"%.0f", a]; //转为字符
+    return timeString;
+}
 @end

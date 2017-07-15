@@ -18,16 +18,52 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self creatUserInterface];
+    [self operationData];
     
 }
 
 -(void)creatUserInterface
 {
     [self setNavTitle:@"充值会员"];
-    
     [self showBackButton:YES];
-    
     [self.view addSubview:self.tableView];
+}
+
+-(void)operationData
+{
+    DNTopUpModel * model1 = [[DNTopUpModel alloc]init];
+    model1.vipTitle = @"月度vip";
+    model1.vipDesc  = @"任意看全部高清图片";
+    model1.vipPrice = 188;
+    
+    DNTopUpModel * model2 = [[DNTopUpModel alloc]init];
+    model2.vipTitle = @"季度vip";
+    model2.vipDesc  = @"任意看全部高清图片";
+    model2.vipPrice = 500;
+
+    DNTopUpModel * model3 = [[DNTopUpModel alloc]init];
+    model3.vipTitle = @"半年vip";
+    model3.vipDesc  = @"任意看全部高清图片";
+    model3.vipPrice = 900;
+    
+    DNTopUpModel * model4 = [[DNTopUpModel alloc]init];
+    model4.vipTitle = @"年度vip";
+    model4.vipDesc  = @"任意看全部高清图片";
+    model4.vipPrice = 2000;
+    
+    DNTopUpModel * model5 = [[DNTopUpModel alloc]init];
+    model5.vipTitle = @"终身vip";
+    model5.vipDesc  = @"任意看全部高清图片";
+    model5.vipPrice = 5000;
+    
+    [self.dataArray addObject:model1];
+    [self.dataArray addObject:model2];
+    [self.dataArray addObject:model3];
+    [self.dataArray addObject:model4];
+    [self.dataArray addObject:model5];
+    
+    
+    [self.tableView reloadData];
 }
 
 #pragma mark - Delegate 代理
@@ -41,7 +77,7 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [_dataArray count];
+    return [self.dataArray count];
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
@@ -56,7 +92,7 @@
 
 {
     static NSString * cellID = @"DNTopUpTableViewCell";
-    DNTopUpModel * topUpModel = _dataArray[indexPath.row];
+    DNTopUpModel * topUpModel = self.dataArray[indexPath.row];
     DNTopUpTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellID];
     
     if (!cell) {
@@ -64,12 +100,24 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     
+    cell.delegate = self;
     cell.topUpModel = topUpModel;
     
     return cell;
     
 }
+-(void)didSelectPriceButton:(DNTopUpModel*)topUpModel;
+{
+    NSLog(@"开通 %ld 元的vip ",(long)topUpModel.vipPrice);
+}
 
+-(NSMutableArray*)dataArray
+{
+    if (!_dataArray) {
+        _dataArray =[NSMutableArray array];
+    }
+    return _dataArray;
+}
 
 -(UITableView*)tableView
 {
