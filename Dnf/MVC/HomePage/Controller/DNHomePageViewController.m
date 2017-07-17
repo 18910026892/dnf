@@ -10,6 +10,8 @@
 #import "DNPlayerViewController.h"
 @interface DNHomePageViewController ()
 
+@property(nonatomic,strong)UIImageView * navlogoView;
+
 @end
 
 @implementation DNHomePageViewController
@@ -38,7 +40,7 @@
 
 -(void)setupUI;
 {
-    [self setNavTitle:@"大妞范"];
+    [self.customNavigationBar addSubview:self.navlogoView];
     
     [self.rightButton setImage:[UIImage imageNamed:@"nav_search_normal"] forState:UIControlStateNormal];
     
@@ -53,11 +55,8 @@
 
 -(void)rightButtonClick:(UIButton*)sender
 {
-//    DNSearchViewController * searchVc = [DNSearchViewController viewController];
-//    [self.navigationController pushViewController:searchVc animated:YES];
-    
-    DNPlayerViewController * playerVc = [DNPlayerViewController viewController];
-    [self.navigationController pushViewController:playerVc animated:YES];
+    DNSearchViewController * searchVc = [DNSearchViewController viewController];
+    [self.navigationController pushViewController:searchVc animated:YES];
     
 }
 
@@ -66,6 +65,16 @@
     
      [self.xl_sldeMenu showLeftViewControllerAnimated:true];
 }
+
+-(UIImageView*)navlogoView
+{
+    if (!_navlogoView) {
+        _navlogoView = [[UIImageView alloc]initWithFrame:CGRectMake(KScreenWidth/2-36,32, 72, 20)];
+        _navlogoView.image = [UIImage imageNamed:@"nav_logo"];
+    }
+    return _navlogoView;
+}
+
 
 
 - (void)didReceiveMemoryWarning {

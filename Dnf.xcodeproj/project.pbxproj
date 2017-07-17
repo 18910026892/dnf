@@ -48,7 +48,6 @@
 		D2A331231F14AF4700B78079 /* XLSlideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A331211F14AF4700B78079 /* XLSlideMenu.m */; };
 		D2A3312D1F14B42C00B78079 /* DNSession.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A3312C1F14B42C00B78079 /* DNSession.m */; };
 		D2A331311F14B60500B78079 /* DNUserDefault.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A331301F14B60500B78079 /* DNUserDefault.m */; };
-		D2A331341F14B6B600B78079 /* DNHttpRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A331331F14B6B600B78079 /* DNHttpRequest.m */; };
 		D2DE2AC81F1873DA00401113 /* DNEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2DE2AC71F1873DA00401113 /* DNEditViewController.m */; };
 		D2DE2ACB1F18740D00401113 /* DNEditNickNameViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2DE2ACA1F18740D00401113 /* DNEditNickNameViewController.m */; };
 		D2DE2ACF1F188C8100401113 /* DNEditTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2DE2ACE1F188C8100401113 /* DNEditTableViewCell.m */; };
@@ -162,8 +161,6 @@
 		D2A3312C1F14B42C00B78079 /* DNSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNSession.m; sourceTree = "<group>"; };
 		D2A3312F1F14B60500B78079 /* DNUserDefault.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNUserDefault.h; sourceTree = "<group>"; };
 		D2A331301F14B60500B78079 /* DNUserDefault.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNUserDefault.m; sourceTree = "<group>"; };
-		D2A331321F14B6B600B78079 /* DNHttpRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNHttpRequest.h; sourceTree = "<group>"; };
-		D2A331331F14B6B600B78079 /* DNHttpRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNHttpRequest.m; sourceTree = "<group>"; };
 		D2DE2AC61F1873DA00401113 /* DNEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNEditViewController.h; sourceTree = "<group>"; };
 		D2DE2AC71F1873DA00401113 /* DNEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNEditViewController.m; sourceTree = "<group>"; };
 		D2DE2AC91F18740D00401113 /* DNEditNickNameViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNEditNickNameViewController.h; sourceTree = "<group>"; };
@@ -608,8 +605,6 @@
 		D2A330CD1F146C6B00B78079 /* NetWork */ = {
 			isa = PBXGroup;
 			children = (
-				D2A331321F14B6B600B78079 /* DNHttpRequest.h */,
-				D2A331331F14B6B600B78079 /* DNHttpRequest.m */,
 			);
 			path = NetWork;
 			sourceTree = "<group>";
@@ -1199,7 +1194,6 @@
 				D2A3312D1F14B42C00B78079 /* DNSession.m in Sources */,
 				D2E19D1D1F171FFA00E26126 /* DNRecordViewController.m in Sources */,
 				D2E19D301F1731DA00E26126 /* DNMessageViewController.m in Sources */,
-				D2A331341F14B6B600B78079 /* DNHttpRequest.m in Sources */,
 				D2DE2AD71F18C6FD00401113 /* NSString+Date.m in Sources */,
 				D2A330AF1F146B7600B78079 /* main.m in Sources */,
 				D225E55B1F15CCF40075F243 /* DLCollecionViewController.m in Sources */,

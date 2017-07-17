@@ -69,7 +69,7 @@
     self.frame = frame;
     
     //气泡方向
-    self.bubble.image = [UIImage imageNamed:@"bubble_white"];
+    self.bubble.image = [UIImage imageNamed:@"message_bubble_white"];
     [self.text setTextColor:[UIColor blackColor]];
     return self;
 }
