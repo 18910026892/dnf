@@ -8,6 +8,8 @@
 
 #import "DNHomePageViewController.h"
 #import "DNPlayerViewController.h"
+#import "DNSearchViewController.h"
+#import "DNLoginViewController.h"
 @interface DNHomePageViewController ()
 
 @property(nonatomic,strong)UIImageView * navlogoView;
@@ -62,8 +64,18 @@
 
 -(void)leftButtonClick:(UIButton*)sender
 {
+
+    if ([[DNSession sharedSession] isLogin]==YES) {
+        
+        [self.xl_sldeMenu showLeftViewControllerAnimated:true];
+        
+    }else
+    {
+        DNLoginViewController * loginVc = [DNLoginViewController viewController];
+        [self.navigationController pushViewController:loginVc animated:YES];
+    }
     
-     [self.xl_sldeMenu showLeftViewControllerAnimated:true];
+  
 }
 
 -(UIImageView*)navlogoView

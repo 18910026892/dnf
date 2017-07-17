@@ -9,4 +9,5 @@ pod 'WebViewJavascriptBridge', '~> 6.0.0'
 pod 'YLGIFImage'
 pod 'SVProgressHUD'
 pod 'MJRefresh'
+pod 'IQKeyboardManager'
 end

@@ -156,7 +156,13 @@
             break;
             case 5:
         {
-         
+          
+            [[DNSession sharedSession] removeUserInfo];
+            
+            
+            DNLoginViewController * loginViewController = [DNLoginViewController viewController];
+            [self pushController:loginViewController];
+            
         }
             break;
         default:

@@ -13,6 +13,7 @@
 #import "DNRecordViewController.h"
 #import "DNHelpViewController.h"
 #import "DNEditViewController.h"
+#import "DNLoginViewController.h"
 @interface DNPersonalViewController :DNBaseViewController<UITableViewDelegate,UITableViewDataSource>
 
 //个人中心

@@ -12,6 +12,21 @@
 
 + (DNSession *)sharedSession;
 
+//用户账号
+@property(nonatomic,copy)NSString * userAccount;
+
+//用户密码
+@property(nonatomic,copy)NSString * passWord;
+
+//用户手机号
+@property(nonatomic,copy)NSString * phone;
+
+//用户email
+@property(nonatomic,copy)NSString * email;
+
+//用户token
+@property(nonatomic,copy)NSString * token;
+
 //用户id
 @property(nonatomic,copy)NSString * uid;
 
@@ -28,5 +43,6 @@
 @property(nonatomic,copy)NSString * birthday;
 
 
+-(void)removeUserInfo;
 -(BOOL)isLogin;
 @end
