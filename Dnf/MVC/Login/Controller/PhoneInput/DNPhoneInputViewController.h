@@ -1,0 +1,23 @@
+//
+//  DNPhoneInputViewController.h
+//  Dnf
+//
+//  Created by 巩鑫 on 2017/7/18.
+//  Copyright © 2017年 点寰科技. All rights reserved.
+//
+
+#import "DNBaseViewController.h"
+//进入类型
+typedef NS_ENUM(NSInteger, phoneInputControllerType)
+{
+    phoneRegister=0,
+    forgetPassWord,
+};
+
+
+@interface DNPhoneInputViewController : DNBaseViewController
+
+//进入类型
+@property(nonatomic,assign)phoneInputControllerType enterType;
+
+@end

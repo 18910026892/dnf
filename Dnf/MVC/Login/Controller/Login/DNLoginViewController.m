@@ -7,10 +7,10 @@
 //
 
 #import "DNLoginViewController.h"
+#import "DNPhoneInputViewController.h"
+#import "DNEmailRegisterViewController.h"
 #import "UIUnderlinedButton.h"
 #import "DNTextField.h"
-#import "DNPhoneRegisterViewController.h"
-#import "DNEmailRegisterViewController.h"
 @interface DNLoginViewController ()<UITextFieldDelegate>
 
 @property(nonatomic,strong)UILabel * accountLabel;
@@ -43,6 +43,15 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self creatUserInterface];
+    
+    [self textFieldDidChange:nil];
+  
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
 }
 
 -(void)creatUserInterface
@@ -60,8 +69,6 @@
     [self.view addSubview:self.registerButton];
     [self.view addSubview:self.forgetButton];
     [self.view addSubview:self.otherLoginLabel];
-    
- 
     [self initOtherLoginButton];
     
 }
@@ -87,14 +94,48 @@
     }
 }
 
+- (void)textFieldDidChange:(id)sender {
+    
+    
+    if (self.accoutTextField.text.length&&self.passwordTextField.text.length)
+    {
+        self.loginButton.enabled = YES;
+        self.loginButton.backgroundColor = kThemeColor;
+        
+    }else
+    {
+        self.loginButton.enabled = NO;
+        self.loginButton.backgroundColor = [kThemeColor colorWithAlphaComponent:0.3];
+    }
+    
+
+}
+
+
+-(void)showPassWord:(UIButton*)sender
+{
+    self.passwordTextField.secureTextEntry = !self.passwordTextField.secureTextEntry;
+    
+    if (self.passwordTextField.secureTextEntry) {
+    
+        [self.showPasswordButton setImage:[UIImage imageNamed:@"login_password_close"] forState:UIControlStateNormal];
+    }else
+    {
+        [self.showPasswordButton setImage:[UIImage imageNamed:@"login_password_open"] forState:UIControlStateNormal];
+        
+    }
+}
+
 -(void)loginButtonClick:(UIButton*)sender
 {
-    
+    [self.navigationController popToRootViewControllerAnimated:NO];
 }
 
 -(void)forgetButtonClick:(UIButton*)sender
 {
-    
+    DNPhoneInputViewController * phoneInputVc = [DNPhoneInputViewController viewController];
+    phoneInputVc.enterType = forgetPassWord;
+    [self.navigationController pushViewController:phoneInputVc animated:YES];
 }
 
 -(void)registerButtonClick:(UIButton*)sender
@@ -111,8 +152,9 @@
     UIAlertAction *phoneAction = [UIAlertAction actionWithTitle:@"手机注册" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         NSLog(@"The \"Okay/Cancel\" alert's other action occured.");
         
-        DNPhoneRegisterViewController * phoneRegisterVc = [DNPhoneRegisterViewController viewController];
-        [self.navigationController pushViewController:phoneRegisterVc animated:YES];
+        DNPhoneInputViewController * phoneInputVc = [DNPhoneInputViewController viewController];
+        phoneInputVc.enterType = phoneRegister;
+        [self.navigationController pushViewController:phoneInputVc animated:YES];
     }];
     
     UIAlertAction *emailAction = [UIAlertAction actionWithTitle:@"邮箱注册" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
@@ -122,11 +164,16 @@
         [self.navigationController pushViewController:emailRegisterVc animated:YES];
     }];
     
+    [cancelAction setValue:[UIColor blackColor] forKey:@"_titleTextColor"];
+    [phoneAction setValue:[UIColor blackColor] forKey:@"_titleTextColor"];
+    [emailAction setValue:[UIColor blackColor] forKey:@"_titleTextColor"];
+    
     
     // Add the actions.
     [alertController addAction:cancelAction];
     [alertController addAction:phoneAction];
     [alertController addAction:emailAction];
+
     
     [self presentViewController:alertController animated:YES completion:nil];
 }
@@ -134,8 +181,7 @@
 -(void)otherLoginButtonClick:(UIButton*)sender
 {
     UIButton * btn = (UIButton*)sender;
-    
-    NSLog(@" btn.tag %ld",(long)btn.tag);
+
     
     switch (btn.tag) {
         case 1000:
@@ -159,6 +205,16 @@
     }
 }
 
+-(BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
+}
+
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self.view endEditing:YES];
+}
+
 
 -(UILabel*)accountLabel
 {
@@ -174,7 +230,6 @@
 
 -(UILabel*)passwordLabel
 {
- 
     if (!_passwordLabel) {
         _passwordLabel = [[UILabel alloc]initWithFrame:CGRectMake(32, 148+64, 35, 21)];
         _passwordLabel.text = @"密码";
@@ -188,7 +243,7 @@
 -(DNTextField*)accoutTextField
 {
     if (!_accoutTextField) {
-        _accoutTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,66+64, KScreenWidth-160,20)];
+        _accoutTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,66+64, KScreenWidth-130,20)];
         _accoutTextField.placeholder = @"ID/邮箱/手机号";
         _accoutTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _accoutTextField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -198,8 +253,7 @@
         _accoutTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _accoutTextField.textColor = [UIColor blackColor];
         _accoutTextField.tintColor = kThemeColor;
-        _accoutTextField.tag = 0;
-
+        [_accoutTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     }
     return _accoutTextField;
     
@@ -218,12 +272,23 @@
         _passwordTextField.textColor = [UIColor blackColor];
         _passwordTextField.tintColor = kThemeColor;
         _passwordTextField.secureTextEntry = YES;
-        _passwordTextField.tag = 1;
+        [_passwordTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     
   
     }
     return _passwordTextField;
     
+}
+
+-(UIButton*)showPasswordButton
+{
+    if (!_showPasswordButton) {
+        _showPasswordButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _showPasswordButton.frame= CGRectMake(KScreenWidth-79,200, 40, 40);
+        [_showPasswordButton setImage:[UIImage imageNamed:@"login_password_close"] forState:UIControlStateNormal];
+        [_showPasswordButton addTarget:self action:@selector(showPassWord:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _showPasswordButton;
 }
 
 -(UIView*)linea

@@ -53,7 +53,9 @@
     
     
 //    [NSURLProtocol registerClass:[RNCachingURLProtocol class]];
-    
+    [IQKeyboardManager sharedManager].enable = YES;
+    [IQKeyboardManager sharedManager].enableAutoToolbar = NO;
+    [[IQKeyboardManager sharedManager] setKeyboardDistanceFromTextField:80];
     
     //主界面
     DNMainTabBarViewController * tabbarVc = [DNMainTabBarViewController shareTabBarController];

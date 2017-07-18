@@ -11,6 +11,7 @@
 #import "DNPersonalViewController.h"
 #import "XLSlideMenu.h"
 #import "RNCachingURLProtocol.h"
+#import <IQKeyboardManager/IQKeyboardManager.h>
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;

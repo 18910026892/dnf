@@ -1,15 +1,15 @@
 //
-//  DNPhoneRegisterViewController.m
+//  DNValidationViewController.m
 //  Dnf
 //
-//  Created by 巩鑫 on 2017/7/17.
+//  Created by 巩鑫 on 2017/7/18.
 //  Copyright © 2017年 点寰科技. All rights reserved.
 //
 
-#import "DNPhoneRegisterViewController.h"
-#import "DNPerfectInfoViewController.h"
+#import "DNValidationViewController.h"
+#import "DNChangePasswordViewController.h"
 #import "DNTextField.h"
-@interface DNPhoneRegisterViewController ()<UITextFieldDelegate>
+@interface DNValidationViewController ()<UITextFieldDelegate>
 
 @property(nonatomic,strong)UILabel * infoLabel;
 
@@ -17,32 +17,22 @@
 
 @property(nonatomic,strong)DNTextField * validationTextField;
 
+@property(nonatomic,strong)UIView * line;
+
 @property(nonatomic,strong)UIButton * countdownButton;
-
-@property(nonatomic,strong)UIImageView * passwordImageView;
-
-@property(nonatomic,strong)DNTextField * passWordTextField;
-
-@property(nonatomic,strong)UILabel * promptLabel;
-
-@property(nonatomic,strong)UIButton * showPasswordButton;
-
-@property(nonatomic,strong)UIImageView * accountImageView;
-
-@property(nonatomic,strong)DNTextField * nickNameTextField;
 
 @property(nonatomic,strong)UIButton * nextBtn;
 
 @end
 
-@implementation DNPhoneRegisterViewController
+@implementation DNValidationViewController
 
--(void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
+    // Do any additional setup after loading the view.
     [self creatUserInterface];
-    [self initLines];
     [self startTime];
+    [self validationChange];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -55,29 +45,15 @@
 -(void)creatUserInterface
 {
     [self showBackButton:YES];
-    [self setNavTitle:@"使用手机号注册"];
+    [self setNavTitle:@"验证"];
     [self.view addSubview:self.infoLabel];
     [self.view addSubview:self.validationImageView];
     [self.view addSubview:self.validationTextField];
-    [self.view addSubview:self.passwordImageView];
-    [self.view addSubview:self.passWordTextField];
-    [self.view addSubview:self.showPasswordButton];
-    [self.view addSubview:self.promptLabel];
-    [self.view addSubview:self.accountImageView];
-    [self.view addSubview:self.nickNameTextField];
+    [self.view addSubview:self.line];
+    [self.view addSubview:self.countdownButton];
     [self.view addSubview:self.nextBtn];
     
 }
-
--(void)initLines
-{
-    for (int i=0; i<3; i++) {
-        UIView * lineView = [[UIView alloc]initWithFrame:CGRectMake(80, 198+i*81.5, KScreenWidth-130, 0.5)];
-        lineView.backgroundColor = [UIColor customColorWithString:@"eeeeee"];
-        [self.view addSubview:lineView];
-    }
-}
-
 
 #pragma 开启时间线程
 -(void)startTime{
@@ -115,42 +91,34 @@
     
 }
 
+-(void)validationChange {
+    
+    if (self.validationTextField .text.length)
+    {
+        self.nextBtn.enabled = YES;
+        self.nextBtn.backgroundColor = kThemeColor;
+        
+    }else
+    {
+        self.nextBtn.enabled = NO;
+        self.nextBtn.backgroundColor = [kThemeColor colorWithAlphaComponent:0.3];
+
+    }
+    
+}
+
 
 -(void)nextBtnClick:(UIButton*)sender
 {
-    DNPerfectInfoViewController * perfectinfoVc = [DNPerfectInfoViewController viewController];
-    [self.navigationController pushViewController:perfectinfoVc animated:YES];
- 
+    DNChangePasswordViewController * changePassWordVc = [DNChangePasswordViewController viewController];
+    changePassWordVc.phoneNumber = self.phoneNumber;
+    changePassWordVc.countryCode = self.countryCode;
+    [self.navigationController pushViewController:changePassWordVc animated:YES];
 }
 
 -(void)countdownButtonClick:(UIButton*)sender
 {
     
-}
-
-
--(void)showPassWord:(UIButton*)sender
-{
-    self.passWordTextField.secureTextEntry = !self.passWordTextField.secureTextEntry;
-    
-    if (self.passWordTextField.secureTextEntry) {
-        
-        [self.showPasswordButton setImage:[UIImage imageNamed:@"login_password_close"] forState:UIControlStateNormal];
-    }else
-    {
-        [self.showPasswordButton setImage:[UIImage imageNamed:@"login_password_open"] forState:UIControlStateNormal];
-        
-    }
-}
-
--(BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [textField resignFirstResponder];
-    return YES;
-}
-
--(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
-{
-    [self.view endEditing:YES];
 }
 
 
@@ -166,7 +134,6 @@
     return _infoLabel;
 }
 
-
 -(UIImageView*)validationImageView
 {
     if (!_validationImageView) {
@@ -180,7 +147,7 @@
 -(DNTextField*)validationTextField
 {
     if (!_validationTextField) {
-        _validationTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,158, KScreenWidth-150,27)];
+        _validationTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,158, KScreenWidth-180,27)];
         _validationTextField.placeholder = @"验证码";
         _validationTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _validationTextField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -189,11 +156,22 @@
         _validationTextField.delegate = self;
         _validationTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _validationTextField.textColor = [UIColor blackColor];
-        [_validationTextField becomeFirstResponder];
-     
+        [_validationTextField addTarget:self action:@selector(validationChange) forControlEvents:UIControlEventEditingChanged];
+        
     }
     return _validationTextField;
     
+}
+
+
+-(UIView*)line
+{
+    if (!_line) {
+        _line = [[UIView alloc]initWithFrame:CGRectMake(80, 194, KScreenWidth-130, 1)];
+        _line.backgroundColor = [UIColor customColorWithString:@"eeeeee"];
+        
+    }
+    return _line;
 }
 
 -(UIButton*)countdownButton
@@ -208,96 +186,12 @@
     return _countdownButton;
 }
 
-
--(UIImageView*)passwordImageView
-{
-    if (!_passwordImageView) {
-        _passwordImageView = [[UIImageView alloc]initWithFrame:CGRectMake(44, 247, 25, 25)];
-        _passwordImageView.image = [UIImage imageNamed:@"login_password_icon"];
-        
-    }
-    return _passwordImageView;
-}
-
--(DNTextField*)passWordTextField
-{
-    if (!_passWordTextField) {
-        _passWordTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,246, KScreenWidth-150,27)];
-        _passWordTextField.placeholder = @"密码";
-        _passWordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        _passWordTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-        _passWordTextField.keyboardType = UIKeyboardTypeDefault;
-        _passWordTextField.returnKeyType = UIReturnKeyDefault;
-        _passWordTextField.delegate = self;
-        _passWordTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        _passWordTextField.textColor = [UIColor blackColor];
-        _passWordTextField.secureTextEntry = YES;
-        
-    }
-    return _passWordTextField;
-    
-}
-
--(UIButton*)showPasswordButton
-{
-    if (!_showPasswordButton) {
-        _showPasswordButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _showPasswordButton.frame= CGRectMake(KScreenWidth-79,240, 40, 40);
-        [_showPasswordButton setImage:[UIImage imageNamed:@"login_password_close"] forState:UIControlStateNormal];
-        [_showPasswordButton addTarget:self action:@selector(showPassWord:) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _showPasswordButton;
-}
-
-
--(UILabel*)promptLabel
-{
-    if (!_promptLabel) {
-        _promptLabel = [[UILabel alloc]initWithFrame:CGRectMake(78, 282, KScreenWidth-100, 16)];
-        _promptLabel.text = @"密码长度为6至20个字";
-        _promptLabel.font = [UIFont fontWithName:TextFontName_Light size:12];
-        _promptLabel.textColor = [UIColor customColorWithString:@"999999"];
-    }
-    return _promptLabel;
-}
-
-
-
--(UIImageView*)accountImageView
-{
-    if (!_accountImageView) {
-        _accountImageView = [[UIImageView alloc]initWithFrame:CGRectMake(44, 327, 25, 25)];
-        _accountImageView.image = [UIImage imageNamed:@"login_profile_icon"];
-    }
-    return _accountImageView;
-}
-
--(DNTextField*)nickNameTextField
-{
-    if (!_nickNameTextField) {
-        _nickNameTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,328, KScreenWidth-130,27)];
-        _nickNameTextField.placeholder =@"昵称 (长度为3至20个字)";
-        _nickNameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
-        _nickNameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
-        _nickNameTextField.keyboardType = UIKeyboardTypeDefault;
-        _nickNameTextField.returnKeyType = UIReturnKeyDefault;
-        _nickNameTextField.delegate = self;
-        _nickNameTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        _nickNameTextField.textColor = [UIColor blackColor];
-        
-    }
-    return _nickNameTextField;
-    
-}
-
-
-
 -(UIButton*)nextBtn
 {
     if (!_nextBtn) {
         _nextBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         _nextBtn.backgroundColor = kThemeColor;
-        _nextBtn.frame = CGRectMake(38, CGRectGetMaxY(self.nickNameTextField.frame)+44, KScreenWidth-76, 36);
+        _nextBtn.frame = CGRectMake(38, 264, KScreenWidth-76, 36);
         [_nextBtn setTitle:@"下一步" forState:UIControlStateNormal];
         [_nextBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _nextBtn.titleLabel.font = [UIFont fontWithName:TextFontName_Light size:16];
@@ -308,7 +202,6 @@
     }
     return _nextBtn;
 }
-
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

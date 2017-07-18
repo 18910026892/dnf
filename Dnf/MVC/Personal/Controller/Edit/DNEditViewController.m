@@ -245,8 +245,6 @@
                     [[UIView appearance] setTintColor:[UIColor blackColor]];
                     [userSexActionSheet showInView:self.view];
 
-            
-      
                     
                 }
                     break;
@@ -260,8 +258,6 @@
             break;
     }
 }
-
-
 
 
 -(void)didFinishPickView:(NSDate*)date {
@@ -402,7 +398,6 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
 
     self.avatarImageView.image = avatarImage;
-    
     NSData * data = UIImageJPEGRepresentation(avatarImage, 1.0);
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
  
