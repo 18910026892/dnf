@@ -59,6 +59,7 @@
     [self.view addSubview:self.infoLabel];
     [self.view addSubview:self.validationImageView];
     [self.view addSubview:self.validationTextField];
+    [self.view addSubview:self.countdownButton];
     [self.view addSubview:self.passwordImageView];
     [self.view addSubview:self.passWordTextField];
     [self.view addSubview:self.showPasswordButton];
@@ -78,7 +79,21 @@
     }
 }
 
-
+-(void)checkRegisterInfo{
+    
+    if (self.validationTextField.text.length&&[self.passWordTextField.text isValidPassword])
+    {
+        self.nextBtn.enabled = YES;
+        self.nextBtn.backgroundColor = kThemeColor;
+        
+    }else
+    {
+        self.nextBtn.enabled = NO;
+        self.nextBtn.backgroundColor = [kThemeColor colorWithAlphaComponent:0.3];
+        
+    }
+    
+}
 #pragma 开启时间线程
 -(void)startTime{
     __block int timeout = 59; //倒计时时间
@@ -190,6 +205,8 @@
         _validationTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _validationTextField.textColor = [UIColor blackColor];
         [_validationTextField becomeFirstResponder];
+        [_validationTextField addTarget:self action:@selector(checkRegisterInfo) forControlEvents:UIControlEventEditingChanged];
+        
      
     }
     return _validationTextField;
@@ -232,6 +249,7 @@
         _passWordTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _passWordTextField.textColor = [UIColor blackColor];
         _passWordTextField.secureTextEntry = YES;
+        [_passWordTextField addTarget:self action:@selector(checkRegisterInfo) forControlEvents:UIControlEventEditingChanged];
         
     }
     return _passWordTextField;
@@ -276,7 +294,7 @@
 {
     if (!_nickNameTextField) {
         _nickNameTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,328, KScreenWidth-130,27)];
-        _nickNameTextField.placeholder =@"昵称 (长度为3至20个字)";
+        _nickNameTextField.placeholder =@"昵称 (长度为3至8个字)";
         _nickNameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _nickNameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
         _nickNameTextField.keyboardType = UIKeyboardTypeDefault;

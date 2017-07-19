@@ -9,6 +9,7 @@
 #import "DNLoginViewController.h"
 #import "DNPhoneInputViewController.h"
 #import "DNEmailRegisterViewController.h"
+#import "DNEmailViewController.h"
 #import "UIUnderlinedButton.h"
 #import "DNTextField.h"
 @interface DNLoginViewController ()<UITextFieldDelegate>
@@ -133,9 +134,19 @@
 
 -(void)forgetButtonClick:(UIButton*)sender
 {
-    DNPhoneInputViewController * phoneInputVc = [DNPhoneInputViewController viewController];
-    phoneInputVc.enterType = forgetPassWord;
-    [self.navigationController pushViewController:phoneInputVc animated:YES];
+    if ([self.accoutTextField.text isValidEmail]) {
+        
+        DNEmailViewController * emailVc = [DNEmailViewController viewController];
+        emailVc.email = self.accoutTextField.text;
+        [self.navigationController pushViewController:emailVc animated:YES];
+        
+    }else
+    {
+        DNPhoneInputViewController * phoneInputVc = [DNPhoneInputViewController viewController];
+        phoneInputVc.enterType = forgetPassWord;
+        [self.navigationController pushViewController:phoneInputVc animated:YES];
+    }
+    
 }
 
 -(void)registerButtonClick:(UIButton*)sender

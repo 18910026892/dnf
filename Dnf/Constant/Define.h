@@ -49,4 +49,7 @@
 #define TextFontName_Italic @"Verdana-Italic"
 #define TextFontName_Medium @"PingFangSC-Medium"
 
+//HTTP
+#define HTTP_KEY   @"%ZW19nA8yVwt4*!YRqCQ!Wz6NVr#l*"
+
 #endif /* Define_h */

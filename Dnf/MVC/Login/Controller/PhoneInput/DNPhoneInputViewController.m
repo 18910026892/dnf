@@ -52,7 +52,7 @@
 
 -(void)phoneChange{
     
-    if (self.phoneTextField.text.length==11)
+    if ([self.phoneTextField.text isValidPhone])
     {
         self.nextBtn.enabled = YES;
         self.nextBtn.backgroundColor = kThemeColor;
@@ -61,8 +61,7 @@
     {
         self.nextBtn.enabled = NO;
         self.nextBtn.backgroundColor = [kThemeColor colorWithAlphaComponent:0.3];
-        
-        
+ 
     }
     
 }
@@ -81,6 +80,8 @@
 
 -(void)nextButtonClick:(UIButton*)sender
 {
+
+    
     if (self.enterType==forgetPassWord) {
         DNValidationViewController * validationVc = [DNValidationViewController viewController];
         validationVc.phoneNumber = self.phoneTextField.text;

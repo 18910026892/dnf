@@ -14,7 +14,6 @@ typedef NS_ENUM(NSInteger, phoneInputControllerType)
     forgetPassWord,
 };
 
-
 @interface DNPhoneInputViewController : DNBaseViewController
 
 //进入类型

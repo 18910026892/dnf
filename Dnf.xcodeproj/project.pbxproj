@@ -7,6 +7,32 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D218B8E01F1EFF1A0062BBF9 /* NSString+Validation.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B8DF1F1EFF1A0062BBF9 /* NSString+Validation.m */; };
+		D218B8E41F1F098A0062BBF9 /* DNEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B8E31F1F098A0062BBF9 /* DNEmailViewController.m */; };
+		D218B8E71F1F27ED0062BBF9 /* NSString+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B8E61F1F27ED0062BBF9 /* NSString+MD5.m */; };
+		D218B8EA1F1F289B0062BBF9 /* Toast+UIView.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B8E91F1F289B0062BBF9 /* Toast+UIView.m */; };
+		D218B8F41F1F2A0D0062BBF9 /* DLHttpRequestFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B8EC1F1F2A0D0062BBF9 /* DLHttpRequestFactory.m */; };
+		D218B8F51F1F2A0D0062BBF9 /* DLHttpsBusinesRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B8EE1F1F2A0D0062BBF9 /* DLHttpsBusinesRequest.m */; };
+		D218B8F61F1F2A0D0062BBF9 /* DLHttpsClient.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B8F01F1F2A0D0062BBF9 /* DLHttpsClient.m */; };
+		D218B8F71F1F2A0D0062BBF9 /* DLServerError.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B8F31F1F2A0D0062BBF9 /* DLServerError.m */; };
+		D218B9001F1F2D790062BBF9 /* DLDeviceInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B8FA1F1F2D790062BBF9 /* DLDeviceInfo.m */; };
+		D218B9011F1F2D790062BBF9 /* DLJSONArray.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B8FD1F1F2D790062BBF9 /* DLJSONArray.m */; };
+		D218B9021F1F2D790062BBF9 /* DLJSONObject.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B8FF1F1F2D790062BBF9 /* DLJSONObject.m */; };
+		D218B9071F1F2DD90062BBF9 /* DLDataConvertionUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B9041F1F2DD90062BBF9 /* DLDataConvertionUtil.m */; };
+		D218B9081F1F2DD90062BBF9 /* DLKeyChain.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B9061F1F2DD90062BBF9 /* DLKeyChain.m */; };
+		D218B90E1F1F30C60062BBF9 /* MSNetworkStatusObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B90B1F1F30C60062BBF9 /* MSNetworkStatusObserver.m */; };
+		D218B9131F1F31550062BBF9 /* DLNetWorkSpeedMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B9121F1F31550062BBF9 /* DLNetWorkSpeedMonitor.m */; };
+		D218B9171F1F323B0062BBF9 /* DLTimeoutHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B9161F1F323B0062BBF9 /* DLTimeoutHandler.m */; };
+		D218B91E1F1F32A70062BBF9 /* CollectIDFA.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B91A1F1F32A70062BBF9 /* CollectIDFA.m */; };
+		D218B91F1F1F32A70062BBF9 /* DLDeviceOrientationMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B91D1F1F32A70062BBF9 /* DLDeviceOrientationMonitor.m */; };
+		D218B9231F1F32D50062BBF9 /* DLLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B9221F1F32D50062BBF9 /* DLLocationManager.m */; };
+		D218B9271F1F343B0062BBF9 /* DLApplicationConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B9261F1F343B0062BBF9 /* DLApplicationConfig.m */; };
+		D218B92B1F1F368F0062BBF9 /* DLProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B92A1F1F368F0062BBF9 /* DLProgressView.m */; };
+		D218B92E1F1F38480062BBF9 /* MSReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B92D1F1F38480062BBF9 /* MSReachability.m */; };
+		D218B9341F1F3CE70062BBF9 /* DLFile.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B9311F1F3CE70062BBF9 /* DLFile.m */; };
+		D218B9351F1F3CE70062BBF9 /* DLPath.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B9331F1F3CE70062BBF9 /* DLPath.m */; };
+		D218B9371F1F3E130062BBF9 /* config.plist in Resources */ = {isa = PBXBuildFile; fileRef = D218B9361F1F3E130062BBF9 /* config.plist */; };
+		D218B93A1F1F3F100062BBF9 /* NSString+DLExtend.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B9381F1F3F100062BBF9 /* NSString+DLExtend.m */; };
 		D225E5521F15CCC90075F243 /* DNJoinViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D225E5511F15CCC90075F243 /* DNJoinViewController.m */; };
 		D225E5551F15CCDD0075F243 /* DLMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D225E5541F15CCDD0075F243 /* DLMessageViewController.m */; };
 		D225E5581F15CCE90075F243 /* DLHelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D225E5571F15CCE90075F243 /* DLHelpViewController.m */; };
@@ -87,6 +113,58 @@
 		45896F5E11ACC9FE7284A165 /* Pods-Dnf.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Dnf.release.xcconfig"; path = "Pods/Target Support Files/Pods-Dnf/Pods-Dnf.release.xcconfig"; sourceTree = "<group>"; };
 		77383E51B876F5EBE814AC4E /* Pods-Dnf.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Dnf.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Dnf/Pods-Dnf.debug.xcconfig"; sourceTree = "<group>"; };
 		BAA4675A2CCEDC3301D9A212 /* libPods-Dnf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Dnf.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D218B8DE1F1EFF1A0062BBF9 /* NSString+Validation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Validation.h"; sourceTree = "<group>"; };
+		D218B8DF1F1EFF1A0062BBF9 /* NSString+Validation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Validation.m"; sourceTree = "<group>"; };
+		D218B8E21F1F098A0062BBF9 /* DNEmailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNEmailViewController.h; sourceTree = "<group>"; };
+		D218B8E31F1F098A0062BBF9 /* DNEmailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNEmailViewController.m; sourceTree = "<group>"; };
+		D218B8E51F1F27ED0062BBF9 /* NSString+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5.h"; sourceTree = "<group>"; };
+		D218B8E61F1F27ED0062BBF9 /* NSString+MD5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5.m"; sourceTree = "<group>"; };
+		D218B8E81F1F289B0062BBF9 /* Toast+UIView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Toast+UIView.h"; sourceTree = "<group>"; };
+		D218B8E91F1F289B0062BBF9 /* Toast+UIView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Toast+UIView.m"; sourceTree = "<group>"; };
+		D218B8EB1F1F2A0D0062BBF9 /* DLHttpRequestFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLHttpRequestFactory.h; sourceTree = "<group>"; };
+		D218B8EC1F1F2A0D0062BBF9 /* DLHttpRequestFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLHttpRequestFactory.m; sourceTree = "<group>"; };
+		D218B8ED1F1F2A0D0062BBF9 /* DLHttpsBusinesRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLHttpsBusinesRequest.h; sourceTree = "<group>"; };
+		D218B8EE1F1F2A0D0062BBF9 /* DLHttpsBusinesRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLHttpsBusinesRequest.m; sourceTree = "<group>"; };
+		D218B8EF1F1F2A0D0062BBF9 /* DLHttpsClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLHttpsClient.h; sourceTree = "<group>"; };
+		D218B8F01F1F2A0D0062BBF9 /* DLHttpsClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLHttpsClient.m; sourceTree = "<group>"; };
+		D218B8F11F1F2A0D0062BBF9 /* DLHttpServerError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLHttpServerError.h; sourceTree = "<group>"; };
+		D218B8F21F1F2A0D0062BBF9 /* DLServerError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLServerError.h; sourceTree = "<group>"; };
+		D218B8F31F1F2A0D0062BBF9 /* DLServerError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLServerError.m; sourceTree = "<group>"; };
+		D218B8F91F1F2D790062BBF9 /* DLDeviceInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLDeviceInfo.h; sourceTree = "<group>"; };
+		D218B8FA1F1F2D790062BBF9 /* DLDeviceInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLDeviceInfo.m; sourceTree = "<group>"; };
+		D218B8FC1F1F2D790062BBF9 /* DLJSONArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLJSONArray.h; sourceTree = "<group>"; };
+		D218B8FD1F1F2D790062BBF9 /* DLJSONArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLJSONArray.m; sourceTree = "<group>"; };
+		D218B8FE1F1F2D790062BBF9 /* DLJSONObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLJSONObject.h; sourceTree = "<group>"; };
+		D218B8FF1F1F2D790062BBF9 /* DLJSONObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLJSONObject.m; sourceTree = "<group>"; };
+		D218B9031F1F2DD90062BBF9 /* DLDataConvertionUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLDataConvertionUtil.h; sourceTree = "<group>"; };
+		D218B9041F1F2DD90062BBF9 /* DLDataConvertionUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLDataConvertionUtil.m; sourceTree = "<group>"; };
+		D218B9051F1F2DD90062BBF9 /* DLKeyChain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLKeyChain.h; sourceTree = "<group>"; };
+		D218B9061F1F2DD90062BBF9 /* DLKeyChain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLKeyChain.m; sourceTree = "<group>"; };
+		D218B90A1F1F30C60062BBF9 /* MSNetworkStatusObserver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSNetworkStatusObserver.h; sourceTree = "<group>"; };
+		D218B90B1F1F30C60062BBF9 /* MSNetworkStatusObserver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSNetworkStatusObserver.m; sourceTree = "<group>"; };
+		D218B9111F1F31550062BBF9 /* DLNetWorkSpeedMonitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLNetWorkSpeedMonitor.h; sourceTree = "<group>"; };
+		D218B9121F1F31550062BBF9 /* DLNetWorkSpeedMonitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLNetWorkSpeedMonitor.m; sourceTree = "<group>"; };
+		D218B9151F1F323B0062BBF9 /* DLTimeoutHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLTimeoutHandler.h; sourceTree = "<group>"; };
+		D218B9161F1F323B0062BBF9 /* DLTimeoutHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLTimeoutHandler.m; sourceTree = "<group>"; };
+		D218B9191F1F32A70062BBF9 /* CollectIDFA.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollectIDFA.h; sourceTree = "<group>"; };
+		D218B91A1F1F32A70062BBF9 /* CollectIDFA.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollectIDFA.m; sourceTree = "<group>"; };
+		D218B91C1F1F32A70062BBF9 /* DLDeviceOrientationMonitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLDeviceOrientationMonitor.h; sourceTree = "<group>"; };
+		D218B91D1F1F32A70062BBF9 /* DLDeviceOrientationMonitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLDeviceOrientationMonitor.m; sourceTree = "<group>"; };
+		D218B9211F1F32D50062BBF9 /* DLLocationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLLocationManager.h; sourceTree = "<group>"; };
+		D218B9221F1F32D50062BBF9 /* DLLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLLocationManager.m; sourceTree = "<group>"; };
+		D218B9251F1F343B0062BBF9 /* DLApplicationConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLApplicationConfig.h; sourceTree = "<group>"; };
+		D218B9261F1F343B0062BBF9 /* DLApplicationConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLApplicationConfig.m; sourceTree = "<group>"; };
+		D218B9291F1F368F0062BBF9 /* DLProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLProgressView.h; sourceTree = "<group>"; };
+		D218B92A1F1F368F0062BBF9 /* DLProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLProgressView.m; sourceTree = "<group>"; };
+		D218B92C1F1F38480062BBF9 /* MSReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSReachability.h; sourceTree = "<group>"; };
+		D218B92D1F1F38480062BBF9 /* MSReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSReachability.m; sourceTree = "<group>"; };
+		D218B9301F1F3CE70062BBF9 /* DLFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLFile.h; sourceTree = "<group>"; };
+		D218B9311F1F3CE70062BBF9 /* DLFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLFile.m; sourceTree = "<group>"; };
+		D218B9321F1F3CE70062BBF9 /* DLPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLPath.h; sourceTree = "<group>"; };
+		D218B9331F1F3CE70062BBF9 /* DLPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLPath.m; sourceTree = "<group>"; };
+		D218B9361F1F3E130062BBF9 /* config.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = config.plist; sourceTree = "<group>"; };
+		D218B9381F1F3F100062BBF9 /* NSString+DLExtend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+DLExtend.m"; sourceTree = "<group>"; };
+		D218B93B1F1F3F360062BBF9 /* NSString+DLExtend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+DLExtend.h"; sourceTree = "<group>"; };
 		D22578721F1C5480007952BF /* DNLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNLoginViewController.h; sourceTree = "<group>"; };
 		D22578731F1C5480007952BF /* DNLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNLoginViewController.m; sourceTree = "<group>"; };
 		D225E5501F15CCC90075F243 /* DNJoinViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNJoinViewController.h; sourceTree = "<group>"; };
@@ -267,9 +345,128 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		D218B8E11F1F09790062BBF9 /* EmailChange */ = {
+			isa = PBXGroup;
+			children = (
+				D218B8E21F1F098A0062BBF9 /* DNEmailViewController.h */,
+				D218B8E31F1F098A0062BBF9 /* DNEmailViewController.m */,
+			);
+			path = EmailChange;
+			sourceTree = "<group>";
+		};
+		D218B8F81F1F2D790062BBF9 /* DLDeviceInfo */ = {
+			isa = PBXGroup;
+			children = (
+				D218B9031F1F2DD90062BBF9 /* DLDataConvertionUtil.h */,
+				D218B9041F1F2DD90062BBF9 /* DLDataConvertionUtil.m */,
+				D218B9051F1F2DD90062BBF9 /* DLKeyChain.h */,
+				D218B9061F1F2DD90062BBF9 /* DLKeyChain.m */,
+				D218B8F91F1F2D790062BBF9 /* DLDeviceInfo.h */,
+				D218B8FA1F1F2D790062BBF9 /* DLDeviceInfo.m */,
+			);
+			path = DLDeviceInfo;
+			sourceTree = "<group>";
+		};
+		D218B8FB1F1F2D790062BBF9 /* DLJson */ = {
+			isa = PBXGroup;
+			children = (
+				D218B8FC1F1F2D790062BBF9 /* DLJSONArray.h */,
+				D218B8FD1F1F2D790062BBF9 /* DLJSONArray.m */,
+				D218B8FE1F1F2D790062BBF9 /* DLJSONObject.h */,
+				D218B8FF1F1F2D790062BBF9 /* DLJSONObject.m */,
+			);
+			path = DLJson;
+			sourceTree = "<group>";
+		};
+		D218B9091F1F30C60062BBF9 /* NetWorkStatus */ = {
+			isa = PBXGroup;
+			children = (
+				D218B92C1F1F38480062BBF9 /* MSReachability.h */,
+				D218B92D1F1F38480062BBF9 /* MSReachability.m */,
+				D218B90A1F1F30C60062BBF9 /* MSNetworkStatusObserver.h */,
+				D218B90B1F1F30C60062BBF9 /* MSNetworkStatusObserver.m */,
+			);
+			path = NetWorkStatus;
+			sourceTree = "<group>";
+		};
+		D218B9101F1F31550062BBF9 /* NetWorkSpeed */ = {
+			isa = PBXGroup;
+			children = (
+				D218B9111F1F31550062BBF9 /* DLNetWorkSpeedMonitor.h */,
+				D218B9121F1F31550062BBF9 /* DLNetWorkSpeedMonitor.m */,
+			);
+			path = NetWorkSpeed;
+			sourceTree = "<group>";
+		};
+		D218B9141F1F323B0062BBF9 /* TimeOut */ = {
+			isa = PBXGroup;
+			children = (
+				D218B9151F1F323B0062BBF9 /* DLTimeoutHandler.h */,
+				D218B9161F1F323B0062BBF9 /* DLTimeoutHandler.m */,
+			);
+			path = TimeOut;
+			sourceTree = "<group>";
+		};
+		D218B9181F1F32A70062BBF9 /* DLCollectionIDFA */ = {
+			isa = PBXGroup;
+			children = (
+				D218B9191F1F32A70062BBF9 /* CollectIDFA.h */,
+				D218B91A1F1F32A70062BBF9 /* CollectIDFA.m */,
+			);
+			path = DLCollectionIDFA;
+			sourceTree = "<group>";
+		};
+		D218B91B1F1F32A70062BBF9 /* DLDeviceOrientationMonitor */ = {
+			isa = PBXGroup;
+			children = (
+				D218B91C1F1F32A70062BBF9 /* DLDeviceOrientationMonitor.h */,
+				D218B91D1F1F32A70062BBF9 /* DLDeviceOrientationMonitor.m */,
+			);
+			path = DLDeviceOrientationMonitor;
+			sourceTree = "<group>";
+		};
+		D218B9201F1F32D50062BBF9 /* locationManager */ = {
+			isa = PBXGroup;
+			children = (
+				D218B9211F1F32D50062BBF9 /* DLLocationManager.h */,
+				D218B9221F1F32D50062BBF9 /* DLLocationManager.m */,
+			);
+			path = locationManager;
+			sourceTree = "<group>";
+		};
+		D218B9241F1F343B0062BBF9 /* DLAppConfig */ = {
+			isa = PBXGroup;
+			children = (
+				D218B9251F1F343B0062BBF9 /* DLApplicationConfig.h */,
+				D218B9261F1F343B0062BBF9 /* DLApplicationConfig.m */,
+			);
+			path = DLAppConfig;
+			sourceTree = "<group>";
+		};
+		D218B9281F1F36680062BBF9 /* DLProgressView */ = {
+			isa = PBXGroup;
+			children = (
+				D218B9291F1F368F0062BBF9 /* DLProgressView.h */,
+				D218B92A1F1F368F0062BBF9 /* DLProgressView.m */,
+			);
+			path = DLProgressView;
+			sourceTree = "<group>";
+		};
+		D218B92F1F1F3CE70062BBF9 /* File */ = {
+			isa = PBXGroup;
+			children = (
+				D218B9301F1F3CE70062BBF9 /* DLFile.h */,
+				D218B9311F1F3CE70062BBF9 /* DLFile.m */,
+				D218B9321F1F3CE70062BBF9 /* DLPath.h */,
+				D218B9331F1F3CE70062BBF9 /* DLPath.m */,
+			);
+			path = File;
+			sourceTree = "<group>";
+		};
 		D22578701F1C5480007952BF /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				D218B8E11F1F09790062BBF9 /* EmailChange */,
 				D2F8BE121F1DD27B00E53B11 /* PerfectInformation */,
 				D2300BCC1F1DB94800EC5103 /* PhoneInput */,
 				D2300BC81F1DB1D600EC5103 /* ChangePassword */,
@@ -616,6 +813,7 @@
 				D2A330B91F146B7600B78079 /* Assets.xcassets */,
 				D2A330BB1F146B7600B78079 /* LaunchScreen.storyboard */,
 				D2A330BE1F146B7600B78079 /* Info.plist */,
+				D218B9361F1F3E130062BBF9 /* config.plist */,
 				D2A330AD1F146B7600B78079 /* Supporting Files */,
 			);
 			path = Dnf;
@@ -651,6 +849,7 @@
 		D2A330C81F146BF900B78079 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				D218B9281F1F36680062BBF9 /* DLProgressView */,
 				D2E19CFC1F1718FF00E26126 /* MJPhotoBrowser */,
 				D2A3311D1F14AF4700B78079 /* XLSlideMenu */,
 			);
@@ -687,6 +886,15 @@
 		D2A330CB1F146BF900B78079 /* Tool */ = {
 			isa = PBXGroup;
 			children = (
+				D218B92F1F1F3CE70062BBF9 /* File */,
+				D218B9241F1F343B0062BBF9 /* DLAppConfig */,
+				D218B9181F1F32A70062BBF9 /* DLCollectionIDFA */,
+				D218B91B1F1F32A70062BBF9 /* DLDeviceOrientationMonitor */,
+				D218B9141F1F323B0062BBF9 /* TimeOut */,
+				D218B9101F1F31550062BBF9 /* NetWorkSpeed */,
+				D218B9091F1F30C60062BBF9 /* NetWorkStatus */,
+				D218B8F81F1F2D790062BBF9 /* DLDeviceInfo */,
+				D218B8FB1F1F2D790062BBF9 /* DLJson */,
 				D2F8BE161F1DFE4600E53B11 /* NIMKitUtil */,
 			);
 			path = Tool;
@@ -695,6 +903,15 @@
 		D2A330CD1F146C6B00B78079 /* NetWork */ = {
 			isa = PBXGroup;
 			children = (
+				D218B8EB1F1F2A0D0062BBF9 /* DLHttpRequestFactory.h */,
+				D218B8EC1F1F2A0D0062BBF9 /* DLHttpRequestFactory.m */,
+				D218B8ED1F1F2A0D0062BBF9 /* DLHttpsBusinesRequest.h */,
+				D218B8EE1F1F2A0D0062BBF9 /* DLHttpsBusinesRequest.m */,
+				D218B8EF1F1F2A0D0062BBF9 /* DLHttpsClient.h */,
+				D218B8F01F1F2A0D0062BBF9 /* DLHttpsClient.m */,
+				D218B8F11F1F2A0D0062BBF9 /* DLHttpServerError.h */,
+				D218B8F21F1F2A0D0062BBF9 /* DLServerError.h */,
+				D218B8F31F1F2A0D0062BBF9 /* DLServerError.m */,
 			);
 			path = NetWork;
 			sourceTree = "<group>";
@@ -798,8 +1015,14 @@
 		D2A330FA1F14839D00B78079 /* NS+ */ = {
 			isa = PBXGroup;
 			children = (
+				D218B93B1F1F3F360062BBF9 /* NSString+DLExtend.h */,
+				D218B9381F1F3F100062BBF9 /* NSString+DLExtend.m */,
+				D218B8DE1F1EFF1A0062BBF9 /* NSString+Validation.h */,
+				D218B8DF1F1EFF1A0062BBF9 /* NSString+Validation.m */,
 				D2DE2AD51F18C6FD00401113 /* NSString+Date.h */,
 				D2DE2AD61F18C6FD00401113 /* NSString+Date.m */,
+				D218B8E51F1F27ED0062BBF9 /* NSString+MD5.h */,
+				D218B8E61F1F27ED0062BBF9 /* NSString+MD5.m */,
 			);
 			path = "NS+";
 			sourceTree = "<group>";
@@ -807,6 +1030,8 @@
 		D2A330FB1F14839D00B78079 /* UI+ */ = {
 			isa = PBXGroup;
 			children = (
+				D218B8E81F1F289B0062BBF9 /* Toast+UIView.h */,
+				D218B8E91F1F289B0062BBF9 /* Toast+UIView.m */,
 				D2438C5C1F19B54800B897D8 /* UIView+Extension.h */,
 				D2438C5D1F19B54800B897D8 /* UIView+Extension.m */,
 				D2A330FC1F1483CD00B78079 /* UIColor+Category.h */,
@@ -973,6 +1198,7 @@
 		D2A331291F14B3E200B78079 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				D218B9201F1F32D50062BBF9 /* locationManager */,
 				D2A3312A1F14B41C00B78079 /* DNSession */,
 			);
 			path = Manager;
@@ -1256,6 +1482,7 @@
 				D2A330BD1F146B7600B78079 /* LaunchScreen.storyboard in Resources */,
 				D2E19D0B1F1718FF00E26126 /* MJPhotoBrowser.bundle in Resources */,
 				D2A330BA1F146B7600B78079 /* Assets.xcassets in Resources */,
+				D218B9371F1F3E130062BBF9 /* config.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1314,18 +1541,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D218B92B1F1F368F0062BBF9 /* DLProgressView.m in Sources */,
 				D2B53BFB1F1C6C5D0016A69F /* DNLoginViewController.m in Sources */,
+				D218B9351F1F3CE70062BBF9 /* DLPath.m in Sources */,
 				D2438C851F1A08A100B897D8 /* DNRecordModel.m in Sources */,
 				D2438C571F19B35100B897D8 /* DNMessageTableViewCell.m in Sources */,
 				D2DE2ACB1F18740D00401113 /* DNEditNickNameViewController.m in Sources */,
 				D2438C791F19FD3100B897D8 /* DNRecordListViewController.m in Sources */,
 				D2438C5E1F19B54800B897D8 /* UIView+Extension.m in Sources */,
 				D2300BCB1F1DB1E400EC5103 /* DNChangePasswordViewController.m in Sources */,
+				D218B8E01F1EFF1A0062BBF9 /* NSString+Validation.m in Sources */,
 				D225E5551F15CCDD0075F243 /* DLMessageViewController.m in Sources */,
 				D2F8BE151F1DD3E100E53B11 /* DNPerfectInfoViewController.m in Sources */,
 				D2A331311F14B60500B78079 /* DNUserDefault.m in Sources */,
 				D2A330F21F14760E00B78079 /* DNTabBarItem.m in Sources */,
 				D2A330DC1F14728D00B78079 /* DNBaseViewController.m in Sources */,
+				D218B9001F1F2D790062BBF9 /* DLDeviceInfo.m in Sources */,
 				D2B53C121F1C9AEE0016A69F /* DNPhoneRegisterViewController.m in Sources */,
 				D2438C711F19E89600B897D8 /* DNPartyViewController.m in Sources */,
 				D2E19D291F17212400E26126 /* DNTopUpModel.m in Sources */,
@@ -1336,10 +1567,16 @@
 				D2A331191F14A12400B78079 /* DNVideoViewController.m in Sources */,
 				D2E19D0F1F1718FF00E26126 /* MJPhotoToolbar.m in Sources */,
 				D2A330EC1F14755B00B78079 /* DNMainTabBarViewController.m in Sources */,
+				D218B9131F1F31550062BBF9 /* DLNetWorkSpeedMonitor.m in Sources */,
+				D218B8F51F1F2A0D0062BBF9 /* DLHttpsBusinesRequest.m in Sources */,
+				D218B8F71F1F2A0D0062BBF9 /* DLServerError.m in Sources */,
+				D218B8F61F1F2A0D0062BBF9 /* DLHttpsClient.m in Sources */,
 				D2E19D331F174ED900E26126 /* DNPlayerViewController.m in Sources */,
 				D225E55E1F15CD590075F243 /* DNBrowsingHistoryViewController.m in Sources */,
 				D225E5581F15CCE90075F243 /* DLHelpViewController.m in Sources */,
+				D218B9271F1F343B0062BBF9 /* DLApplicationConfig.m in Sources */,
 				D2300BC71F1DA1D300EC5103 /* DNValidationViewController.m in Sources */,
+				D218B9011F1F2D790062BBF9 /* DLJSONArray.m in Sources */,
 				D2E19D0A1F1718FF00E26126 /* MJPhoto.m in Sources */,
 				D225E5741F15D3350075F243 /* README.md in Sources */,
 				D2E19D1A1F171FEC00E26126 /* DNTopUpViewController.m in Sources */,
@@ -1350,6 +1587,8 @@
 				D2E19D101F1718FF00E26126 /* MJPhotoView.m in Sources */,
 				D225E57B1F15D6F10075F243 /* DNSearchViewController.m in Sources */,
 				D2A3311C1F14A13300B78079 /* DNVRViewController.m in Sources */,
+				D218B9071F1F2DD90062BBF9 /* DLDataConvertionUtil.m in Sources */,
+				D218B9231F1F32D50062BBF9 /* DLLocationManager.m in Sources */,
 				D2F8BE191F1DFE4600E53B11 /* NIMKitUtil.m in Sources */,
 				D2A331041F149E4100B78079 /* DNWebViewController.m in Sources */,
 				D2E19D0C1F1718FF00E26126 /* MJPhotoBrowser.m in Sources */,
@@ -1357,20 +1596,27 @@
 				D2A3310A1F14A0DE00B78079 /* DNHomePageViewController.m in Sources */,
 				D2DE2ACF1F188C8100401113 /* DNEditTableViewCell.m in Sources */,
 				D2A330CC1F146BF900B78079 /* AppDelegate.m in Sources */,
+				D218B8EA1F1F289B0062BBF9 /* Toast+UIView.m in Sources */,
 				D2B53C1A1F1C9DCF0016A69F /* DNChosseCountryViewController.m in Sources */,
 				D2B53C221F1C9E9F0016A69F /* DNTextField.m in Sources */,
 				D2DE2AC81F1873DA00401113 /* DNEditViewController.m in Sources */,
 				D2A3312D1F14B42C00B78079 /* DNSession.m in Sources */,
 				D2B53C231F1C9E9F0016A69F /* UIUnderlinedButton.m in Sources */,
 				D2E19D1D1F171FFA00E26126 /* DNRecordViewController.m in Sources */,
+				D218B91F1F1F32A70062BBF9 /* DLDeviceOrientationMonitor.m in Sources */,
 				D2E19D301F1731DA00E26126 /* DNMessageViewController.m in Sources */,
+				D218B9171F1F323B0062BBF9 /* DLTimeoutHandler.m in Sources */,
+				D218B8F41F1F2A0D0062BBF9 /* DLHttpRequestFactory.m in Sources */,
+				D218B9081F1F2DD90062BBF9 /* DLKeyChain.m in Sources */,
 				D2B53C261F1C9ED50016A69F /* DNChosseCountryTableViewCell.m in Sources */,
 				D2DE2AD71F18C6FD00401113 /* NSString+Date.m in Sources */,
 				D2A330AF1F146B7600B78079 /* main.m in Sources */,
+				D218B8E41F1F098A0062BBF9 /* DNEmailViewController.m in Sources */,
 				D2300BCF1F1DB95500EC5103 /* DNPhoneInputViewController.m in Sources */,
 				D225E55B1F15CCF40075F243 /* DLCollecionViewController.m in Sources */,
 				D2438C811F1A056E00B897D8 /* DNRecordHeaderView.m in Sources */,
 				D2E19D251F1720DE00E26126 /* DNPersonalTableViewCell.m in Sources */,
+				D218B93A1F1F3F100062BBF9 /* NSString+DLExtend.m in Sources */,
 				D2DE2AD41F18C53500401113 /* FullTimeView.m in Sources */,
 				D2E19D171F171F3600E26126 /* DNPersonalViewController.m in Sources */,
 				D2A331161F14A11500B78079 /* DNPhotoViewController.m in Sources */,
@@ -1378,11 +1624,17 @@
 				D2E19D201F17209B00E26126 /* DNHelpViewController.m in Sources */,
 				D2438C761F19F46D00B897D8 /* DNSegmentView.m in Sources */,
 				D2B53C0C1F1C9AC30016A69F /* DNEmailRegisterViewController.m in Sources */,
+				D218B8E71F1F27ED0062BBF9 /* NSString+MD5.m in Sources */,
+				D218B9021F1F2D790062BBF9 /* DLJSONObject.m in Sources */,
 				D2438C621F19B66800B897D8 /* DNTextContentView.m in Sources */,
 				D2A330FE1F1483CD00B78079 /* UIColor+Category.m in Sources */,
 				D225E5731F15D3350075F243 /* Reachability.m in Sources */,
 				D2E19D491F177D5500E26126 /* DNVideoInfoView.m in Sources */,
+				D218B9341F1F3CE70062BBF9 /* DLFile.m in Sources */,
 				D2A331221F14AF4700B78079 /* UIViewController+XLSlideMenu.m in Sources */,
+				D218B92E1F1F38480062BBF9 /* MSReachability.m in Sources */,
+				D218B91E1F1F32A70062BBF9 /* CollectIDFA.m in Sources */,
+				D218B90E1F1F30C60062BBF9 /* MSNetworkStatusObserver.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

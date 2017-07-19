@@ -345,7 +345,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     if (!_nickNameTextField) {
         _nickNameTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,300, KScreenWidth-130,27)];
-        _nickNameTextField.placeholder = @"昵称 (长度为3至20个字)";
+        _nickNameTextField.placeholder = @"昵称 (长度为3至8个字)";
         _nickNameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _nickNameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
         _nickNameTextField.keyboardType = UIKeyboardTypeDefault;

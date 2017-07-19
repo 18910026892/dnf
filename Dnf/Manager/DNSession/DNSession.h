@@ -12,6 +12,35 @@
 
 + (DNSession *)sharedSession;
 
+/**
+ 登陆成功时的服务器时间 */
+@property (nonatomic,assign) int64_t loginServerTime;
+
+/** 客户端确认的位置信息 例: china */
+@property (nonatomic, copy, nullable) NSString *regon;
+
+/** 当前纬度，注意 NaN 表示没有获取到*/
+@property (atomic, copy) NSString * _Nullable latitude;
+/** 当前经度，注意 NaN 表示没有获取到*/
+@property (atomic, copy) NSString * _Nullable longitude;
+
+/** 国家编码 */
+@property (nonatomic, copy) NSString * _Nullable countryCode;
+/** 前城市名称*/
+@property (atomic,copy,nullable) NSString* city;
+/** /最后登录的用户帐号(仅平台帐号) */
+@property (atomic,copy,nullable) NSString* lastLoginUserAccount;
+
+@property (nonatomic, copy, nullable) NSString *lastLoginEmailAdress;
+
+@property (nonatomic, copy) NSString * _Nullable lastLoginUserId;
+
+/** 渠道号 */
+@property(nonatomic,copy)NSString * _Nullable channel;
+
+/** 当前时间与本地时间的时间差 */
+@property(nonatomic, assign)NSInteger timeDifference;
+
 //用户账号
 @property(nonatomic,copy)NSString * userAccount;
 
