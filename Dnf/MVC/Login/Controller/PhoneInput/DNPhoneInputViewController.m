@@ -80,22 +80,56 @@
 
 -(void)nextButtonClick:(UIButton*)sender
 {
-
     
-    if (self.enterType==forgetPassWord) {
-        DNValidationViewController * validationVc = [DNValidationViewController viewController];
-        validationVc.phoneNumber = self.phoneTextField.text;
-        validationVc.countryCode = self.countryNum.text;
-        [self.navigationController pushViewController:validationVc animated:YES];
-    }else
-        
-    {
-        DNPhoneRegisterViewController * registerVc = [DNPhoneRegisterViewController viewController];
-        registerVc.phoneNumber = self.phoneTextField.text;
-        registerVc.countryCode = self.countryNum.text;
-        [self.navigationController pushViewController:registerVc animated:YES];
-        
+    NSString *mtype = nil;
+    
+    if (self.enterType==phoneRegister) {
+        mtype = @"reg";
+    }else if (self.enterType==forgetPassWord) {
+        mtype = @"forgot";
     }
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory getCodeWithMobileNum:self.phoneTextField.text
+                                                                           type:mtype];
+    // 成功回调
+    request.requestSuccess = ^(id response)
+    {
+
+        DLJSONObject *obj = response;
+        NSInteger code = [obj getInteger:@"errno"];
+        
+        if (0 == code) {
+            
+            // 获取成功
+            if (self.enterType==phoneRegister) {
+          
+                DNPhoneRegisterViewController * registerVc = [DNPhoneRegisterViewController viewController];
+                registerVc.phoneNumber = self.phoneTextField.text;
+                registerVc.countryCode = self.countryNum.text;
+                [self.navigationController pushViewController:registerVc animated:YES];
+                
+            }else if (self.enterType==forgetPassWord) {
+              
+                DNValidationViewController * validationVc = [DNValidationViewController viewController];
+                validationVc.phoneNumber = self.phoneTextField.text;
+                validationVc.countryCode = self.countryNum.text;
+                [self.navigationController pushViewController:validationVc animated:YES];
+            }
+            
+        }
+        
+    };
+    
+    // 失败回调
+    
+    request.requestFaile = ^(NSError *error)
+    {
+        NSString * str = [NSString stringWithFormat:@"%@",error];
+        
+        NSLog(@"获取验证码失败 %@",str);
+    };
+    
+    [request excute];
+    
     
 }
 -(void)countryButtonClick:(UIButton*)sender

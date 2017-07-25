@@ -17,26 +17,20 @@
 @property (nonatomic,assign) int64_t loginServerTime;
 
 /** 客户端确认的位置信息 例: china */
-@property (nonatomic, copy, nullable) NSString *regon;
+@property (nonatomic, copy) NSString *regon;
 
 /** 当前纬度，注意 NaN 表示没有获取到*/
-@property (atomic, copy) NSString * _Nullable latitude;
+@property (nonatomic, copy) NSString * latitude;
 /** 当前经度，注意 NaN 表示没有获取到*/
-@property (atomic, copy) NSString * _Nullable longitude;
+@property (nonatomic,copy) NSString * longitude;
 
 /** 国家编码 */
-@property (nonatomic, copy) NSString * _Nullable countryCode;
+@property (nonatomic,copy) NSString * countryCode;
 /** 前城市名称*/
-@property (atomic,copy,nullable) NSString* city;
-/** /最后登录的用户帐号(仅平台帐号) */
-@property (atomic,copy,nullable) NSString* lastLoginUserAccount;
-
-@property (nonatomic, copy, nullable) NSString *lastLoginEmailAdress;
-
-@property (nonatomic, copy) NSString * _Nullable lastLoginUserId;
+@property (nonatomic,copy) NSString* city;
 
 /** 渠道号 */
-@property(nonatomic,copy)NSString * _Nullable channel;
+@property(nonatomic,copy)NSString * channel;
 
 /** 当前时间与本地时间的时间差 */
 @property(nonatomic, assign)NSInteger timeDifference;
@@ -71,7 +65,16 @@
 //用户生日
 @property(nonatomic,copy)NSString * birthday;
 
+//浏览记录
+@property(nonatomic,strong)NSArray * record;
+
+//收藏
+@property(nonatomic,strong)NSArray * collection;
+
+//是否是vip
+@property(nonatomic,assign)BOOL vip;
 
 -(void)removeUserInfo;
 -(BOOL)isLogin;
+
 @end

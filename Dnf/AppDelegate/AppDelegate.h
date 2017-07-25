@@ -7,11 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <IQKeyboardManager/IQKeyboardManager.h>
+#import "DLThirdShareManager.h"
 #import "DNMainTabBarViewController.h"
 #import "DNPersonalViewController.h"
 #import "XLSlideMenu.h"
 #import "RNCachingURLProtocol.h"
-#import <IQKeyboardManager/IQKeyboardManager.h>
+#import "DLApplicationConfig.h"
+#import "DLLocationManager.h"
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;

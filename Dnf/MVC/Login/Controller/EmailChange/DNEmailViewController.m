@@ -35,8 +35,8 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self creatUserInterface];
-    [self startTime];
     [self validationChange];
+    [self countdownButtonClick:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -58,7 +58,18 @@
     [self.view addSubview:self.passWordTextField];
     [self.view addSubview:self.showPasswordButton];
     [self.view addSubview:self.nextBtn];
+    [self.view addSubview:self.promptLabel];
+    [self initLines];
     
+}
+
+-(void)initLines
+{
+    for (int i=0; i<2; i++) {
+        UIView * lineView = [[UIView alloc]initWithFrame:CGRectMake(80, 200+i*80, KScreenWidth-130, 0.5)];
+        lineView.backgroundColor = [UIColor customColorWithString:@"eeeeee"];
+        [self.view addSubview:lineView];
+    }
 }
 
 -(void)showPassWord:(UIButton*)sender
@@ -77,7 +88,35 @@
 
 -(void)nextButtonClick:(UIButton*)sender
 {
-    [self.navigationController popToRootViewControllerAnimated:NO];
+ 
+    
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory resetPassWordUserName:self.email
+                                                                        passWord:self.passWordTextField.text
+                                                                            code:self.validationTextField.text
+                                                                            weak:nil];
+    
+    request.requestSuccess = ^(id response)
+    {
+        DLJSONObject *object = response;
+        
+        NSInteger resultCode = [object getInteger:@"errno"];
+        
+        if (0 == resultCode) {
+            
+              [[UIApplication sharedApplication].keyWindow makeToast:@"修改成功" duration:1.5 position:CSToastPositionCenter];
+              [self.navigationController popViewControllerAnimated:YES];
+            
+        }
+        
+    };
+    
+    request.requestFaile = ^(NSError *error)
+    {
+        
+        
+    };
+    [request excute];
+    
 }
 
 
@@ -119,7 +158,7 @@
 
 -(void)validationChange {
     
-    if (self.validationTextField .text.length)
+    if (self.validationTextField.text.length&&[self.passWordTextField.text isValidPassword])
     {
         self.nextBtn.enabled = YES;
         self.nextBtn.backgroundColor = kThemeColor;
@@ -134,15 +173,34 @@
 }
 
 
--(void)nextBtnClick:(UIButton*)sender
-{
-  
-}
-
 -(void)countdownButtonClick:(UIButton*)sender
 {
-    
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory getEmailCodeWithEmail:self.email
+                                                                            type:@"forgot"];
+    request.requestSuccess = ^(id response)
+    {
+        
+        [self startTime];
+     
+    };
+    request.requestFaile = ^(NSError *error)
+    {
+        
+    };
+    [request excute];
+
 }
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
+}
+
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self.view endEditing:YES];
+}
+
 
 
 -(UILabel*)infoLabel
@@ -160,7 +218,7 @@
 -(UIImageView*)validationImageView
 {
     if (!_validationImageView) {
-        _validationImageView = [[UIImageView alloc]initWithFrame:CGRectMake(44, 208, 25, 25)];
+        _validationImageView = [[UIImageView alloc]initWithFrame:CGRectMake(44, 168, 25, 25)];
         _validationImageView.image = [UIImage imageNamed:@"login_validation_icon"];
     }
     return _validationImageView;
@@ -170,7 +228,7 @@
 -(DNTextField*)validationTextField
 {
     if (!_validationTextField) {
-        _validationTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,210, KScreenWidth-180,27)];
+        _validationTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,170, KScreenWidth-190,27)];
         _validationTextField.placeholder = @"验证码";
         _validationTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _validationTextField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -180,6 +238,7 @@
         _validationTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _validationTextField.textColor = [UIColor blackColor];
         [_validationTextField addTarget:self action:@selector(validationChange) forControlEvents:UIControlEventEditingChanged];
+        [_validationTextField becomeFirstResponder];
         
     }
     return _validationTextField;
@@ -189,7 +248,7 @@
 -(UIImageView*)passwordImageView
 {
     if (!_passwordImageView) {
-        _passwordImageView = [[UIImageView alloc]initWithFrame:CGRectMake(44, 288, 25, 25)];
+        _passwordImageView = [[UIImageView alloc]initWithFrame:CGRectMake(44, 248, 25, 25)];
         _passwordImageView.image = [UIImage imageNamed:@"login_password_icon"];
         
     }
@@ -199,7 +258,7 @@
 -(DNTextField*)passWordTextField
 {
     if (!_passWordTextField) {
-        _passWordTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,290, KScreenWidth-160,27)];
+        _passWordTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,250, KScreenWidth-160,27)];
         _passWordTextField.placeholder = @"密码";
         _passWordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _passWordTextField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -209,6 +268,7 @@
         _passWordTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _passWordTextField.textColor = [UIColor blackColor];
         _passWordTextField.secureTextEntry = YES;
+         [_passWordTextField addTarget:self action:@selector(validationChange) forControlEvents:UIControlEventEditingChanged];
     }
     return _passWordTextField;
     
@@ -217,17 +277,30 @@
 {
     if (!_showPasswordButton) {
         _showPasswordButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _showPasswordButton.frame= CGRectMake(KScreenWidth-79,281, 40, 40);
+        _showPasswordButton.frame= CGRectMake(KScreenWidth-79,243, 40, 40);
         [_showPasswordButton setImage:[UIImage imageNamed:@"login_password_close"] forState:UIControlStateNormal];
         [_showPasswordButton addTarget:self action:@selector(showPassWord:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _showPasswordButton;
 }
 
+
+-(UIButton*)countdownButton
+{
+    if (!_countdownButton) {
+        _countdownButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _countdownButton.frame = CGRectMake(KScreenWidth-47-62, 160, 62, 40);
+        [_countdownButton setTitleColor:[UIColor customColorWithString:@"999999"] forState:UIControlStateNormal];
+        _countdownButton.titleLabel.font = [UIFont fontWithName:TextFontName_Light size:15];
+        [_countdownButton addTarget:self action:@selector(countdownButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _countdownButton;
+}
+
 -(UILabel*)promptLabel
 {
     if (!_promptLabel) {
-        _promptLabel = [[UILabel alloc]initWithFrame:CGRectMake(78, 329, KScreenWidth-100, 16)];
+        _promptLabel = [[UILabel alloc]initWithFrame:CGRectMake(78, 285, KScreenWidth-100, 16)];
         _promptLabel.text = @"密码长度为6至20个字";
         _promptLabel.font = [UIFont fontWithName:TextFontName_Light size:12];
         _promptLabel.textColor = [UIColor customColorWithString:@"999999"];
@@ -236,30 +309,17 @@
 }
 
 
-
--(UIButton*)countdownButton
-{
-    if (!_countdownButton) {
-        _countdownButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _countdownButton.frame = CGRectMake(KScreenWidth-47-62, 150, 62, 40);
-        [_countdownButton setTitleColor:[UIColor customColorWithString:@"999999"] forState:UIControlStateNormal];
-        _countdownButton.titleLabel.font = [UIFont fontWithName:TextFontName_Light size:15];
-        [_countdownButton addTarget:self action:@selector(countdownButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _countdownButton;
-}
-
 -(UIButton*)nextBtn
 {
     if (!_nextBtn) {
         _nextBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         _nextBtn.backgroundColor = kThemeColor;
-        _nextBtn.frame = CGRectMake(38, 427, KScreenWidth-76, 36);
+        _nextBtn.frame = CGRectMake(38, 327, KScreenWidth-76, 36);
         [_nextBtn setTitle:@"下一步" forState:UIControlStateNormal];
         [_nextBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _nextBtn.titleLabel.font = [UIFont fontWithName:TextFontName_Light size:16];
         _nextBtn.layer.cornerRadius = 18;
-        [_nextBtn addTarget:self action:@selector(nextBtnClick:) forControlEvents:UIControlEventTouchUpInside];
+        [_nextBtn addTarget:self action:@selector(nextButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         
         
     }

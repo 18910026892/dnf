@@ -12,6 +12,11 @@
 
 -(long long)dateStringWithFormateStyle:(NSString *)style;
 
++(NSInteger)getNowTimestamp;
+//时间转化时间戳
++(NSInteger)timeSwitchTimestamp:(NSString *)formatTime andFormatter:(NSString *)format;
+//时间戳转化时间
++(NSString *)timestampSwitchTime:(NSInteger)timestamp andFormatter:(NSString *)format;
 
-+(NSString *)getNowTimeInterval;
+
 @end

@@ -8,6 +8,7 @@
 
 #import "DNEmailRegisterViewController.h"
 #import "DNTextField.h"
+#import "DNPerfectInfoViewController.h"
 @interface DNEmailRegisterViewController ()<UITextFieldDelegate>
 
 @property(nonatomic,strong)UIImageView * emailImageView;
@@ -74,7 +75,7 @@
 
 - (void)textFieldDidChange:(id)sender  {
     
-    if (self.emailTextField.text.length&&self.validationTextField.text.length&&self.passWordTextField.text.length&&self.nickNameTextField)
+    if ([self.emailTextField.text isValidEmail]&&self.validationTextField.text.length&&[self.passWordTextField.text isValidPassword]&&self.nickNameTextField.text.length)
     {
         self.nextBtn.enabled = YES;
         self.nextBtn.backgroundColor = kThemeColor;
@@ -103,10 +104,7 @@
     }
 }
 
-
-
-
--(void)countdownButtonClick:(UIButton*)sender
+-(void)startTime
 {
     __block int timeout = 59; //倒计时时间
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
@@ -139,12 +137,113 @@
         }
     });
     dispatch_resume(_timer);
+}
 
+
+-(void)countdownButtonClick:(UIButton*)sender
+{
+    if ([self.emailTextField.text isValidEmail]) {
+    
+        
+        DLHttpsBusinesRequest *request = [DLHttpRequestFactory getEmailCodeWithEmail:_emailTextField.text
+                                                                                type:@"reg"];
+        request.requestSuccess = ^(id response)
+        {
+        
+            [self startTime];
+            [self.view makeToast:@"验证码已发送至您的邮箱" duration:3.0 position:CSToastPositionCenter];
+ 
+        };
+        request.requestFaile = ^(NSError *error)
+        {
+            
+        };
+        [request excute];
+      
+    }else
+    {
+        [self.view makeToast:@"请输入正确的邮箱" duration:3.0 position:CSToastPositionCenter];
+        
+    }
+    
 }
 
 -(void)nextBtnClick:(UIButton*)sender
 {
     
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory registerEmailWithEmail:self.emailTextField.text
+                                                                         password:self.passWordTextField.text
+                                                                             code:self.validationTextField.text
+                                                                         nickName:self.nickNameTextField.text];
+
+    
+    request.requestSuccess = ^(id response)
+    {
+        DLJSONObject *object = response;
+        
+        NSInteger resultCode = [object getInteger:@"errno"];
+        
+        if (0 == resultCode) {
+            
+            DLJSONObject *resultData = [object getJSONObject:@"data"];
+            
+            [DNSession sharedSession].token = [resultData getString:@"token"];
+            
+            [DNSession sharedSession].userAccount = self.emailTextField.text;
+            
+            [DNSession sharedSession].uid   = [resultData optString:@"uid"
+                                                       defaultValue:@"0"];
+            
+            
+            
+            [DNSession sharedSession].nickname = [resultData optString:@"nickname"
+                                                          defaultValue:nil];
+            
+            [DNSession sharedSession].avatar = [resultData getString:@"avatar"]; //大图
+            
+            [DNSession sharedSession].sex      = [resultData getString:@"gender"];
+            
+            [DNSession sharedSession].birthday    = [resultData getString:@"birth"];
+            
+            [DNSession sharedSession].regon      = [resultData getString:@"region"];
+            
+            [DNSession sharedSession].vip       = NO;
+            
+            if ([[resultData getString:@"channel"] length]) {
+                [DNSession sharedSession].channel = [resultData getString:@"channel"];
+            }else{
+                [DNSession sharedSession].channel = @"0";
+            }
+            
+            
+            DNPerfectInfoViewController * perfectinfoVc = [DNPerfectInfoViewController viewController];
+            [self.navigationController pushViewController:perfectinfoVc animated:YES];
+            
+            
+        }else
+        {
+            if (1112 == resultCode) {
+                
+                UIAlertView *reRegisterAlert = [[UIAlertView alloc]initWithTitle:@"提示！"
+                                                                         message:@"邮箱已注册"
+                                                                        delegate:self
+                                                               cancelButtonTitle:@"知道了"
+                                                               otherButtonTitles:nil, nil];
+                
+                [reRegisterAlert show];
+                
+            }
+            
+        }
+        
+    };
+    
+    request.requestFaile = ^(NSError *error)
+    {
+        // 请求失败
+    };
+    
+    [request excute];
 }
 
 

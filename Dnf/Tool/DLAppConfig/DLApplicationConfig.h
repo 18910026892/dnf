@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "DLJSONObject.h"
+#import "DLJSONArray.h"
 @interface DLApplicationConfig : NSObject
 
 + (void)load;

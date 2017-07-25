@@ -63,6 +63,22 @@
         [self addGestureRecognizer:doubleTap];
         
         [singleTap requireGestureRecognizerToFail:doubleTap];
+        
+        
+        //添加轻扫手势
+        UISwipeGestureRecognizer *swipeGestureUp = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeGesture:)];
+        //设置轻扫的方向
+        swipeGestureUp.direction = UISwipeGestureRecognizerDirectionUp;
+        [self addGestureRecognizer:swipeGestureUp];
+        
+        //添加轻扫手势
+        UISwipeGestureRecognizer *swipeGestureDown = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeGesture:)];
+        //设置轻扫的方向
+        swipeGestureDown.direction = UISwipeGestureRecognizerDirectionDown;
+        [self addGestureRecognizer:swipeGestureDown];
+        
+        
+
     }
     return self;
 }
@@ -218,6 +234,34 @@
         CGRect rectTozoom=CGRectMake(touchPoint.x * scale, touchPoint.y * scale, 1, 1);
         [self zoomToRect:rectTozoom animated:YES];
 	}
+}
+
+//轻扫手势触发方法
+-(void)swipeGesture:(id)sender
+{
+    
+    UISwipeGestureRecognizer *swipe = sender;
+    
+    if (swipe.direction == UISwipeGestureRecognizerDirectionUp)
+    {
+           NSLog(@"向上");
+        if ([self.photoViewDelegate respondsToSelector:@selector(showPhotoCollectionView)]) {
+            [self.photoViewDelegate showPhotoCollectionView];
+        }
+        
+    }
+    
+    if (swipe.direction == UISwipeGestureRecognizerDirectionDown)
+        
+    {
+        NSLog(@"向下");
+        
+        if ([self.photoViewDelegate respondsToSelector:@selector(hidePhotoCollectionView)]) {
+            [self.photoViewDelegate hidePhotoCollectionView];
+        }
+        
+
+    }
 }
 
 - (void)dealloc

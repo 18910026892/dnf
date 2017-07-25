@@ -18,6 +18,17 @@ static NSString *const kSessionNickName       = @"kSessionNickName";
 static NSString *const kSessionAvatar         = @"kSessionAvatar";
 static NSString *const kSessionSex            = @"kSessionSex";
 static NSString *const kSessionBirthday       = @"kSessionBirthday";
+static NSString *const kSessionRegon          = @"kSessionRegon";
+static NSString *const kSessionLatitude       = @"kSessionLatitude";
+static NSString *const kSessionLongitude      = @"kSessionLongitude";
+static NSString *const kSessionCountryCode    = @"kSessionCountryCode";
+static NSString *const kSessionCity           = @"kSessionCity";
+static NSString *const kSessionChannel        = @"kSessionChannel";
+static NSString *const kSessionTimeDifference = @"kSessionTimeDifference";
+static NSString *const kSessionRecord         = @"kSessionRecord";
+static NSString *const kSessionCollecion      = @"kSessionCollecion";
+static NSString *const kSeesionVip            = @"kSeesionVip";
+
 
 static DNSession *sharedManager=nil;
 @implementation DNSession
@@ -33,6 +44,7 @@ static DNSession *sharedManager=nil;
     return sharedManager;
 }
 
+#pragma mark set
 -(void)setUserAccount:(NSString *)userAccount
 {
     [self setValue:userAccount forKey:kSessionAccount];
@@ -81,6 +93,58 @@ static DNSession *sharedManager=nil;
     [self setValue:birthday forKey:kSessionBirthday];
 }
 
+-(void)setRegon:(NSString *)regon
+{
+    [self setValue:regon forKey:kSessionRegon];
+}
+
+-(void)setLatitude:(NSString *)latitude
+{
+    [self setValue:latitude forKey:kSessionLatitude];
+}
+
+-(void)setLongitude:(NSString *)longitude
+{
+    [self setValue:longitude forKey:kSessionLongitude];
+}
+
+-(void)setCountryCode:(NSString *)countryCode
+{
+    [self setValue:countryCode forKey:kSessionCountryCode];
+}
+
+-(void)setCity:(NSString *)city
+{
+    [self setValue:city forKey:kSessionCity];
+}
+
+-(void)setChannel:(NSString *)channel
+{
+    [self setValue:channel forKey:kSessionChannel];
+}
+
+-(void)setTimeDifference:(NSInteger)timeDifference
+{
+    [self setIntegerValue:timeDifference forkey:kSessionTimeDifference];
+}
+
+-(void)setRecord:(NSArray *)record
+{
+    [self setValue:record forKey:kSessionRecord];
+}
+
+-(void)setCollection:(NSArray *)collection
+{
+    [self setCollection:collection];
+}
+
+-(void)setVip:(BOOL)vip
+{
+    [self setBoolValue:vip forkey:kSeesionVip];
+}
+
+
+#pragma mark get
 -(NSString*)userAccount
 {
     return [self getValueForKey:kSessionAccount];
@@ -129,14 +193,67 @@ static DNSession *sharedManager=nil;
     return [self getValueForKey:kSessionSex];
 }
 
+-(NSString*)regon
+{
+    return [self getValueForKey:kSessionRegon];
+}
+
+-(NSString*)latitude
+{
+    return [self getValueForKey:kSessionLatitude];
+}
+
+-(NSString*)longitude
+{
+    return [self getValueForKey:kSessionLongitude];
+}
+
+-(NSString*)countryCode
+{
+    return [self getValueForKey:kSessionCountryCode];
+}
+
+-(NSString*)city
+{
+    return [self getValueForKey:kSessionCity];
+}
+
+
+-(NSString*)channel
+{
+    return [self getValueForKey:kSessionChannel];
+}
+
+
+
+-(NSInteger)timeDifference
+{
+    return [self getIntegerValue:kSessionTimeDifference];
+}
+
+-(NSArray*)record
+{
+    return [self getValueForKey:kSessionRecord];
+}
+
+-(NSArray*)collection
+{
+    return [self getValueForKey:kSessionCollecion];
+}
+
+-(BOOL)isVip
+{
+    return [self getBoolValueForKey:kSeesionVip];
+}
+
 #pragma mark - islogin
 - (BOOL)isLogin{
-    if(self.uid){
-        
-        NSLog(@" 用户ID 是 %@",self.uid);
-        return YES;
+    
+    if(IsStrEmpty(self.token)){
+ 
+        return NO;
     }
-    return NO;
+    return YES;
 }
 
 #pragma mark -
@@ -145,7 +262,7 @@ static DNSession *sharedManager=nil;
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (NSString *)getValueForKey:(NSString *)key{
+- (id)getValueForKey:(NSString *)key{
     return [[NSUserDefaults standardUserDefaults] valueForKey:key];
 }
 

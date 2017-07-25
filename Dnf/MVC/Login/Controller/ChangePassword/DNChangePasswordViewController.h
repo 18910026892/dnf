@@ -12,6 +12,7 @@
 
 @interface DNChangePasswordViewController : DNBaseViewController
 
+@property(nonatomic,copy)NSString * code;
 
 @property(nonatomic,copy)NSString * phoneNumber;
 

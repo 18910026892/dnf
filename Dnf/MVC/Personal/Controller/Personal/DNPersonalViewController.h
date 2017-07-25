@@ -28,5 +28,9 @@
 //昵称
 @property(nonatomic,strong)UILabel * nickNameLabel;
 
+//消息提示红点
+@property(nonatomic,strong)UIView * redView;
+
+
 
 @end

@@ -7,10 +7,17 @@
 //
 
 #import "DNRecordViewController.h"
+#import "DLTopBarView.h"
+#import "DLPageView.h"
+#import "DLTopBarConfig.h"
+#import "DLRecordListView.h"
+@interface DNRecordViewController ()<DLTopBarViewDelegate,DLPageViewDelegate>
 
-const static CGFloat headerHeight = 44.0f;
-
-@interface DNRecordViewController ()
+@property (nonatomic,strong) DLTopBarView *topbar; // 标题
+@property (nonatomic,strong) DLPageView *pageView; // 切换用
+@property (nonatomic,strong) UIButton * clearButton;
+@property (nonatomic,strong) NSMutableArray * viewArray;
+@property (nonatomic,assign) BOOL isEdit;
 
 @end
 
@@ -19,7 +26,7 @@ const static CGFloat headerHeight = 44.0f;
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
+    _isEdit = NO;
     [self creatUserInterface];
 }
 
@@ -27,48 +34,147 @@ const static CGFloat headerHeight = 44.0f;
 {
     [self showBackButton:YES];
     [self.rightButton setTitle:@"管理" forState:UIControlStateNormal];
-    
-    [self.view addSubview:self.segmentView];
+    [self.rightButton addTarget:self action:@selector(rightButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.clearButton];
-    [self.view addSubview:self.bigScrollView];
+   
+    [self initTopBar];
+    [self initPageView];
 }
 
--(void)addSubView
+-(void)rightButtonClick:(UIButton*)sender
 {
-    //数组的count
-    for (int i=0 ; i<2;i++){
-        DNRecordListViewController* listViewController = [DNRecordListViewController viewController];
-         listViewController.view.frame = CGRectMake(KScreenWidth*i, 0, KScreenWidth, KScreenHeight-107);
-        [self.bigScrollView addSubview:listViewController.view];
-        
-    }
-
+    _isEdit = !_isEdit;
+    
+    self.pageView.isNeedScroll =!_isEdit;
+    self.topbar.userInteractionEnabled = !_isEdit;
+    
+    DLRecordListView * listView = self.viewArray[self.topbar.selectIndex];
+    listView.isEdit = _isEdit;
+    [listView.collectionView reloadData];
 }
 
 -(void)clearButtonClick:(UIButton*)sender
 {
+ 
+    DLRecordListView * listView = self.viewArray[self.topbar.selectIndex];
+
+    NSInteger  dataCount = [listView.dataArray count];
+    
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"这些项目将从您的收藏中删除" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    // Create the actions.
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        NSLog(@"The \"Okay/Cancel\" alert's cancel action occured.");
+        
+        
+    }];
+    
+    NSString * deleteString = [NSString stringWithFormat:@"删除%ld个项目",dataCount];
+    
+    UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:deleteString style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        
+        NSLog(@"delete");
+    
+    }];
+
+    [cancelAction setValue:[UIColor blackColor] forKey:@"_titleTextColor"];
+    [deleteAction setValue:[UIColor customColorWithString:@"fe3824"] forKey:@"_titleTextColor"];
+
+    // Add the actions.
+    [alertController addAction:cancelAction];
+    [alertController addAction:deleteAction];
+
+    [self presentViewController:alertController animated:YES completion:nil];
+    
     
 }
 
-#pragma mark - ScrollView delegate
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+-(void)initTopBar
+{
+    DLTopBarConfig *topbarConfig = [[DLTopBarConfig alloc]init];
+    
+    topbarConfig.titleSelectColor = [[UIColor customColorWithString:@"#ffffff"] colorWithAlphaComponent:0.9];
+    topbarConfig.titleNormalColor = [[UIColor customColorWithString:@"#ffffff"] colorWithAlphaComponent:0.5];
+    topbarConfig.underLineColor   = [UIColor customColorWithString:@"#ffffff"];
+    
+    topbarConfig.uderLineHeight   = 2;
+    topbarConfig.lineType         = DLTopBarUderlineType_equTitleWidth;
+    
+    _topbar = [[DLTopBarView alloc]initWithFrame:CGRectMake(KScreenWidth/2-90,20,180,44) config:topbarConfig];
+    _topbar.backgroundColor = [UIColor clearColor];
+    
+    NSArray * arr = @[@"浏览记录",@"我的收藏"];
+    [_topbar addTabBarItemWithTitles:arr];
+    
+    _topbar.delegate = self;
+    
+    _topbar.selectIndex = 0;
+    
+    [self.view addSubview:_topbar];
+}
+
+-(void)initPageView
 {
     
-    float page = self.bigScrollView.contentOffset.x/self.bigScrollView.width;
+    CGRect pageRect = CGRectMake(0, 43+64,KScreenWidth,KScreenHeight-64-43);
+    
+    _pageView = [[DLPageView alloc]initWithFrame:pageRect];
+    _pageView.delegate = self;
+    [self.view addSubview:_pageView];
 
-    if(page-(int)page==0){
-        self.headerIndex= (int)page;
-        [self.segmentView itemSelectIndex:page];
-    }else{
-        [self.segmentView SegmentChangeWithScrollView:scrollView contentOffset:self.bigScrollView.contentOffset.x];
+    
+    CGFloat listHeight = KScreenHeight-64-43;
+
+    for (int i=0; i<2; i++) {
+        DLRecordListView * listView = [[DLRecordListView alloc]initWithFrame:CGRectMake(0, 107, KScreenWidth,listHeight)];
+        listView.tag = 1000+i;
+        [self.viewArray addObject:listView];
     }
+    
+    
+    [self.pageView addSubviews:self.viewArray];
+
 }
 
--(void)setHeaderIndex:(NSInteger)headerIndex
+
+/**
+ *  视图的item被选中时的回调函数
+ *
+ *  @param index 视图item的索引
+ */
+-(void)topTabBarDidSelectedWithIndex:(NSInteger)index
 {
-    [self.segmentView itemSelectIndex:headerIndex];
-    [self.segmentView SegmentChangeWithScrollView:self.bigScrollView contentOffset:self.bigScrollView.contentOffset.x];
+    
+    [_pageView moveToPageWithIndex:index];
+    
 }
+
+#pragma mark -- pageViewDelegate
+
+/**
+ *  滑动时的回调函数
+ *
+ *  @param index 子视图的索引
+ */
+- (void)pageViewDidMoveToIndex:(NSInteger)index
+{
+    _topbar.selectIndex = index;
+    
+}
+
+/**
+ *  滑动时的回调函数
+ *
+ *  @param percentage 滑动层的偏移量
+ */
+- (void)pageViewDidScroll:(CGFloat)percentage
+{
+    NSLog(@"%f",percentage);
+    [_topbar moveUnderlineWithPercent:percentage];
+    
+}
+
 
 -(UIButton*)clearButton
 {
@@ -85,48 +191,12 @@ const static CGFloat headerHeight = 44.0f;
     return _clearButton;
 }
 
--(UIScrollView*)bigScrollView
+-(NSMutableArray*)viewArray
 {
-    if (!_bigScrollView)
-    {
-        _bigScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0,107, KScreenWidth, KScreenHeight-107)];
-        _bigScrollView.delegate = self;
-        _bigScrollView.bounces = NO;
-        _bigScrollView.pagingEnabled = YES;
-        _bigScrollView.showsVerticalScrollIndicator = NO;
-        _bigScrollView.showsHorizontalScrollIndicator = NO;
-        _bigScrollView.scrollEnabled=  YES;
-        _bigScrollView.contentSize = CGSizeMake(KScreenWidth*2, 0);
-        [self addSubView];
+    if (!_viewArray) {
+        _viewArray = [NSMutableArray array];
     }
-    return _bigScrollView;
-}
-
-- (DNSegmentView*)segmentView
-{
-    if(!_segmentView){
-        
-        CGFloat headerWidth = 220;
-        CGFloat oneItemWidth = 110;
-  
-        _segmentView = [[DNSegmentView alloc]initWithFrame:CGRectMake(KScreenWidth/2-headerWidth/2,22,headerWidth, headerHeight)];
-
-        [_segmentView setTitleArr:@[@"浏览记录",@"我的收藏"] OneItemWidth:oneItemWidth TitleFont: [UIFont fontWithName:TextFontName_Light size:17]];
-        _segmentView.sliderWidth = 60;
-        __weak DNRecordViewController * weakSelf = self;
-        _segmentView.SegmentSelectedItemIndex = ^(NSInteger index){
-            _headerIndex = index;
-            
-        [weakSelf.bigScrollView setContentOffset:CGPointMake(weakSelf.bigScrollView.width*index,0) animated:YES];
-        [weakSelf.segmentView SegmentChangeWithScrollView:weakSelf.bigScrollView contentOffset:weakSelf.bigScrollView.contentOffset.x];
-            
-          
-        };
-        _segmentView.backgroundColor = [UIColor clearColor];
-
-        
-    }
-    return _segmentView;
+    return _viewArray;
 }
 
 

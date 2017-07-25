@@ -17,7 +17,9 @@ PODS:
   - IQKeyboardManager (4.0.9)
   - KRVideoPlayer (1.0.1)
   - MBProgressHUD (0.9.2)
+  - MJExtension (3.0.13)
   - MJRefresh (3.1.12)
+  - MOBFoundation (2.2.19)
   - NJKWebViewProgress (0.2.3):
     - NJKWebViewProgress/Core (= 0.2.3)
     - NJKWebViewProgress/ProgressView (= 0.2.3)
@@ -26,6 +28,17 @@ PODS:
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
+  - ShareSDK3 (3.6.3):
+    - MOBFoundation
+    - ShareSDK3/ShareSDK (= 3.6.3)
+  - ShareSDK3/ShareSDK (3.6.3):
+    - MOBFoundation
+  - ShareSDK3/ShareSDKPlatforms/QQ (3.6.3):
+    - MOBFoundation
+  - ShareSDK3/ShareSDKPlatforms/SinaWeibo (3.6.3):
+    - MOBFoundation
+  - ShareSDK3/ShareSDKPlatforms/WeChat (3.6.3):
+    - MOBFoundation
   - SVProgressHUD (2.1.2)
   - WebViewJavascriptBridge (6.0.2)
   - YLGIFImage (0.11)
@@ -35,9 +48,15 @@ DEPENDENCIES:
   - IQKeyboardManager
   - KRVideoPlayer
   - MBProgressHUD (~> 0.9.2)
+  - MJExtension
   - MJRefresh
+  - MOBFoundation
   - NJKWebViewProgress
   - SDWebImage (~> 3.8.2)
+  - ShareSDK3
+  - ShareSDK3/ShareSDKPlatforms/QQ
+  - ShareSDK3/ShareSDKPlatforms/SinaWeibo
+  - ShareSDK3/ShareSDKPlatforms/WeChat
   - SVProgressHUD
   - WebViewJavascriptBridge (~> 6.0.0)
   - YLGIFImage
@@ -47,13 +66,16 @@ SPEC CHECKSUMS:
   IQKeyboardManager: 322c7405df3eb5f7e50dede32ea937bf3d4364e0
   KRVideoPlayer: 08918da1b99cae35fd4c15b2ec2b49358d4c985f
   MBProgressHUD: 1569cf7ace17a8bac47aabfbb8580a49690386d1
+  MJExtension: 5932755f451458eefa24239358817f8d291240c7
   MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
+  MOBFoundation: e962b2aee79e2b8f626e2d30c2f23e9f13e5331e
   NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
+  ShareSDK3: d271520113160eb24b31cd642b45b38fcd592d93
   SVProgressHUD: c404a55d78acbeb7ebb78b76d3faf986475a6994
   WebViewJavascriptBridge: 791ee0e26d1bf15efe5fb7fb9666a71a19b89d77
   YLGIFImage: c0ae132fe80e5282b2762a97d14e23ba71a748ae
 
-PODFILE CHECKSUM: 6971f3609bbefb8ca52650544f1ad3b7cb3f5456
+PODFILE CHECKSUM: e587f1e3f3693a774f77c9b93aa9548847fbd6ef
 
 COCOAPODS: 1.2.1

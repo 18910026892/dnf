@@ -8,17 +8,24 @@
 #import "MJPhoto.h"
 #import "MJPhotoView.h"
 #import "MJPhotoToolbar.h"
+#import "MJPhotoCollectionViewCell.h"
 #import <SDWebImage/SDWebImagePrefetcher.h>
-
+#import "DLShareView.h"
 #define kPadding 10
 #define kPhotoViewTagOffset 1000
 #define kPhotoViewIndex(photoView) ([photoView tag] - kPhotoViewTagOffset)
 
-@interface MJPhotoBrowser () <MJPhotoViewDelegate>
+@interface MJPhotoBrowser () <MJPhotoViewDelegate,UICollectionViewDelegate,UICollectionViewDataSource>
+
+@property (strong,nonatomic) UIButton * closeButton;
+@property (strong,nonatomic) UIButton * shareButton;
 @property (strong, nonatomic) UIView *view;
 @property (strong, nonatomic) UIScrollView *photoScrollView;
 @property (strong, nonatomic) NSMutableSet *visiblePhotoViews, *reusablePhotoViews;
 @property (strong, nonatomic) MJPhotoToolbar *toolbar;
+@property (strong, nonatomic) UICollectionView * collectionView;
+@property (nonatomic, assign) BOOL isBarShowing;
+
 @end
 
 @implementation MJPhotoBrowser
@@ -30,16 +37,125 @@
     self = [super init];
     if (self) {
         _showSaveBtn = YES;
+        
+        
     }
     return self;
 }
 
+
+
+- (void)animateHide
+{
+    if (!self.isBarShowing) {
+        return;
+    }
+    [UIView animateWithDuration:0.3 animations:^{
+     
+        self.closeButton.alpha = 0.0;
+        self.shareButton.alpha = 0.0;
+    } completion:^(BOOL finished) {
+        self.isBarShowing = NO;
+    }];
+}
+
+- (void)animateShow
+{
+    if (self.isBarShowing) {
+        return;
+    }
+    [UIView animateWithDuration:0.3 animations:^{
+        self.closeButton.alpha = 1.0;
+        self.shareButton.alpha = 1.0;
+        
+    } completion:^(BOOL finished) {
+        self.isBarShowing = YES;
+        [self autoFadeOutControlBar];
+    }];
+}
+
+- (void)autoFadeOutControlBar
+{
+    if (!self.isBarShowing) {
+        return;
+    }
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(animateHide) object:nil];
+    [self performSelector:@selector(animateHide) withObject:nil afterDelay:5];
+}
+
+- (void)cancelAutoFadeOutControlBar
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(animateHide) object:nil];
+}
+
+
+-(void)closeButtonClick:(UIButton*)sender
+{
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
+    // 移除工具条
+    [self.toolbar removeFromSuperview];
+    [self.closeButton removeFromSuperview];
+    [self.shareButton removeFromSuperview];
+    [self.collectionView removeFromSuperview];
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        self.view.alpha = 0;
+    } completion:^(BOOL finished) {
+        [self.view removeFromSuperview];
+    }];
+}
+
+-(void)shareButtonClick:(UIButton*)sender
+{
+    NSString * anchorID = @"123";
+    NSString * avatar = @"http://img2.inke.cn/MTQ5NzUxODQwODE0MSMzMTkjanBn.jpg";
+    NSString * nickname = @"大妞范";
+    NSString * sn = @"sn";
+    
+    NSDictionary * shareDict = [NSDictionary dictionaryWithObjectsAndKeys:anchorID,@"anchorid",avatar,@"avatar",nickname,@"nickname",sn,@"sn",nil];
+    
+    [DLShareView showMyShareViewWothSuperView:self.view
+                                  isShowLaHei:NO
+                                       userId:anchorID
+                                      andType:10
+                                resourcesType:@"live"
+                                    andRoomID:@"1"
+                                 andShareDict:shareDict
+                                    backColor:nil];
+}
+
 #pragma mark - get M
+
+-(UIButton*)closeButton
+{
+    if (!_closeButton) {
+        _closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _closeButton.frame = CGRectMake(15, 27, 30, 30);
+        _closeButton.alpha = 0.0;
+        [_closeButton setImage:[UIImage imageNamed:@"photo_close"] forState:UIControlStateNormal];
+        [_closeButton addTarget:self action:@selector(closeButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _closeButton;
+}
+
+
+-(UIButton*)shareButton
+{
+    if (!_shareButton) {
+        _shareButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _shareButton.frame = CGRectMake(KScreenWidth-45, 27, 30, 30);
+        _shareButton.alpha = 0.0;
+        [_shareButton setImage:[UIImage imageNamed:@"photo_share"] forState:UIControlStateNormal];
+        [_shareButton addTarget:self action:@selector(shareButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _shareButton;
+}
 
 - (UIView *)view{
     if (!_view) {
         _view = [[UIView alloc] initWithFrame:[UIApplication sharedApplication].keyWindow.bounds];
         _view.backgroundColor = [UIColor blackColor];
+     
     }
     return _view;
 }
@@ -63,17 +179,40 @@
 - (MJPhotoToolbar *)toolbar{
     if (!_toolbar) {
         CGFloat barHeight = 27;
-        
-        CGFloat value = (self.view.frame.size.height - self.view.frame.size.width)/2;
-        CGFloat barY = self.view.frame.size.height - barHeight-value;
+    
+        CGFloat barY = self.view.frame.size.height - barHeight;
         _toolbar = [[MJPhotoToolbar alloc] init];
         _toolbar.showSaveBtn = _showSaveBtn;
         _toolbar.frame = CGRectMake(0, barY, self.view.frame.size.width, barHeight);
         _toolbar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin;
+
         
     }
     return _toolbar;
 }
+-(UICollectionView*)collectionView
+{
+    if (!_collectionView) {
+
+        //普通集合视图布局
+        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc]init];
+        layout.minimumLineSpacing = 0;
+        layout.minimumInteritemSpacing = 0;
+        layout.itemSize = CGSizeMake(71,114);
+        layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+        
+        _collectionView =[[UICollectionView alloc]initWithFrame:CGRectMake(0,KScreenHeight,KScreenWidth, 114) collectionViewLayout:layout];
+        _collectionView.showsHorizontalScrollIndicator = NO;
+        _collectionView.dataSource = self;
+        _collectionView.delegate = self;
+        _collectionView.scrollEnabled = YES;
+        _collectionView.backgroundColor = [UIColor clearColor];
+        [_collectionView registerClass:[MJPhotoCollectionViewCell class] forCellWithReuseIdentifier:@"MJPhotoCollectionViewCell"];
+    
+    }
+    return _collectionView;
+}
+
 
 - (void)show
 {
@@ -98,6 +237,9 @@
         
         [self.view addSubview:self.photoScrollView];
         [self.view addSubview:self.toolbar];
+        [self.view addSubview:self.closeButton];
+        [self.view addSubview:self.shareButton];
+        [self.view addSubview:self.collectionView];
         [self updateTollbarState];
         [self showPhotos];
     }
@@ -245,26 +387,91 @@
 #pragma mark - MJPhotoViewDelegate
 - (void)photoViewSingleTap:(MJPhotoView *)photoView
 {
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
-    // 移除工具条
-    [self.toolbar removeFromSuperview];
-    
-    [UIView animateWithDuration:0.3 animations:^{
-        self.view.alpha = 0;
-    } completion:^(BOOL finished) {
-        [self.view removeFromSuperview];
-    }];
+    if (self.isBarShowing) {
+        [self animateHide];
+    } else {
+        [self animateShow];
+    }
 }
 
 - (void)photoViewImageFinishLoad:(MJPhotoView *)photoView
 {
     [self updateTollbarState];
 }
+- (void)showPhotoCollectionView
+{
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        self.collectionView.y = KScreenHeight-114;
+        self.toolbar.y = self.view.frame.size.height - 27-114;
+
+        
+    } completion:^(BOOL finished) {
+
+    }];
+}
+- (void)hidePhotoCollectionView
+{
+    [UIView animateWithDuration:0.3 animations:^{
+        
+        self.collectionView.y = KScreenHeight;
+        self.toolbar.y = self.view.frame.size.height - 27;
+        
+    } completion:^(BOOL finished) {
+        
+    }];
+}
 
 #pragma mark - UIScrollView Delegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
 	[self showPhotos];
     [self updateTollbarState];
+
 }
+
+# pragma CollectionView Delegate
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView;
+{
+    return 1;
+}
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section;
+{
+    return [_photos count];
+    
+}
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath;
+{
+    
+    
+    MJPhotoCollectionViewCell * cell;
+    
+    if(!cell)
+    {
+        cell= (MJPhotoCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:@"MJPhotoCollectionViewCell" forIndexPath:indexPath];
+    }
+   
+    
+    MJPhoto *photo= _photos[indexPath.row];
+    [cell.coverImageView sd_setImageWithURL:photo.url];
+   
+    return cell;
+    
+}
+
+#pragma mark --UICollectionViewDelegate
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    self.toolbar.currentPhotoIndex = indexPath.row;
+    [self setCurrentPhotoIndex:indexPath.row];
+    
+}
+//返回这个UICollectionView是否可以被选择
+-(BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+
+
 
 @end

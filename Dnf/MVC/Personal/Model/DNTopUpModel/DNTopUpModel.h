@@ -10,10 +10,25 @@
 
 @interface DNTopUpModel : NSObject
 
-@property(nonatomic,copy)NSString * vipTitle;
+@property(nonatomic,copy)NSString * detail;
 
-@property(nonatomic,copy)NSString * vipDesc;
+@property(nonatomic,assign)NSInteger weight;
 
-@property(nonatomic,assign)NSInteger  vipPrice;
+@property(nonatomic,assign)NSInteger expire;
+
+@property(nonatomic,assign)NSInteger id;
+
+@property(nonatomic,copy)NSString * title;
+
+@property(nonatomic,copy)NSString * price;
+
+@property(nonatomic,copy)NSString * effect;
+
+@property(nonatomic,copy)NSString * addtime;
+
+@property(nonatomic,copy)NSString * modtime;
+
+@property(nonatomic,copy)NSString * type;
+
 
 @end

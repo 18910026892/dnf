@@ -12,8 +12,14 @@
 
 + (NSString*)showTime:(NSTimeInterval) msglastTime showDetail:(BOOL)showDetail
 {
+ 
     //今天的时间
-    NSDate * nowDate = [NSDate date];
+    NSDate * date = [NSDate date];
+    NSTimeZone *zone = [NSTimeZone systemTimeZone];
+    NSInteger interval = [zone secondsFromGMTForDate: date];
+    NSDate * nowDate = [date  dateByAddingTimeInterval: interval];
+
+    
     NSDate * msgDate = [NSDate dateWithTimeIntervalSince1970:msglastTime];
     NSString *result = nil;
     NSCalendarUnit components = (NSCalendarUnit)(NSCalendarUnitYear|NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitWeekday|NSCalendarUnitHour | NSCalendarUnitMinute);

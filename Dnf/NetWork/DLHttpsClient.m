@@ -325,7 +325,8 @@ static inline NSString *cachePath() {
         url = [self encodeUrl:url];
         
     }
-
+    
+   
     AFHTTPSessionManager *manager = [self manager];
     NSString *absolute = [self absoluteUrlWithPath:url];
     
@@ -389,6 +390,7 @@ static inline NSString *cachePath() {
                 progress(downloadProgress.completedUnitCount, downloadProgress.totalUnitCount);
             }
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+   
             [self successResponse:responseObject callback:success];
             
             if (sg_cacheGet) {

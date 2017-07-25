@@ -129,7 +129,93 @@
 
 -(void)loginButtonClick:(UIButton*)sender
 {
-    [self.navigationController popToRootViewControllerAnimated:NO];
+
+    
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory userLoginUserName:self.accoutTextField.text
+                                                                    passwoed:self.passwordTextField.text
+                                                                     captcha:nil];
+
+    request.requestSuccess = ^(id response)
+    {
+
+        [DNSession sharedSession].userAccount = self.accoutTextField.text;
+        
+        
+        DLJSONObject *object = response;
+        
+        NSInteger resultCode = [object getInteger:@"errno"];
+        [DNSession sharedSession].loginServerTime = [object getLong:@"time"];
+        
+        DLJSONObject *resultData = [object getJSONObject:@"data"];
+        
+        [DNSession sharedSession].uid  = [resultData getString:@"uid"];
+        
+        [DNSession sharedSession].token = [resultData getString:@"token"];
+        
+        [DNSession sharedSession].birthday = [resultData getString:@"birth"];
+        
+        [DNSession sharedSession].avatar  = [resultData getString:@"avatar"];
+        
+        [DNSession sharedSession].nickname = [resultData getString:@"nickname"];
+        
+        [DNSession sharedSession].sex  = [resultData getString:@"gender"];
+        
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"DNUserInfoChange" object:nil];
+        
+        if (0 == resultCode) {
+ 
+
+            if ([[resultData getString:@"channel"] length]) {
+                [DNSession sharedSession].channel = [resultData getString:@"channel"];
+            }else{
+                [DNSession sharedSession].channel = @"0";
+            }
+        
+
+                [self.navigationController popToRootViewControllerAnimated:NO];
+            
+        }
+    };
+    
+    request.requestFaile = ^(NSError *error)
+    {
+        // 登录请求失败
+        if (error.code == 1001) {
+            
+            [[UIApplication sharedApplication].keyWindow makeToast:@"您输入账号或者密码错误"                                                          duration:1.5
+                                                          position:CSToastPositionCenter];
+            
+            
+        }else if (error.code == 1114)
+        {
+            [[UIApplication sharedApplication].keyWindow makeToast:@"您输入账号或者密码错误"
+                                                          duration:1.5
+                                                          position:CSToastPositionCenter];
+        }else if (error.code == 1301)
+        {
+            [[UIApplication sharedApplication].keyWindow makeToast:@"您输入账号或者密码错误"
+                                                          duration:1.5
+                                                          position:CSToastPositionCenter];
+            
+        }else
+        {
+            NSString *str = [error.userInfo objectForKey:NSLocalizedFailureReasonErrorKey];
+            
+            if (!str) return;
+            
+            [[UIApplication sharedApplication].keyWindow makeToast:str
+                                                          duration:1.5
+                                                          position:CSToastPositionCenter];
+            
+        }
+        
+        // 登录失败
+     
+        
+    };
+    
+    [request excute];
+    
 }
 
 -(void)forgetButtonClick:(UIButton*)sender
@@ -265,6 +351,10 @@
         _accoutTextField.textColor = [UIColor blackColor];
         _accoutTextField.tintColor = kThemeColor;
         [_accoutTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
+        
+        if (IsStrEmpty([DNSession sharedSession].userAccount)==NO) {
+            _accoutTextField.text = [DNSession sharedSession].userAccount;
+        }
     }
     return _accoutTextField;
     

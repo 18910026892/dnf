@@ -7,42 +7,155 @@
 //
 
 #import "DNEditViewController.h"
-
+#import "UIImage+Compress.h"
 @interface DNEditViewController ()
 
 @end
 
 @implementation DNEditViewController
 
+
 - (void)viewDidLoad {
+    
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    [self showBackButton:YES];
-    [self setNavTitle:@"个人信息"];
-    [self creatUserInterface];
-    [self operationData];
+    
+    [self initData];
+
+    [self setupUI];
 }
+
+- (void)initData
+{
+    infoModel = [[DLMineUserInfoModel alloc]init];
+    infoModel.avatar   =  [DNSession sharedSession].avatar;
+    infoModel.uid      =  [DNSession sharedSession].uid;
+    infoModel.nickName =  [DNSession sharedSession].nickname;
+    infoModel.gender   =  [DNSession sharedSession].sex;
+    infoModel.birth    =  [DNSession sharedSession].birthday;
+
+}
+
+
+//初始化设置 添加设置UI
+- (void)setupUI {
+    
+    [self setNavigationBarHide:NO];;
+    [self showBackButton:YES];
+    
+    [self setNavTitle:@"个人信息"];
+    
+    [self.rightButton setTitle:@"保存" forState:UIControlStateNormal];
+    [self.rightButton addTarget:self action:@selector(saveMyInfo) forControlEvents:UIControlEventTouchUpInside];
+
+    [self.view addSubview:self.tableView];
+    
+    [self refreshUI];
+}
+
+
+
+//下载头像更新 tableView
+-(void)refreshUI
+{
+    [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[DNSession sharedSession].avatar] placeholderImage:[UIImage imageNamed:@"personalcenter_avatar_normal"]];
+    
+    [self.tableView reloadData];
+}
+
 
 
 -(void)creatUserInterface
 {
     [self.view addSubview:self.tableView];
 }
--(void)operationData
+
+
+//保存逻辑（右上角按钮） (待处理)
+// MARK: save
+-(void)saveMyInfo
 {
+    [self.view endEditing:YES];
     
-    [DNSession sharedSession].avatar = @"http://img2.inke.cn/MTQ5ODIwMDgyNDA0NCMzODQjanBn.jpg";
+    profile = [[DLJSONObject alloc]initWithMutableDictionary:[[NSMutableDictionary alloc]init]];
     
-    [DNSession sharedSession].uid = @"大妞范";
     
-    [DNSession sharedSession].birthday = @"2017-7-15";
+    // nickname
+    if (!IsStrEmpty(infoModel.nickName)&& infoModel.nickName !=  [DNSession sharedSession].nickname) { // 昵称不为空 且 发生变化
+        
+        [profile putWithString:infoModel.nickName key:@"nickname"];
+        
+    }
+    //性别
     
-    [DNSession sharedSession].sex = @"女";
+    if (!IsStrEmpty(infoModel.gender)&& infoModel.gender !=  [DNSession sharedSession].sex) { // 性别发生变化
+        
+        [profile putWithString:infoModel.gender key:@"gender"];
+        
+    }
     
-    [self.avatarImageView sd_setImageWithURL:[NSURL URLWithString:[DNSession sharedSession].avatar]];
+
     
-    [self.tableView reloadData];
+    // 生日
+    
+    if (!IsStrEmpty(infoModel.birth)&& infoModel.birth !=  [DNSession sharedSession].birthday) {
+        
+        [profile putWithString:infoModel.birth key:@"birth"];
+        
+    }
+
+    
+    // 头像
+    
+    if (!IsStrEmpty(infoModel.avatar)&& infoModel.avatar !=  [DNSession sharedSession].avatar) {
+        
+        [profile putWithString:infoModel.avatar key:@"avatar"];
+        
+    }
+    
+    
+    NSError *parseError = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:profile.dictionary options:NSJSONWritingPrettyPrinted error:&parseError];
+    
+    if (parseError) {
+        
+        [self.view makeToast:@"你输入的昵称或者签名含有非法字符" duration:1.5 position:CSToastPositionCenter];
+        
+        return;
+    }
+    
+    NSString *profileStr = [[NSString alloc]initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
+    //   NSLog(@"profileStr == %@",profileStr);
+    
+    
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory synchUserInfoWithToken: [DNSession sharedSession].token
+                                                                          profile:profileStr];
+    
+    
+    request.requestSuccess = ^(id response)
+    {
+        
+        
+         [DNSession sharedSession].avatar = infoModel.avatar;
+         [DNSession sharedSession].uid      = infoModel.uid ;
+         [DNSession sharedSession].nickname     = infoModel.nickName;
+         [DNSession sharedSession].sex       = infoModel.gender;
+         [DNSession sharedSession].birthday     = infoModel.birth;
+         [self.view makeToast:@"保存成功" duration:3.0 position:CSToastPositionCenter];
+         [[NSNotificationCenter defaultCenter]postNotificationName:@"DNUserInfoChange" object:nil];
+
+    };
+    
+    request.requestFaile  = ^(NSError *error)
+    {
+        NSLog(@"修改失败。。。");
+    };
+    
+    [request excute];
+    
 }
+
+
 
 #pragma mark - tableViewSourceDelegate
 
@@ -108,7 +221,7 @@
                     case 1:
                 {
                     cell.cellTitle.text= @"昵称";
-                    cell.cellDesc.text = [DNSession sharedSession].nickname;
+                    cell.cellDesc.text = infoModel.nickName;
                 }
                     break;
                     case 2:
@@ -128,13 +241,14 @@
                 case 0:
                 {
                     cell.cellTitle.text= @"生日";
-                    cell.cellDesc.text = [DNSession sharedSession].birthday;
+                    cell.cellDesc.text = infoModel.birth;
                 }
                     break;
                     case 1:
                 {
                     cell.cellTitle.text= @"性别";
-                    cell.cellDesc.text = [DNSession sharedSession].sex;
+ 
+                    cell.cellDesc.text = ([infoModel.gender isEqualToString:@"M"])?@"男":@"女";
                 }
                     break;
                 default:
@@ -170,6 +284,8 @@
             switch (indexPath.row) {
                 case 0:
                 {
+                    
+        
                     UIActionSheet*photoActionSheet =[[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照",@"从相册中选取", nil];
                     photoActionSheet.delegate = self;
                     photoActionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
@@ -188,8 +304,8 @@
                     //逆向传值
                     editNickNameVc.block = ^(NSString *nickName){
                         
-                        NSLog(@"nickname %@",nickName);
-                        
+    
+                        infoModel.nickName = nickName;
                         NSIndexPath *indexPath=[NSIndexPath indexPathForRow:1 inSection:0];
                         [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
                         
@@ -212,6 +328,8 @@
             switch (indexPath.row) {
                 case 0:
                 {
+        
+
                     BOOL isHavePick = NO;
                     for (UIView * view in self.view.subviews) {
                         if ([[view  class] isSubclassOfClass:[FullTimeView class]]) {
@@ -223,7 +341,7 @@
                       
 
                         [self.view addSubview:self.pickView];
-                        if ([DNSession sharedSession].birthday.length) {
+                        if ([DNSession sharedSession].birthday.length&&[[DNSession sharedSession].birthday isEqualToString:@"0000-00-00"]==NO) {
                             NSDate * date = [NSDate dateWithTimeIntervalSince1970: [[DNSession sharedSession].birthday dateStringWithFormateStyle:@"yyyy-MM-dd"]/1000];
                             self.pickView.curDate = date;
                         }else{
@@ -264,7 +382,8 @@
     NSDateFormatter * formate=[[NSDateFormatter alloc]init];
     [formate setDateFormat:@"yyyy-MM-dd"];
     NSString * gradeTime=[formate stringFromDate:date];
-    [DNSession sharedSession].birthday = gradeTime;
+
+    infoModel.birth = gradeTime;
     NSIndexPath *indexPath=[NSIndexPath indexPathForRow:0 inSection:1];
     [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
 }
@@ -343,12 +462,12 @@
             switch (buttonIndex) {
                 case 0:
                 {
-                    [DNSession sharedSession].sex = @"男";
+                    infoModel.gender = @"M";
                 }
                     break;
                     case 1:
                 {
-                    [DNSession sharedSession].sex = @"女";
+                    infoModel.gender = @"F";
                 }
                     break;
                 default:
@@ -397,12 +516,41 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
 -(void)UploadimageWithImage:(UIImage*)avatarImage
 {
 
-    self.avatarImageView.image = avatarImage;
-    NSData * data = UIImageJPEGRepresentation(avatarImage, 1.0);
+
+
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
  
+    if (avatarImage.size.width > 1000 || avatarImage.size.height >1000) { // 大于1000 则只处理尺寸
+        
+        avatarImage = [avatarImage imageByScalingAndCroppingForSize:CGSizeMake(1000,1000)];
+    }
+    
+    
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory uplodImage:avatarImage kind:@"avatar"];
+    
+    request.requestSuccess = ^(id response)
+    {
+        DLJSONObject  *object = response;
+        
+        DLJSONObject *resultData = [object getJSONObject:@"data"];
+    
+        self.avatarImageView.image = avatarImage;
+        infoModel.avatar = [resultData getString:@"path"];
+        
+    };
+    
+    request.requestFaile = ^(NSError *error)
+    {
+        
+    };
+    
+    
+    [request excute];
     
 }
+
+
+
 
 
 -(UITableView*)tableView
@@ -435,6 +583,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     if (!_pickView) {
         _pickView = [[FullTimeView alloc]initWithFrame:CGRectMake(0, KScreenHeight-220, KScreenWidth, 220)];
+        _pickView.delegate = self;
     }
     return _pickView;
 }

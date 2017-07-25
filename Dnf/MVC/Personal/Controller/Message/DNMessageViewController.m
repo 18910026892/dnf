@@ -40,17 +40,43 @@
 - (void)requestMessageList {
     
     //掉接口获取数据
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory getMessageListWithMessageid:self.messageid];
     
-    for (int i=0; i<10; i++) {
-        DNMessageModel *message = [[DNMessageModel alloc] init];
-        message.sendTime = [[NSString getNowTimeInterval] integerValue];
-        message.showSendTime = NO;
-        message.message  = @"您的什么什么已经生效，到期时间是2017年11月20日。（开通VIP）";
-        [self.messageArray insertObject:message atIndex:0];
-    }
+    request.requestSuccess = ^(id response)
+    {
+        
+        DLJSONObject *object = response;
+        
+        DLJSONArray * messageArray = [object getJSONArray:@"data"];
+        
+        for (int i=0; i<[messageArray.array count]; i++) {
+            DNMessageModel *message = [[DNMessageModel alloc] init];
+            
+            NSString * addtime  = [messageArray.array[i] valueForKey:@"addtime"];
+            
+            message.sendTime =  [NSString timeSwitchTimestamp:addtime andFormatter:@"YYYY-MM-dd HH:mm:ss"];
+            message.showSendTime = NO;
+            message.message  = [messageArray.array[i] valueForKey:@"message_text"];
+            [self.messageArray addObject:message];
+        }
+        
+        [self intervalTime:self.messageArray];
+        [self.messageTableView reloadData];
+        
+        
+    };
     
-    [self intervalTime:self.messageArray];
-    [self.messageTableView reloadData];
+    request.requestFaile = ^(NSError *error)
+    {
+        
+        
+        
+    };
+    
+    [request excute];
+    
+    
+
 }
 
 

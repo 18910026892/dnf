@@ -10,4 +10,6 @@
 
 @interface DNRecordModel : NSObject
 
+@property(nonatomic,assign)BOOL select;
+
 @end

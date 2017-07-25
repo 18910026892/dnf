@@ -14,8 +14,19 @@
 #import "DNEditNickNameViewController.h"
 #import "FullTimeView.h"
 #import "NSString+Date.h"
+#import "DLJSONObject.h"
+#import "DLMineUserInfoModel.h"
+
+typedef void (^editblock)(NSString * nickName,NSString*avatar);
+
 
 @interface DNEditViewController : DNBaseViewController<UITableViewDelegate,UITableViewDataSource,UIImagePickerControllerDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,FinishPickView>
+
+{
+    DLMineUserInfoModel *infoModel; //用户模型
+    DLJSONObject *profile;
+}
+@property (nonatomic, copy)editblock block;
 
 @property(nonatomic,strong)UITableView * tableView;
 

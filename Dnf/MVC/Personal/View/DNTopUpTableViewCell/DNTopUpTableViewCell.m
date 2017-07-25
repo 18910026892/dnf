@@ -27,9 +27,11 @@
 {
     _topUpModel = topUpModel;
     
-    self.vipTitleLabel.text = topUpModel.vipTitle;
-    self.vipDescLabel.text = topUpModel.vipDesc;
-    [self.priceButton setTitle:[NSString stringWithFormat:@"￥ %ld",(long)topUpModel.vipPrice] forState:UIControlStateNormal];
+    self.vipTitleLabel.text = topUpModel.title;
+    self.vipDescLabel.text = topUpModel.detail;
+
+    
+    [self.priceButton setTitle:[NSString stringWithFormat:@"￥ %@",topUpModel.price] forState:UIControlStateNormal];
 }
 
 

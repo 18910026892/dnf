@@ -11,54 +11,72 @@
 
 @interface DLHttpRequestFactory : NSObject
 
-/**
- 获取验证码
- 
- @param mobileNum 手机号
- @param type      参数类型  type: login/reg/bind/forgot不传默认login
- 
- @return request
- */
 +(nonnull DLHttpsBusinesRequest*)getCodeWithMobileNum:(nonnull NSString *)mobileNum
                                                  type:(nonnull NSString *)type;
 
-
-/**
- 快速登录 刷新token
- 
- @param token token 必穿
- 
- @return request
- */
 +(nonnull DLHttpsBusinesRequest*)fastLogin:(nonnull NSString *)token;
 
-
-
-/**
- 用户登录
- 
- @param userName 用户名 手机号
- @param password 密码
- @param captchCode 图片验证码 可选参数 没有传 nil
- 
- @return request
- */
 +(nonnull DLHttpsBusinesRequest*)userLoginUserName:(nonnull NSString *)userName
                                           passwoed:(nonnull NSString *)password
                                            captcha:(nonnull NSString *)captchCode;
 
-
-/**
- 同步个人信息
- 
- @param token    token
- @param profiles 待修改项
- 
- @return request
- */
 +(nonnull DLHttpsBusinesRequest*)synchUserInfoWithToken:(nonnull NSString *)token
                                                 profile:(nonnull NSString *)profiles;
 
+
++(nonnull DLHttpsBusinesRequest*)getMyUserInfo;
+
++(nonnull DLHttpsBusinesRequest*)getUserInfo:(nonnull NSString*)userId;
+
++(nonnull DLHttpsBusinesRequest*)userRegisterMobile:(nonnull NSString *)mobileNum
+                                           password:(nonnull NSString *)password
+                                               code:(nonnull NSString *)code
+                                           nickName:(nonnull NSString *)nickName;
+
++(nonnull DLHttpsBusinesRequest*)getEmailCodeWithEmail:(nonnull NSString *)email
+                                                  type:(nonnull NSString *)type;
+
++(nonnull DLHttpsBusinesRequest*)registerEmailWithEmail:(nonnull NSString *)email
+                                               password:(nonnull NSString *)password
+                                                   code:(nonnull NSString *)code
+                                               nickName:(nonnull NSString *)name;
+
+
+//邮箱密码修改
++(nonnull DLHttpsBusinesRequest*)resetPassWordUserName:(nonnull NSString *)userName
+                                              passWord:(nonnull NSString *)passWord
+                                                  code:(nonnull NSString *)code
+                                                  weak:(NSString *)weak;
+
+
++(nonnull DLHttpsBusinesRequest*)checkIsVip;
+
+
++(nonnull DLHttpsBusinesRequest*)uplodImage:(nonnull UIImage *)image
+                                       kind:(nonnull NSString *)kind;
+
+
+
++(nonnull DLHttpsBusinesRequest*)getProduct;
+
+
++(nonnull DLHttpsBusinesRequest*)shareLiveWithType:(nonnull NSString*)type
+                                            author:(nonnull NSString*)authorid
+                                          relateid:(nonnull NSString*)relateid
+                                            target:(nonnull NSString*)target
+                                             title:(nonnull NSString*)title;
+
+
++(nonnull DLHttpsBusinesRequest*)shareCallBackWithType:(nonnull NSString*)type
+                                                   uid:(nonnull NSString*)uid
+                                              relateid:(nonnull NSString*)relateid
+                                                target:(nonnull NSString*)target
+                                               shareid:(nonnull NSString*)shareid;
+
+
++(nonnull DLHttpsBusinesRequest*)checkHasNewMessage;
+
++(nonnull DLHttpsBusinesRequest*)getMessageListWithMessageid:(nonnull NSString*)messageid;
 
 @end
 

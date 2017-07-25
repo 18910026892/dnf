@@ -32,6 +32,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self creatUserInterface];
+    [self passwordChange];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -55,6 +56,22 @@
     [self.view addSubview:self.nextBtn];
 }
 
+-(void)passwordChange {
+    
+    if ([self.passWordTextField.text isValidPassword])
+    {
+        self.nextBtn.enabled = YES;
+        self.nextBtn.backgroundColor = kThemeColor;
+        
+    }else
+    {
+        self.nextBtn.enabled = NO;
+        self.nextBtn.backgroundColor = [kThemeColor colorWithAlphaComponent:0.3];
+        
+    }
+    
+}
+
 -(void)showPassWord:(UIButton*)sender
 {
     self.passWordTextField.secureTextEntry = !self.passWordTextField.secureTextEntry;
@@ -71,7 +88,32 @@
 
 -(void)nextButtonClick:(UIButton*)sender
 {
-    [self.navigationController popToRootViewControllerAnimated:NO];
+     NSLog(@" viewcontroller  %@",self.navigationController.viewControllers);
+    
+    
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory resetPassWordUserName:self.phoneNumber
+                                                                        passWord:self.passWordTextField.text
+                                                                            code:self.code
+                                                                            weak:nil];
+    
+    request.requestSuccess = ^(id response)
+    {
+     
+        [[UIApplication sharedApplication].keyWindow makeToast:@"修改成功" duration:1.5 position:CSToastPositionCenter];
+        
+        [self.navigationController popToViewController:self.navigationController.viewControllers[1] animated:YES];
+    
+    };
+    
+    request.requestFaile = ^(NSError *error)
+    {
+        
+        
+    };
+    
+    [request excute];
+    
+
 }
 
 -(UILabel*)infoLabel
@@ -109,6 +151,7 @@
         _passWordTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _passWordTextField.textColor = [UIColor blackColor];
         _passWordTextField.secureTextEntry = YES;
+        [_passWordTextField addTarget:self action:@selector(passwordChange) forControlEvents:UIControlEventEditingChanged];
     }
     return _passWordTextField;
     

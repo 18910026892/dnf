@@ -10,6 +10,9 @@
 #import "DNPlayerViewController.h"
 #import "DNSearchViewController.h"
 #import "DNLoginViewController.h"
+
+
+#import "DNPerfectInfoViewController.h"
 @interface DNHomePageViewController ()
 
 @property(nonatomic,strong)UIImageView * navlogoView;
@@ -36,9 +39,89 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
     self.url = @"http://www.baidu.com";
-
+    [self fastlogin];
     [self setupUI];
 }
+
+-(void)fastlogin
+{
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory fastLogin:[DNSession sharedSession].token];
+    
+    request.requestSuccess = ^(id response)
+    {
+        DLJSONObject *object = response;
+        
+        NSInteger resultCode = [object getInteger:@"errno"];
+        
+        [DNSession sharedSession].loginServerTime = [object getLong:@"time"];
+     
+        
+        if (0 == resultCode) {
+     
+            DLJSONObject *resultData = [object getJSONObject:@"data"];
+       
+            [DNSession sharedSession].uid  = [resultData getString:@"uid"];
+            
+            [DNSession sharedSession].token = [resultData getString:@"token"];
+            
+            [DNSession sharedSession].birthday = [resultData getString:@"birth"];
+            
+            [DNSession sharedSession].avatar  = [resultData getString:@"avatar"];
+            
+            [DNSession sharedSession].nickname = [resultData getString:@"nickname"];
+            
+            [DNSession sharedSession].sex  = [resultData getString:@"gender"];
+            
+            [DNSession sharedSession].token = [resultData getString:@"token"];
+            
+            
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"DNUserInfoChange" object:nil];
+            
+            //获取vip信息
+            [self cheakIsVip];
+            
+        }else
+            
+        {
+           
+            [[DNSession sharedSession] removeUserInfo];
+        }
+    };
+    
+    request.requestFaile   = ^(NSError *error)
+    {
+        
+        [[DNSession sharedSession] removeUserInfo];
+    };
+    
+    [request excute];
+}
+
+-(void)cheakIsVip
+{
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory checkIsVip];
+    
+    request.requestSuccess = ^(id response)
+    {
+        DLJSONObject *object = response;
+        
+        DLJSONObject * dataObject = [object getJSONObject:@"data"];
+        
+        NSString * isvip = [dataObject getString:@"isvip"];
+        
+        [DNSession sharedSession].vip = ([isvip isEqualToString:@"Y"])?YES:NO;
+      
+    };
+    
+    request.requestFaile   = ^(NSError *error)
+    {
+        
+      
+    };
+    
+    [request excute];
+}
+
 
 -(void)setupUI;
 {
@@ -59,23 +142,23 @@
 {
     DNSearchViewController * searchVc = [DNSearchViewController viewController];
     [self.navigationController pushViewController:searchVc animated:YES];
-    
+
 }
 
 -(void)leftButtonClick:(UIButton*)sender
 {
 
-    if ([[DNSession sharedSession] isLogin]==YES) {
-        
+   if ([[DNSession sharedSession] isLogin]==YES) {
+   
         [self.xl_sldeMenu showLeftViewControllerAnimated:true];
-        
+    
     }else
     {
         DNLoginViewController * loginVc = [DNLoginViewController viewController];
         [self.navigationController pushViewController:loginVc animated:YES];
-    }
-    
-  
+   }
+
+
 }
 
 -(UIImageView*)navlogoView

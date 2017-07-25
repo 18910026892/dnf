@@ -10,6 +10,7 @@
 
 @interface DNPlayerViewController ()
 
+
 @end
 
 @implementation DNPlayerViewController
@@ -33,7 +34,6 @@
     // Do any additional setup after loading the view.
     [self setNavigationBarHide:YES];
     [self setupUI];
-    
 
 }
 

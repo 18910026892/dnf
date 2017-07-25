@@ -31,39 +31,35 @@
 
 -(void)operationData
 {
-    DNTopUpModel * model1 = [[DNTopUpModel alloc]init];
-    model1.vipTitle = @"月度vip";
-    model1.vipDesc  = @"任意看全部高清图片";
-    model1.vipPrice = 188;
     
-    DNTopUpModel * model2 = [[DNTopUpModel alloc]init];
-    model2.vipTitle = @"季度vip";
-    model2.vipDesc  = @"任意看全部高清图片";
-    model2.vipPrice = 500;
+    
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory getProduct];
+    
+    request.requestSuccess = ^(id response)
+    {
+    
+        DLJSONObject *object = response;
+        
+        DLJSONObject * dataObject = [object getJSONObject:@"data"];
+        
+        DLJSONArray *  productArray = [dataObject getJSONArray:@"product"];
+        
+        self.dataArray = [DNTopUpModel mj_objectArrayWithKeyValuesArray:productArray.array];
+        
+        [self.tableView reloadData];
+        
+    };
+    
+    request.requestFaile = ^(NSError *error)
+    {
+    
+        
+        
+    };
+    
+    [request excute];
+    
 
-    DNTopUpModel * model3 = [[DNTopUpModel alloc]init];
-    model3.vipTitle = @"半年vip";
-    model3.vipDesc  = @"任意看全部高清图片";
-    model3.vipPrice = 900;
-    
-    DNTopUpModel * model4 = [[DNTopUpModel alloc]init];
-    model4.vipTitle = @"年度vip";
-    model4.vipDesc  = @"任意看全部高清图片";
-    model4.vipPrice = 2000;
-    
-    DNTopUpModel * model5 = [[DNTopUpModel alloc]init];
-    model5.vipTitle = @"终身vip";
-    model5.vipDesc  = @"任意看全部高清图片";
-    model5.vipPrice = 5000;
-    
-    [self.dataArray addObject:model1];
-    [self.dataArray addObject:model2];
-    [self.dataArray addObject:model3];
-    [self.dataArray addObject:model4];
-    [self.dataArray addObject:model5];
-    
-    
-    [self.tableView reloadData];
 }
 
 #pragma mark - Delegate 代理
@@ -108,7 +104,7 @@
 }
 -(void)didSelectPriceButton:(DNTopUpModel*)topUpModel;
 {
-    NSLog(@"开通 %ld 元的vip ",(long)topUpModel.vipPrice);
+ 
 }
 
 -(NSMutableArray*)dataArray

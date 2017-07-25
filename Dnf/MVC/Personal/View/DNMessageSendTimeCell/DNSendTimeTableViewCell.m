@@ -43,6 +43,7 @@
 
 - (void)setSendTime:(NSInteger)sendTime {
     _sendTime = sendTime;
+
     NSString *sendTimeString = [NIMKitUtil showTime:sendTime showDetail:NO];
     
     //背景 文字

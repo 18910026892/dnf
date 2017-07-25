@@ -209,8 +209,8 @@ static NSString     *DLMainServerAddress = @"";
     NSString *timeSp = [NSString stringWithFormat:@"%ld", (long)[datenow timeIntervalSince1970]];
     
     NSMutableDictionary *CommonParameter = [[NSMutableDictionary alloc]init];
-    
-    if ([[DNSession sharedSession].uid isEmpty]) { // 如果第一次登陆，或者没有本地信息
+
+    if (IsStrEmpty([DNSession sharedSession].uid)) { // 如果第一次登陆，或者没有本地信息
 
         [DNSession sharedSession].uid = @"0";
     }
@@ -262,6 +262,8 @@ static NSString     *DLMainServerAddress = @"";
     // channel
      NSString *channel =@"0";
     [self.parameter setValue:channel forKey:@"channel"];
+    
+
 }
 
 - (NSString *)creatSignStr:(NSDictionary *)dic
@@ -296,10 +298,12 @@ static NSString     *DLMainServerAddress = @"";
      }
     /*拼接上key得到stringSignTemp*/
     
-    returnStr = [NSString stringWithFormat:@"%@487670661e4cec46aba3759a03dcf323",returnStr];
+    returnStr = [NSString stringWithFormat:@"%@z20b323cdff1910523f24a31217e8116",returnStr];
+
     
     /*md5加密*/
     returnStr = [NSString stringToMD5:returnStr];
+
     
     return returnStr;
 }
@@ -329,6 +333,7 @@ static NSString     *DLMainServerAddress = @"";
 {
 
     [self onBeforeExecute];
+    
     switch (self.method) { // get
         default:
         case DLHttpRequestMethodGet:   //默认是GET请求
@@ -348,10 +353,12 @@ static NSString     *DLMainServerAddress = @"";
                     
                 } success:^(id response) {
                    
+         
+                    
                    [self dealResponse:response];
                     
                 } fail:^(NSError *error) {
-                    
+   
                     [self onRequestFailed:error];
                     
                 }];
@@ -715,8 +722,7 @@ static NSString     *DLMainServerAddress = @"";
         [self addCommonParameter]; // 添加公共请求参数
     }
     
-   // NSLog(@"URL = %@",_url); NSLog(@" parameter =  %@",_parameter);
-    
+
     
     if ([self.url rangeOfString:@"://"].location != NSNotFound) {
         // URL 是一个绝对路径
@@ -731,6 +737,8 @@ static NSString     *DLMainServerAddress = @"";
             self.url = [DLMainServerAddress stringByAppendingFormat:@"/%@",self.url];
         }
     }
+
+      NSLog(@"URL = %@",_url); NSLog(@" parameter =  %@",_parameter);
     
     if (_isShowLoading) {
         
@@ -785,7 +793,7 @@ static NSString     *DLMainServerAddress = @"";
     NSString* scheme  = [url substringWithRange:range];
     NSString* address = [ServerAddressList optString:scheme defaultValue:nil];// 取出对应的实际主机头
     
-    if ([address isEmpty]) {
+    if (IsStrEmpty(address)) {
         return url;
     }
     
@@ -793,9 +801,9 @@ static NSString     *DLMainServerAddress = @"";
         address = [address stringByAppendingString:@"/"];
     }
     
-    url = [url stringByReplacingCharactersInRange:range withString:address];
-    
- //   NSLog(@"url = %@",url);
+ 
+     url = [url stringByReplacingCharactersInRange:range withString:address];
+
     
     return url;
 }

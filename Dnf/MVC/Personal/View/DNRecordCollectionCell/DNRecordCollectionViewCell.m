@@ -21,9 +21,17 @@
         [self addSubview:self.vrLabel];
         [self addSubview:self.vipLabel];
         [self addSubview:self.timeLabel];
+        [self addSubview:self.selectImageView];
         
     }
     return self;
+    
+}
+
+-(void)setRecordModel:(DNRecordModel *)recordModel
+{
+    _recordModel = recordModel;
+    
     
 }
 
@@ -93,5 +101,14 @@
     return _timeLabel;
 }
 
+
+-(UIImageView*)selectImageView
+{
+    if (!_selectImageView) {
+        _selectImageView = [[UIImageView alloc]initWithFrame:CGRectMake(self.width-38, self.height-38, 32, 32)];
+        _selectImageView.image = [UIImage imageNamed:@"checkbox_normal"];
+    }
+    return _selectImageView;
+}
 
 @end

@@ -12,6 +12,7 @@
 #import <AVFoundation/AVMediaFormat.h>
 #import "DNTextField.h"
 #import "FullTimeView.h"
+#import "UIImage+Compress.h"
 @interface DNPerfectInfoViewController ()<UITextFieldDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,FinishPickView>
 
 @property(nonatomic,strong)UIButton * passButton;
@@ -44,6 +45,8 @@
 
 @property(nonatomic,assign)BOOL isWoman;
 
+@property(nonatomic,copy)NSString * birthday;
+
 @end
 
 @implementation DNPerfectInfoViewController
@@ -53,11 +56,13 @@
     // Do any additional setup after loading the view.
     [self creatUserInterface];
     [self operationData];
+    [self changeNextBtnState];
 }
 
 -(void)operationData
 {
     self.isWoman = YES;
+    [DNSession sharedSession].sex = @"F";
 }
 
 -(void)creatUserInterface
@@ -88,6 +93,12 @@
     }
 }
 
+-(void)hiddenDatePickerView
+{
+    _pickView.hidden = YES;
+
+}
+
 -(void)avatarButtonClick:(UIButton*)sender
 {
     UIActionSheet*photoActionSheet =[[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照",@"从相册中选取", nil];
@@ -102,10 +113,12 @@
 -(void)womanButtonClick:(UIButton*)sender
 {
     self.isWoman = YES;
+    [DNSession sharedSession].sex = @"F";
 }
 -(void)manButtonClick:(UIButton*)sender
 {
     self.isWoman = NO;
+    [DNSession sharedSession].sex = @"M";
 }
 
 -(void)birthdayButtonClick:(UIButton*)sender
@@ -121,7 +134,7 @@
         
         
         [self.view addSubview:self.pickView];
-        if ([DNSession sharedSession].birthday.length) {
+        if ([DNSession sharedSession].birthday.length&&[[DNSession sharedSession].birthday isEqualToString:@"0000-00-00"]==NO) {
             NSDate * date = [NSDate dateWithTimeIntervalSince1970: [[DNSession sharedSession].birthday dateStringWithFormateStyle:@"yyyy-MM-dd"]/1000];
             self.pickView.curDate = date;
         }else{
@@ -139,15 +152,82 @@
 
 -(void)nextButtonClick:(UIButton*)sender
 {
-    [self.navigationController popToRootViewControllerAnimated:NO];
+    [self.view endEditing:YES];
+    [self.nickNameTextField resignFirstResponder];
+    _pickView.hidden = YES;
+    
+    
+    DLJSONObject *profile = [[DLJSONObject alloc]initWithMutableDictionary:[[NSMutableDictionary alloc]init]];
+    
+    // nickname
+    if (_nickNameTextField.text.length) { // 昵称不为空 且 发生变化
+        
+        [profile putWithString:_nickNameTextField.text key:@"nickname"];
+        
+        [DNSession sharedSession].nickname = _nickNameTextField.text;
+        
+    }
+    //性别
+    
+    if (self.isWoman==YES) { // 性别发生变化
+        [profile putWithString:@"F" key:@"gender"];
+    }else if (self.womanButton==NO){
+        [profile putWithString:@"M" key:@"gender"];
+    }
+    
+    // 生日
+    
+    if ([self.birthday length]) {
+        
+        [profile putWithString:self.birthday key:@"birth"];
+        
+    }
+    
+    [profile putWithString:[DNSession sharedSession].avatar key:@"avatar"];
+    
+    
+    NSError *parseError = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:profile.dictionary  options:NSJSONWritingPrettyPrinted error:nil];
+    
+    NSLog(@"jsonData ==== %@",  jsonData);
+    
+    if (parseError) {
+        NSLog(@"json 转换失败");
+    }
+    
+    NSString *profileStr = [[NSString alloc]initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
+    NSLog(@"profileStr == %@",profileStr);
+    
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory synchUserInfoWithToken:[DNSession sharedSession].token                                                                          profile:profileStr];
+    
+    request.requestSuccess = ^(id response)
+    {
+        
+    
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"DNUserInfoChange" object:nil];
+        [self.navigationController popToRootViewControllerAnimated:YES];
+
+    };
+    request.requestFaile = ^(NSError *error)
+    {
+        [self.navigationController popToRootViewControllerAnimated:YES];
+        
+    };
+    
+    [request excute];
+
+  
 }
 
 -(void)didFinishPickView:(NSDate*)date {
     NSDateFormatter * formate=[[NSDateFormatter alloc]init];
     [formate setDateFormat:@"yyyy-MM-dd"];
-    NSString * gradeTime=[formate stringFromDate:date];
-    [DNSession sharedSession].birthday = gradeTime;
- 
+    self.birthday=[formate stringFromDate:date];
+    [DNSession sharedSession].birthday = self.birthday;
+    [self.birthdayButton setTitle:self.birthday forState:UIControlStateNormal];
+    [self hiddenDatePickerView];
+    [self changeNextBtnState];
 }
 
 
@@ -220,7 +300,6 @@
 {
     
     [picker dismissViewControllerAnimated:YES completion:nil];
-    
     [self UploadimageWithImage:image];
     
 }
@@ -244,14 +323,75 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
 //上传头像
 -(void)UploadimageWithImage:(UIImage*)avatarImage
 {
-    
-    [self.avatarButton setImage:avatarImage forState:UIControlStateNormal];
-    NSData * data = UIImageJPEGRepresentation(avatarImage, 1.0);
+
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
+    UIImage *compressImage = [avatarImage imageByScalingAndCroppingForSize:CGSizeMake(1000, 1000)];
+    
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory uplodImage:compressImage kind:@"avatar"];
+    request.requestSuccess = ^(id response)
+    {
+        DLJSONObject  *object = response;
+        DLJSONObject *resultData = [object getJSONObject:@"data"];
+        NSString *avartar = [resultData getString:@"path"];
+        
+        [DNSession sharedSession].avatar =  avartar;
+        [self.avatarButton setImage:avatarImage forState:UIControlStateNormal];
+        [self changeNextBtnState];
+        
+    };
+    request.requestFaile = ^(NSError *error)
+    {
+        
+    };
+    [request excute];
+    
+}
+- (void)didCanclePickView {
+    [self hiddenDatePickerView];
+}
+
+
+#pragma mark - textField
+
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self.view endEditing:YES];
+}
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [self.view endEditing:YES];
+    return YES;
+}
+
+
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    [self hiddenDatePickerView];
     
 }
 
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    [self changeNextBtnState];
+}
+
+
+- (void)changeNextBtnState
+{
+    if ([DNSession sharedSession].avatar.length && self.nickNameTextField.text.length && self.birthday.length) {
+        
+        self.nextBtn.enabled = YES;
+        self.nextBtn.backgroundColor = kThemeColor;
+        
+    }else
+    {
+        self.nextBtn.enabled = NO;
+        self.nextBtn.backgroundColor = [kThemeColor colorWithAlphaComponent:0.3];
+        
+    }
+    
+}
 
 
 -(void)setIsWoman:(BOOL)isWoman
@@ -327,6 +467,8 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
         _avatarButton.frame = CGRectMake(KScreenWidth/2-76, 132, 152, 152);
         [_avatarButton setImage:[UIImage imageNamed:@"login_addprofile_normal"] forState:UIControlStateNormal];
         [_avatarButton addTarget:self action:@selector(avatarButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        _avatarButton.layer.cornerRadius = 76;
+        _avatarButton.layer.masksToBounds = YES;
     }
     return _avatarButton;
 }
@@ -353,6 +495,11 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
         _nickNameTextField.delegate = self;
         _nickNameTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _nickNameTextField.textColor = [UIColor blackColor];
+        
+        if(IsStrEmpty([DNSession sharedSession].nickname)==NO)
+        {
+            _nickNameTextField.text = [DNSession sharedSession].nickname;
+        }
         
     }
     return _nickNameTextField;
@@ -423,6 +570,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
     if (!_arrowImageView) {
         _arrowImageView = [[UIImageView alloc]initWithFrame:CGRectMake(KScreenWidth-68, 437, 28, 28)];
         _arrowImageView.image = [UIImage imageNamed:@"settings_into_normal"];
+        
     }
     return _arrowImageView;
 }
@@ -448,6 +596,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     if (!_pickView) {
         _pickView = [[FullTimeView alloc]initWithFrame:CGRectMake(0, KScreenHeight-220, KScreenWidth, 220)];
+        _pickView.delegate = self;
     }
     return _pickView;
 }

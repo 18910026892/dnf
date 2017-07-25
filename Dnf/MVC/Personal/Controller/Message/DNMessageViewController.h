@@ -19,4 +19,8 @@
 //消息列表
 @property(nonatomic,strong)UITableView * messageTableView;
 
+//消息id
+@property(nonatomic,copy)NSString * messageid;
+
+
 @end

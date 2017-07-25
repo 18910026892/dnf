@@ -113,12 +113,14 @@
     DNChangePasswordViewController * changePassWordVc = [DNChangePasswordViewController viewController];
     changePassWordVc.phoneNumber = self.phoneNumber;
     changePassWordVc.countryCode = self.countryCode;
+    changePassWordVc.code  = self.validationTextField.text;
     [self.navigationController pushViewController:changePassWordVc animated:YES];
 }
 
 -(void)countdownButtonClick:(UIButton*)sender
 {
-    
+    [self startTime];
+
 }
 
 
@@ -147,7 +149,7 @@
 -(DNTextField*)validationTextField
 {
     if (!_validationTextField) {
-        _validationTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,158, KScreenWidth-180,27)];
+        _validationTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,158, KScreenWidth-190,27)];
         _validationTextField.placeholder = @"验证码";
         _validationTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _validationTextField.autocorrectionType = UITextAutocorrectionTypeNo;

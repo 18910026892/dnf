@@ -53,6 +53,22 @@
     
     
 //    [NSURLProtocol registerClass:[RNCachingURLProtocol class]];
+
+    
+    // 加载本地配置
+    [DLApplicationConfig load];
+    
+    // 获取服务器地址
+    [DLHttpsBusinesRequest setServerAddress:[DLApplicationConfig getServerAddressList]]; // 设置服务器地址列表，所有的服务器地址都在配置文件中
+    
+    // 注册shareSDK
+    [DLThirdShareManager setShareSDKKeys:[DLApplicationConfig getShareSDKKeys]];
+    [[DLThirdShareManager shareInstance] registerApp];
+
+    //开启定位
+    [[DLLocationManager shareManager] startLocation];
+    
+
     [IQKeyboardManager sharedManager].enable = YES;
     [IQKeyboardManager sharedManager].enableAutoToolbar = NO;
     [[IQKeyboardManager sharedManager] setKeyboardDistanceFromTextField:80];

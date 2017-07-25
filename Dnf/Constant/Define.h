@@ -52,4 +52,13 @@
 //HTTP
 #define HTTP_KEY   @"%ZW19nA8yVwt4*!YRqCQ!Wz6NVr#l*"
 
+
+
+//分享地址（图片）
+#define SharePhotoUrl(imageid,uid,userid,language,token) [NSString stringWithFormat:@"http://html5.dreamlive.tv/picture_share.php?imageid=%@&uid=%@&userid=%@&language=%@&token=%@",imageid,uid,userid,language,token]
+
+//分享地址（小视频）
+#define ShareVideoUrl(videoid,uid,userid,language,token) [NSString stringWithFormat:@"http://html5.dreamlive.tv/video_share.php?videoid=%@&uid=%@&userid=%@&language=%@&token=%@",videoid,uid,userid,language,token]
+
+
 #endif /* Define_h */

@@ -220,7 +220,12 @@ static CGFloat MaxCoverAlpha = 0.2;
         _rootViewController.view.center = CGPointMake(_rootViewController.view.bounds.size.width/2 + self.menuWidth, _rootViewController.view.center.y);
         _leftViewController.view.frame = self.view.bounds;
         _coverView.alpha = MaxCoverAlpha;
+    } completion:^(BOOL finished) {
+
+         [[NSNotificationCenter defaultCenter] postNotificationName:@"DNShowLeftViewController" object:nil];
+    
     }];
+
 }
 //显示右侧菜单
 -(void)showRightViewControllerAnimated:(BOOL)animated{

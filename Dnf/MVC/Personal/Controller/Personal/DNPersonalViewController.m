@@ -10,6 +10,8 @@
 
 @interface DNPersonalViewController ()
 
+@property(nonatomic,copy)NSString * messageId;
+
 @end
 
 @implementation DNPersonalViewController
@@ -17,16 +19,65 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-   
     [self preferredStatusBarStyle];
+ 
 }
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
     [self setNavigationBarHide:YES];
     [self creatUserInterface];
+  
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userInfoChange) name:@"DNUserInfoChange" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkHasMessage) name:@"DNShowLeftViewController" object:nil];
+}
+
+-(void)userInfoChange
+{
+  
+    [self.avatarButton sd_setImageWithURL:[NSURL URLWithString:[DNSession sharedSession].avatar] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"personalcenter_avatar_normal"]];
+    
+    self.nickNameLabel.text = [DNSession sharedSession].nickname;
+}
+
+-(void)checkHasMessage
+{
+    NSLog(@"checkHasMessage");
+    
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory checkHasNewMessage];
+    
+    request.requestSuccess = ^(id response)
+    {
+        
+        DLJSONObject *object = response;
+        
+        DLJSONObject * dataObject = [object getJSONObject:@"data"];
+        
+        NSInteger messageid = [dataObject getInteger:@"messageid"];
+    
+        if (messageid==0) {
+     
+            self.redView.hidden = YES;
+        }else
+        {
+            self.redView.hidden = NO;
+        }
+        
+        self.messageId = [NSString stringWithFormat:@"%ld",(long)messageid];
+        
+    };
+    
+    request.requestFaile = ^(NSError *error)
+    {
+        
+        
+        
+    };
+    
+    [request excute];
+    
 }
 
 -(void)creatUserInterface
@@ -88,6 +139,8 @@
             case 1:
         {
             cell.titleLabel.text = @"消息";
+            
+            [cell addSubview:self.redView];
         }
             break;
             case 2:
@@ -125,7 +178,6 @@
             case 0:
         {
             DNTopUpViewController * topupViewController = [DNTopUpViewController viewController];
-           
             [self pushController:topupViewController];
   
        
@@ -134,6 +186,7 @@
             case 1:
         {
             DNMessageViewController * messageViewController = [DNMessageViewController viewController];
+            messageViewController.messageid = self.messageId;
             [self pushController:messageViewController];
         }
             break;
@@ -145,7 +198,7 @@
             break;
             case 3:
         {
-           
+       
         }
             break;
             case 4:
@@ -156,12 +209,10 @@
             break;
             case 5:
         {
-          
-            [[DNSession sharedSession] removeUserInfo];
+            UIAlertView * alertView = [[UIAlertView alloc]initWithTitle:nil message:@"记得回来看我哦~" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"退出", nil];
             
+            [alertView show];
             
-            DNLoginViewController * loginViewController = [DNLoginViewController viewController];
-            [self pushController:loginViewController];
             
         }
             break;
@@ -175,6 +226,7 @@
 {
     DNEditViewController * editVc = [DNEditViewController viewController];
     [self pushController:editVc];
+    
 }
 
 -(void)pushController:(DNBaseViewController*)controller
@@ -185,6 +237,21 @@
     //显示主视图
     [self.xl_sldeMenu showRootViewControllerAnimated:true];
 }
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1)
+    {
+     
+        [[DNSession sharedSession] removeUserInfo];
+        
+        DNLoginViewController * loginViewController = [DNLoginViewController viewController];
+        [self pushController:loginViewController];
+ 
+    }
+
+}
+
 
 -(UITableView*)tableView
 {
@@ -223,9 +290,9 @@
         _avatarButton.frame = CGRectMake(centerX-width/2, width, width, width);
         _avatarButton.layer.cornerRadius = width/2;
         _avatarButton.layer.masksToBounds = YES;
-        [_avatarButton sd_setImageWithURL:[NSURL URLWithString:[DNSession sharedSession].avatar] forState:UIControlStateNormal];
+        [_avatarButton setImage:[UIImage imageNamed:@"personalcenter_avatar_normal"] forState:UIControlStateNormal];
         [_avatarButton addTarget:self action:@selector(avatarButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-
+        [_avatarButton sd_setImageWithURL:[NSURL URLWithString:[DNSession sharedSession].avatar] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"personalcenter_avatar_normal"]];
     }
     return _avatarButton;
 }
@@ -238,10 +305,22 @@
         _nickNameLabel.textColor = [UIColor customColorWithString:@"484848"];
         _nickNameLabel.font = [UIFont fontWithName:TextFontName_Light size:15];
         _nickNameLabel.textAlignment= NSTextAlignmentCenter;
-        _nickNameLabel.text = @"昵称最多八个汉子";
+        _nickNameLabel.text = [DNSession sharedSession].nickname;
     
     }
     return _nickNameLabel;
+}
+
+-(UIView*)redView
+{
+    if(!_redView)
+    {
+        _redView = [[UIView alloc]initWithFrame:CGRectMake(90,15, 8,8)];
+        _redView.backgroundColor = [UIColor redColor];
+        _redView.layer.cornerRadius = 4;
+        _redView.hidden = YES;
+    }
+    return _redView;
 }
 
 
