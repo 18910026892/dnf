@@ -347,4 +347,95 @@
     return request;
 }
 
++(nonnull DLHttpsBusinesRequest*)getRecordListWithNumber:(nonnull NSString*)number
+                                                    offset:(nonnull NSString*)offset
+{
+    DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"msvr://access/getAccess"
+                                                                        method:DLHttpRequestMethodGet];
+    
+    
+    [request addParameter:@"video|vr" key:@"resource"];
+    [request addParameter:number key:@"num"];
+    [request addParameter:offset key:@"offset"];
+    request.isShowErrorToast = NO;
+    request.isShowLoading = NO;
+    
+    return request;
+}
+
++(nonnull DLHttpsBusinesRequest*)getCollectionListWithNumber:(nonnull NSString*)number
+                                                      offset:(nonnull NSString*)offset
+{
+    DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"msvr://favorite/getFavorite"
+                                                                        method:DLHttpRequestMethodGet];
+    
+    
+    [request addParameter:@"video|vr" key:@"resource"];
+    [request addParameter:number key:@"num"];
+    [request addParameter:offset key:@"offset"];
+    
+    request.isShowLoading = NO;
+    
+    return request;
+}
+
++(nonnull DLHttpsBusinesRequest*)deleteCollectionWithFavoriteid:(nonnull NSString*)favoriteid
+{
+    DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"msvr://favorite/cancel"
+                                                                        method:DLHttpRequestMethodGet];
+    
+    
+    [request addParameter:favoriteid key:@"favoriteid"];
+    request.isShowLoading = YES;
+     request.isShowErrorToast = YES;
+    
+    return request;
+}
+
++(nonnull DLHttpsBusinesRequest*)deleteRecordWithAccessidid:(nonnull NSString*)accessidid;
+{
+    DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"msvr://access/cancel"
+                                                                        method:DLHttpRequestMethodGet];
+    
+    
+    [request addParameter:accessidid key:@"accessid"];
+ 
+    request.isShowLoading = YES;
+    request.isShowErrorToast = YES;
+    
+    return request;
+}
+
++(nonnull DLHttpsBusinesRequest*)addRecordResource:(nonnull NSString*)resource
+                                        relationid:(nonnull NSString*)relationid
+{
+    DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"msvr://access/add"
+                                                                        method:DLHttpRequestMethodGet];
+    
+    
+    [request addParameter:resource key:@"resource"];
+    [request addParameter:relationid key:@"relationid"];
+    
+    request.isShowLoading = NO;
+    request.isShowErrorToast = NO;
+    
+    return request;
+}
+
++(nonnull DLHttpsBusinesRequest*)addCollecionResource:(nonnull NSString*)resource
+                                           relationid:(nonnull NSString*)relationid
+{
+    DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"msvr://favorite/add"
+                                                                        method:DLHttpRequestMethodGet];
+    
+    
+    [request addParameter:resource key:@"resource"];
+    [request addParameter:relationid key:@"relationid"];
+    
+    request.isShowLoading = YES;
+    request.isShowErrorToast = YES;
+    
+    return request;
+}
+
 @end

@@ -25,8 +25,6 @@ static NSString *const kSessionCountryCode    = @"kSessionCountryCode";
 static NSString *const kSessionCity           = @"kSessionCity";
 static NSString *const kSessionChannel        = @"kSessionChannel";
 static NSString *const kSessionTimeDifference = @"kSessionTimeDifference";
-static NSString *const kSessionRecord         = @"kSessionRecord";
-static NSString *const kSessionCollecion      = @"kSessionCollecion";
 static NSString *const kSeesionVip            = @"kSeesionVip";
 
 
@@ -128,15 +126,7 @@ static DNSession *sharedManager=nil;
     [self setIntegerValue:timeDifference forkey:kSessionTimeDifference];
 }
 
--(void)setRecord:(NSArray *)record
-{
-    [self setValue:record forKey:kSessionRecord];
-}
 
--(void)setCollection:(NSArray *)collection
-{
-    [self setCollection:collection];
-}
 
 -(void)setVip:(BOOL)vip
 {
@@ -231,15 +221,7 @@ static DNSession *sharedManager=nil;
     return [self getIntegerValue:kSessionTimeDifference];
 }
 
--(NSArray*)record
-{
-    return [self getValueForKey:kSessionRecord];
-}
 
--(NSArray*)collection
-{
-    return [self getValueForKey:kSessionCollecion];
-}
 
 -(BOOL)isVip
 {

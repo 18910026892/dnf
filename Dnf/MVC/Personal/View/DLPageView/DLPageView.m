@@ -11,7 +11,7 @@
 @interface DLPageView ()
 
 @property(nonatomic, strong) NSMutableArray *subViewArray;
-@property(nonatomic, strong) UIScrollView *scrollView;
+
 @property(nonatomic, assign) NSInteger selectIndex;
 
 -(void)initData;

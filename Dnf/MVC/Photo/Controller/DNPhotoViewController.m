@@ -18,7 +18,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    self.url = @"http://www.163.com";
+    self.url = MainUrl(@"photo");
 }
 
 - (void)didReceiveMemoryWarning {

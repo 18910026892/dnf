@@ -7,8 +7,18 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DLNoDataView.h"
+#import "DLNoNetView.h"
+#import <AFNetworking.h>
 @class DNMainTabBarViewController;
-@interface DNBaseViewController : UIViewController
+@interface DNBaseViewController : UIViewController<NoDataViewDelegate,NoNetWorkViewDelegate>
+
+{
+    /**无数据视图**/
+    DLNoDataView*         _noDataView;
+    /**无网视图**/
+    DLNoNetView*      _noNetWorkView;
+}
 
 /**
  *  自定义NavigationBar
@@ -91,5 +101,26 @@
  *  @brief 操作Data
  */
 -(void)operationData;
+
+#pragma mark - 无数据的显示方法
+/*
+ *  @param superView 无数据
+ */
+-(void)showNoDataView:(UIView*)superView
+         noDataString:(NSString *)noDataString
+          noDataImage:(NSString*)imageName
+       imageViewFrame:(CGRect)rect;
+
+- (void)hideNoDataView;
+
+@property NSInteger nodataViewTpye;
+
+#pragma mark - 无网络的显示方法
+
+-(void)hideNoNetWorkView;
+-(void)retryToGetData;
+-(void)showNoNetWorkViewWithimageName:(NSString*)imageName;
+//网络小菊花停止转动，可以再次发起网络请求
+-(void)stopAiv;
 
 @end

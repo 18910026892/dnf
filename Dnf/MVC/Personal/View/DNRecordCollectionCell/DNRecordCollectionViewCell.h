@@ -8,7 +8,18 @@
 
 #import <UIKit/UIKit.h>
 #import "DNRecordModel.h"
+
+@protocol DNRecordCollectionViewCellDelegate <NSObject>
+@optional
+
+-(void)selectRecordModel:(DNRecordModel*)recordModel
+                  select:(BOOL)select;
+
+@end
+
 @interface DNRecordCollectionViewCell : UICollectionViewCell
+
+@property(nonatomic,weak)id<DNRecordCollectionViewCellDelegate>delegate;
 
 @property(nonatomic,strong)DNRecordModel * recordModel;
 
@@ -21,6 +32,7 @@
 @property(nonatomic,strong)UILabel * timeLabel;
 
 @property(nonatomic,strong)UIImageView * selectImageView;
+
 
 
 @end

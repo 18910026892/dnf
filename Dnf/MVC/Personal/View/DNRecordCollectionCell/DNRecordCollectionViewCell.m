@@ -32,8 +32,56 @@
 {
     _recordModel = recordModel;
     
+
     
+    [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:recordModel.cover]];
+    
+    
+    if (recordModel.duration==0||!recordModel.duration) {
+        self.timeLabel.hidden = YES;
+        
+    }else
+    {
+        self.timeLabel.hidden = NO;
+        self.timeLabel.text = [self formatTime:recordModel.duration];
+    }
+    
+    
+    self.vipLabel.hidden = ([recordModel.vip isEqualToString:@"Y"])?NO:YES;
+    
+    self.vrLabel.hidden = ([recordModel.resource isEqualToString:@"vr"])?NO:YES;
 }
+
+- (void)setSelected:(BOOL)selected{
+    [super setSelected:selected];
+    if (selected) {
+        //选中时
+      self.selectImageView.image = [UIImage imageNamed:@"checkbox_hover"];
+        
+    }else{
+        //非选中
+      self.selectImageView.image = [UIImage imageNamed:@"checkbox_normal"];
+    }
+    
+    if (self.delegate) {
+        [self.delegate selectRecordModel:self.recordModel select:selected];
+    }
+    
+    // Configure the view for the selected state
+}
+//format audio time
+- (NSString *)formatTime:(int)num{
+    
+    int second = (int)num%60;//秒
+    int minute = (int)num/60%60;
+    int house = (int)num/3600;
+    if (num < 3600) {
+        return [NSString stringWithFormat:@"%02d:%02d",minute,second];
+    }
+    
+    return [NSString stringWithFormat:@"%02d:%02d:%02d",house,minute,second];
+}
+
 
 -(UIImageView*)coverImageView
 {
@@ -50,6 +98,7 @@
         _vrLabel = [[UILabel alloc]init];
         _vrLabel.frame = CGRectMake(0, 0, 45, 14);
         _vrLabel.text = @"VR视频";
+        _vrLabel.hidden = YES;
         _vrLabel.textColor = [UIColor whiteColor];
         _vrLabel.font = [UIFont fontWithName:TextFontName_Light size:11];
         UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_vrLabel.bounds byRoundingCorners:UIRectCornerBottomRight cornerRadii:CGSizeMake(5, 5)];
@@ -69,6 +118,7 @@
         _vipLabel = [[UILabel alloc]init];
         _vipLabel.frame = CGRectMake(self.width-26, 0, 26, 14);
         _vipLabel.text = @"Vip";
+        _vipLabel.hidden = YES;
         _vipLabel.textColor = [UIColor whiteColor];
         _vipLabel.textAlignment = NSTextAlignmentRight;
         _vipLabel.font = [UIFont fontWithName:TextFontName_Light size:11];
@@ -87,7 +137,7 @@
     if (!_timeLabel) {
         _timeLabel = [[UILabel alloc]init];
         _timeLabel.frame = CGRectMake(self.width-40, self.height-18, 40, 18);
-        _timeLabel.text = @"05:08";
+        _timeLabel.hidden = YES;
         _timeLabel.textColor = [UIColor whiteColor];
         _timeLabel.textAlignment = NSTextAlignmentRight;
         _timeLabel.font = [UIFont fontWithName:TextFontName_Light size:11];

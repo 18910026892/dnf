@@ -30,7 +30,6 @@
     self.vipTitleLabel.text = topUpModel.title;
     self.vipDescLabel.text = topUpModel.detail;
 
-    
     [self.priceButton setTitle:[NSString stringWithFormat:@"￥ %@",topUpModel.price] forState:UIControlStateNormal];
 }
 

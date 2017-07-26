@@ -7,30 +7,7 @@
 //
 
 #import "DNBaseViewController.h"
-#import "DNPersonalTableViewCell.h"
-#import "DNTopUpViewController.h"
-#import "DNMessageViewController.h"
-#import "DNRecordViewController.h"
-#import "DNHelpViewController.h"
-#import "DNEditViewController.h"
-#import "DNLoginViewController.h"
-@interface DNPersonalViewController :DNBaseViewController<UITableViewDelegate,UITableViewDataSource>
 
-//个人中心
-@property(nonatomic,strong)UITableView * tableView;
-
-//顶部视图
-@property(nonatomic,strong)UIView * headerView;
-
-//头像视图
-@property(nonatomic,strong)UIButton * avatarButton;
-
-//昵称
-@property(nonatomic,strong)UILabel * nickNameLabel;
-
-//消息提示红点
-@property(nonatomic,strong)UIView * redView;
-
-
+@interface DNPersonalViewController :DNBaseViewController
 
 @end

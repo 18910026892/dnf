@@ -78,5 +78,22 @@
 
 +(nonnull DLHttpsBusinesRequest*)getMessageListWithMessageid:(nonnull NSString*)messageid;
 
+
+
++(nonnull DLHttpsBusinesRequest*)getRecordListWithNumber:(nonnull NSString*)number
+                                                  offset:(nonnull NSString*)offset;
++(nonnull DLHttpsBusinesRequest*)getCollectionListWithNumber:(nonnull NSString*)number
+                                                  offset:(nonnull NSString*)offset;
++(nonnull DLHttpsBusinesRequest*)deleteCollectionWithFavoriteid:(nonnull NSString*)favoriteid;
++(nonnull DLHttpsBusinesRequest*)deleteRecordWithAccessidid:(nonnull NSString*)accessidid;
+
++(nonnull DLHttpsBusinesRequest*)addRecordResource:(nonnull NSString*)resource
+                                  relationid:(nonnull NSString*)relationid;
+
++(nonnull DLHttpsBusinesRequest*)addCollecionResource:(nonnull NSString*)resource
+                                        relationid:(nonnull NSString*)relationid;
+
+
+
 @end
 

@@ -120,6 +120,71 @@
     }
 }
 
+#pragma mark - NoDataView method
+/**
+ *  显示无数据视图
+ */
+
+-(void)showNoDataView:(UIView*)superView noDataString:(NSString *)noDataString noDataImage:(NSString*)imageName imageViewFrame:(CGRect)rect
+{
+    if (!_noDataView) {
+        _noDataView =  [[DLNoDataView alloc] init];
+        _noDataView.delegate = self;
+    }
+    [_noDataView showNoDataView:superView noDataString:noDataString noDataImage:imageName imageViewFrame:rect];
+}
+
+
+- (void)hideNoDataView
+{
+    [_noDataView hide];
+}
+
+
+#pragma mark -noNetWorkView method
+-(void)showNoNetWorkViewWithimageName:(NSString*)imageName{
+    [self showNoNetWorkViewInView:self.view imageName:imageName];
+}
+
+- (void)showNoNetWorkView:(NoNetWorkViewStyle)style imageName:(NSString*)imageName{
+    return [self showNoNetWorkViewInView:self.view frame:self.view.bounds style:style imageName:imageName];
+}
+
+- (void)showNoNetWorkViewWithFrame:(CGRect)frame imageName:(NSString*)imageName{
+    [self showNoNetWorkViewInView:self.view frame:frame imageName:imageName];
+}
+
+-(void)showNoNetWorkViewInView:(UIView *)view imageName:(NSString*)imageName{
+    [self showNoNetWorkViewInView:view frame:CGRectMake(0, 64, KScreenWidth, KScreenHeight-64) imageName:imageName];
+}
+
+- (void)showNoNetWorkViewInView:(UIView *)view frame:(CGRect)frame imageName:(NSString*)imageName{
+    NoNetWorkViewStyle style = NoNetWorkViewStyle_No_NetWork;
+    AFNetworkReachabilityStatus networkStatus = [AFNetworkReachabilityManager sharedManager].networkReachabilityStatus;
+    if(networkStatus == AFNetworkReachabilityStatusReachableViaWiFi || networkStatus == AFNetworkReachabilityStatusReachableViaWWAN){
+        //加载失败
+        style = NoNetWorkViewStyle_Load_Fail;
+    }
+    [self showNoNetWorkViewInView:view frame:frame style:style imageName:imageName];
+}
+
+- (void)showNoNetWorkViewInView:(UIView *)view frame:(CGRect)frame style:(NoNetWorkViewStyle)style imageName:(NSString *)imageName{
+    if (!_noNetWorkView) {
+        _noNetWorkView = [[DLNoNetView alloc] init];
+        _noNetWorkView.delegate = self;
+    }
+    _noNetWorkView.frame = frame;
+    [_noNetWorkView showInView:view style:style imageName:imageName];
+}
+
+-(void)hideNoNetWorkView
+{
+    [_noNetWorkView hide];
+}
+-(void)stopAiv
+{
+    [_noNetWorkView stopAiv];
+}
 
 
 

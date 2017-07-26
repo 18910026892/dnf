@@ -78,15 +78,15 @@
     //配置NavigationBar
     UINavigationController *rootNav = [[UINavigationController alloc] initWithRootViewController:tabbarVc];
     
-    XLSlideMenu *slideMenu = [[XLSlideMenu alloc] initWithRootViewController:rootNav];
+    _slideMenu = [[XLSlideMenu alloc] initWithRootViewController:rootNav];
     
     DNPersonalViewController * personalViewController = [DNPersonalViewController viewController];
     //设置左侧菜单
-    slideMenu.leftViewController = personalViewController;
+    _slideMenu.leftViewController = personalViewController;
     
     _window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
     _window.backgroundColor = [UIColor whiteColor];
-    _window.rootViewController = slideMenu;
+    _window.rootViewController = _slideMenu;
     [_window makeKeyAndVisible];
     
     

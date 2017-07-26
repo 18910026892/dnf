@@ -19,6 +19,15 @@
     // Do any additional setup after loading the view.
     [self setNavTitle:@"帮助与反馈"];
     [self showBackButton:YES];
+    [self.leftButton addTarget:self action:@selector(showLeft) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.url = MainUrl(@"help");
+}
+
+-(void)showLeft
+{
+    [self.xl_sldeMenu showLeftViewControllerAnimated:YES];
+    
 }
 
 - (void)didReceiveMemoryWarning {

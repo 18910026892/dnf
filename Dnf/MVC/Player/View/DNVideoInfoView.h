@@ -19,7 +19,6 @@
 @property(nonatomic,assign)BOOL collection;
 
 
-
 //视频播放标题
 @property(nonatomic,strong)UILabel * videoTitleLabel;
 

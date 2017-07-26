@@ -21,9 +21,10 @@
 // ** lib ** //
 #import <UIImageView+WebCache.h>
 #import <UIButton+WebCache.h>
+#import <MJExtension.h>
+#import <MJRefresh.h>
 #import "MJPhoto.h"
 #import "MJPhotoBrowser.h"
-#import <MJExtension.h>
 // ** constantDefine ** //
 #import "Define.h"
 #import "Cache.h"

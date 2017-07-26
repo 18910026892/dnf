@@ -14,4 +14,11 @@
 
 @property(nonatomic,strong)UILabel * titleLabel;
 
+@property(nonatomic,strong)UILabel * selectLabel;
+
+@property(nonatomic,assign)NSInteger selectCount;
+
+@property (nonatomic,strong) UIButton * clearButton;
+
+
 @end

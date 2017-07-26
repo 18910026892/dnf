@@ -65,11 +65,7 @@
 //用户生日
 @property(nonatomic,copy)NSString * birthday;
 
-//浏览记录
-@property(nonatomic,strong)NSArray * record;
 
-//收藏
-@property(nonatomic,strong)NSArray * collection;
 
 //是否是vip
 @property(nonatomic,assign)BOOL vip;

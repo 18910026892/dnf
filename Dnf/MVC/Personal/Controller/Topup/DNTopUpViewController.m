@@ -20,7 +20,26 @@
     [self creatUserInterface];
     [self operationData];
     
+ 
 }
+
+-(void)setFormMenu:(BOOL)formMenu
+{
+    _formMenu = formMenu;
+    
+    if (formMenu==YES) {
+        
+        [self.leftButton addTarget:self action:@selector(showLeft) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
+}
+
+-(void)showLeft
+{
+    [self.xl_sldeMenu showLeftViewControllerAnimated:YES];
+    
+}
+
 
 -(void)creatUserInterface
 {
@@ -31,34 +50,12 @@
 
 -(void)operationData
 {
+
+    NSMutableArray * array = [[NSUserDefaults standardUserDefaults] valueForKey:@"kSessionProductArray"];
     
+    self.dataArray = [DNTopUpModel mj_objectArrayWithKeyValuesArray:array];
     
-    DLHttpsBusinesRequest *request = [DLHttpRequestFactory getProduct];
-    
-    request.requestSuccess = ^(id response)
-    {
-    
-        DLJSONObject *object = response;
-        
-        DLJSONObject * dataObject = [object getJSONObject:@"data"];
-        
-        DLJSONArray *  productArray = [dataObject getJSONArray:@"product"];
-        
-        self.dataArray = [DNTopUpModel mj_objectArrayWithKeyValuesArray:productArray.array];
-        
-        [self.tableView reloadData];
-        
-    };
-    
-    request.requestFaile = ^(NSError *error)
-    {
-    
-        
-        
-    };
-    
-    [request excute];
-    
+    [self.tableView reloadData];
 
 }
 

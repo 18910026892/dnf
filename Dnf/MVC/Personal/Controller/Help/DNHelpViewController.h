@@ -8,6 +8,6 @@
 
 #import "DNBaseViewController.h"
 
-@interface DNHelpViewController : DNBaseViewController
+@interface DNHelpViewController : DNWebViewController
 
 @end

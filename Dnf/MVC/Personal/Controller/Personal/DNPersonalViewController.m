@@ -7,11 +7,47 @@
 //
 
 #import "DNPersonalViewController.h"
-
-@interface DNPersonalViewController ()
+#import "DNPersonalTableViewCell.h"
+#import "DNTopUpViewController.h"
+#import "DNMessageViewController.h"
+#import "DNRecordViewController.h"
+#import "DNHelpViewController.h"
+#import "DNEditViewController.h"
+#import "DNLoginViewController.h"
+#import "DNRecordModel.h"
+@interface DNPersonalViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property(nonatomic,copy)NSString * messageId;
+//个人中心
+@property(nonatomic,strong)UITableView * tableView;
 
+//顶部视图
+@property(nonatomic,strong)UIView * headerView;
+
+
+//关闭按钮
+@property(nonatomic,strong)UIButton * closeButton;
+
+//头像视图
+@property(nonatomic,strong)UIButton * avatarButton;
+
+//昵称
+@property(nonatomic,strong)UILabel * nickNameLabel;
+
+//底部视图
+@property(nonatomic,strong)UIView * footerView;
+
+//清除记录
+@property(nonatomic,strong)UIButton * clearButton;
+
+//消息提示红点
+@property(nonatomic,strong)UIView * redView;
+
+//记录图片数组
+@property(nonatomic,strong)NSMutableArray * recordImageArray;
+
+//收藏图片数组
+@property(nonatomic,strong)NSMutableArray * collectionImageArray;
 @end
 
 @implementation DNPersonalViewController
@@ -28,10 +64,106 @@
     
     [self setNavigationBarHide:YES];
     [self creatUserInterface];
-  
+    [self operationData];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userInfoChange) name:@"DNUserInfoChange" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkHasMessage) name:@"DNShowLeftViewController" object:nil];
+    
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(operationData) name:@"DNRecordListChange" object:nil];
+}
+
+-(void)operationData
+{
+    
+    [self getRecordList];
+    [self getCollecitonList];
+    
+}
+
+-(void)getRecordList
+{
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory getRecordListWithNumber:@"3" offset:@"0"];
+    
+    request.requestSuccess = ^(id response)
+    {
+        
+        DLJSONObject *object = response;
+        
+        DLJSONObject * dataObject = [object getJSONObject:@"data"];
+        
+        DLJSONArray * accessArray  = [dataObject getJSONArray:@"access"];
+        
+        DNPersonalTableViewCell * cell =(DNPersonalTableViewCell * )[self.tableView viewWithTag:1002];
+        for (UIView * v in cell.contentView.subviews) {
+            
+            if ([v isKindOfClass:[UIImageView class]]) {
+                [v removeFromSuperview];
+            }
+        }
+        
+
+        [self.recordImageArray removeAllObjects];
+        
+        for (NSDictionary * dict in accessArray.array) {
+            
+            NSString * cover = [dict valueForKey:@"cover"];
+            [self.recordImageArray addObject:cover];
+        }
+    
+        [self.tableView reloadData];
+        
+    };
+    
+    request.requestFaile = ^(NSError *error)
+    {
+        
+    };
+    
+    [request excute];
+
+}
+
+-(void)getCollecitonList
+{
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory getCollectionListWithNumber:@"3" offset:@"0"];
+    
+    request.requestSuccess = ^(id response)
+    {
+        
+        DLJSONObject *object = response;
+        
+        DLJSONObject * dataObject = [object getJSONObject:@"data"];
+        
+        DLJSONArray * favoriteArray  = [dataObject getJSONArray:@"favorite"];
+        
+        DNPersonalTableViewCell * cell =(DNPersonalTableViewCell * )[self.tableView viewWithTag:1003];
+        for (UIView * v in cell.contentView.subviews) {
+            
+            if ([v isKindOfClass:[UIImageView class]]) {
+                [v removeFromSuperview];
+            }
+        }
+        
+        
+        [self.collectionImageArray removeAllObjects];
+        
+        for (NSDictionary * dict in favoriteArray.array) {
+            
+            NSString * cover = [dict valueForKey:@"cover"];
+            [self.collectionImageArray addObject:cover];
+        }
+        [self.tableView reloadData];
+        
+    };
+    
+    request.requestFaile = ^(NSError *error)
+    {
+        
+    };
+    
+    [request excute];
 }
 
 -(void)userInfoChange
@@ -44,8 +176,7 @@
 
 -(void)checkHasMessage
 {
-    NSLog(@"checkHasMessage");
-    
+ 
     DLHttpsBusinesRequest *request = [DLHttpRequestFactory checkHasNewMessage];
     
     request.requestSuccess = ^(id response)
@@ -71,9 +202,7 @@
     
     request.requestFaile = ^(NSError *error)
     {
-        
-        
-        
+
     };
     
     [request excute];
@@ -102,7 +231,7 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return 0.1f;
+    return 74;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -118,6 +247,12 @@
    
 }
 
+- (nullable UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    return self.footerView;
+}
+
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 
 {
@@ -129,6 +264,7 @@
         cell = [[DNPersonalTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
     }
     
+    cell.tag = 1000+indexPath.row;
     
     switch (indexPath.row) {
         case 0:
@@ -146,11 +282,28 @@
             case 2:
         {
             cell.titleLabel.text = @"浏览记录";
+            
+            for (int i=0; i<[self.recordImageArray count]; i++) {
+                UIImageView * imageView = [[UIImageView alloc]initWithFrame:CGRectMake(KScreenWidth*0.8-55-25*i,18, 20, 20)];
+                imageView.layer.cornerRadius = 10;
+                imageView.layer.masksToBounds = YES;
+                [cell.contentView  addSubview:imageView];
+                [imageView sd_setImageWithURL:[NSURL URLWithString:self.recordImageArray[i]]];
+            }
+            
         }
             break;
             case 3:
         {
             cell.titleLabel.text = @"我的收藏";
+            
+            for (int i=0; i<[self.collectionImageArray count]; i++) {
+                UIImageView * imageView = [[UIImageView alloc]initWithFrame:CGRectMake(KScreenWidth*0.8-55-25*i,18, 20, 20)];
+                imageView.layer.cornerRadius = 10;
+                imageView.layer.masksToBounds = YES;
+                [cell.contentView addSubview:imageView];
+                [imageView sd_setImageWithURL:[NSURL URLWithString:self.collectionImageArray[i]]];
+            }
         }
             break;
             case 4:
@@ -178,6 +331,7 @@
             case 0:
         {
             DNTopUpViewController * topupViewController = [DNTopUpViewController viewController];
+            topupViewController.formMenu = YES;
             [self pushController:topupViewController];
   
        
@@ -193,12 +347,17 @@
             case 2:
         {
             DNRecordViewController * recordVc = [DNRecordViewController viewController];
+    
+            recordVc.index = 0;
             [self pushController:recordVc];
         }
             break;
             case 3:
         {
-       
+            DNRecordViewController * recordVc = [DNRecordViewController viewController];
+
+            recordVc.index = 1;
+            [self pushController:recordVc];
         }
             break;
             case 4:
@@ -229,6 +388,71 @@
     
 }
 
+-(void)close
+{
+    //显示主视图
+    [self.xl_sldeMenu showRootViewControllerAnimated:true];
+}
+
+-(void)clear
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"删除浏览记录？" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    
+    // Create the actions.
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        NSLog(@"The \"Okay/Cancel\" alert's cancel action occured.");
+        
+        
+    }];
+    
+    NSString * deleteString = [NSString stringWithFormat:@"删除"];
+    
+    UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:deleteString style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        
+        DLHttpsBusinesRequest *request = [DLHttpRequestFactory deleteRecordWithAccessidid:@"all"];
+        
+        request.requestSuccess = ^(id response)
+        {
+            
+            DLJSONObject *object = response;
+            
+            DLJSONObject * dataObject = [object getJSONObject:@"data"];
+  
+            DNPersonalTableViewCell * cell =(DNPersonalTableViewCell * )[self.tableView viewWithTag:1002];
+            for (UIView * v in cell.contentView.subviews) {
+                
+                if ([v isKindOfClass:[UIImageView class]]) {
+                    [v removeFromSuperview];
+                }
+            }
+            
+            [self.recordImageArray removeAllObjects];
+            [self.tableView reloadData];
+            
+            [self.view makeToast:@"删除成功" duration:3.0 position:CSToastPositionCenter];
+        };
+        
+        request.requestFaile = ^(NSError *error)
+        {
+            
+        };
+        
+        [request excute];
+ 
+        
+    }];
+    
+    [cancelAction setValue:[UIColor blackColor] forKey:@"_titleTextColor"];
+    [deleteAction setValue:[UIColor customColorWithString:@"fe3824"] forKey:@"_titleTextColor"];
+    
+    // Add the actions.
+    [alertController addAction:cancelAction];
+    [alertController addAction:deleteAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+    
+}
+
 -(void)pushController:(DNBaseViewController*)controller
 {
     //获取RootViewController
@@ -236,6 +460,7 @@
     [nav pushViewController:controller animated:false];
     //显示主视图
     [self.xl_sldeMenu showRootViewControllerAnimated:true];
+ 
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -245,8 +470,8 @@
      
         [[DNSession sharedSession] removeUserInfo];
         
-        DNLoginViewController * loginViewController = [DNLoginViewController viewController];
-        [self pushController:loginViewController];
+        //显示主视图
+        [self.xl_sldeMenu showRootViewControllerAnimated:true];
  
     }
 
@@ -266,6 +491,29 @@
     return _tableView;
 }
 
+-(UIView*)footerView
+{
+    if (!_footerView) {
+        _footerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, KScreenWidth*0.8, 74)];
+        [_footerView addSubview:self.clearButton];
+    }
+    return _footerView;
+}
+
+-(UIButton*)clearButton
+{
+    if (!_clearButton) {
+        _clearButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _clearButton.frame= CGRectMake(50, 0, 200, 76);
+        [_clearButton setTitle:@"清空浏览记录" forState:UIControlStateNormal];
+        [_clearButton setTitleColor:[UIColor customColorWithString:@"999999"] forState:UIControlStateNormal];
+        _clearButton.titleLabel.font = [UIFont fontWithName:TextFontName_Light size:13];
+        _clearButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+        [_clearButton addTarget:self action:@selector(clear) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _clearButton;
+}
+
 -(UIView*)headerView
 {
     if (!_headerView) {
@@ -273,10 +521,22 @@
         CGFloat width = KScreenWidth*0.8;
         _headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, width, 240)];
         _headerView.backgroundColor = [UIColor whiteColor];
+        [_headerView addSubview:self.closeButton];
         [_headerView addSubview:self.avatarButton];
         [_headerView addSubview:self.nickNameLabel];
     }
     return _headerView;
+}
+
+-(UIButton*)closeButton
+{
+    if (!_closeButton) {
+        _closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _closeButton.frame = CGRectMake(2, 20, 44, 44);
+        [_closeButton setImage:[UIImage imageNamed:@"nav_close_normal"] forState:UIControlStateNormal];
+        [_closeButton addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return _closeButton;
 }
 
 
@@ -323,6 +583,22 @@
     return _redView;
 }
 
+-(NSMutableArray*)recordImageArray
+{
+    if (!_recordImageArray) {
+        _recordImageArray = [NSMutableArray array];
+    }
+    return _recordImageArray;
+}
+
+
+-(NSMutableArray*)collectionImageArray
+{
+    if (!_collectionImageArray) {
+        _collectionImageArray = [NSMutableArray array];
+    }
+    return _collectionImageArray;
+}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

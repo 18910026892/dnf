@@ -17,4 +17,6 @@
 //数据源
 @property(nonatomic,strong)NSMutableArray * dataArray;
 
+@property(nonatomic,assign)BOOL formMenu;
+
 @end

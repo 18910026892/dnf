@@ -70,7 +70,7 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
     self.pauseButton.frame = self.playButton.frame;
     self.fullScreenButton.frame = CGRectMake(CGRectGetWidth(self.bottomBar.bounds) - CGRectGetWidth(self.fullScreenButton.bounds), CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.fullScreenButton.bounds)/2, CGRectGetWidth(self.fullScreenButton.bounds), CGRectGetHeight(self.fullScreenButton.bounds));
     self.shrinkScreenButton.frame = self.fullScreenButton.frame;
-    self.progressSlider.frame = CGRectMake(CGRectGetMinX(self.bottomBar.frame)-2, CGRectGetHeight(self.bottomBar.bounds) - CGRectGetHeight(self.progressSlider.bounds)/2, CGRectGetWidth(self.bottomBar.frame)+4, CGRectGetHeight(self.progressSlider.bounds));
+    self.progressSlider.frame = CGRectMake(CGRectGetMinX(self.bottomBar.frame), CGRectGetHeight(self.bottomBar.bounds) - CGRectGetHeight(self.progressSlider.bounds)/2, CGRectGetWidth(self.bottomBar.frame), CGRectGetHeight(self.progressSlider.bounds));
     
     self.timeLabel.frame = CGRectMake(CGRectGetMinX(self.bottomBar.frame)+15,0,kVideoTimeLabelWidth, CGRectGetHeight(self.bottomBar.frame));
     

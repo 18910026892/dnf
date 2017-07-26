@@ -738,7 +738,6 @@ static NSString     *DLMainServerAddress = @"";
         }
     }
 
-      NSLog(@"URL = %@",_url); NSLog(@" parameter =  %@",_parameter);
     
     if (_isShowLoading) {
         

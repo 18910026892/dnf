@@ -10,8 +10,6 @@
 #import "DNPlayerViewController.h"
 #import "DNSearchViewController.h"
 #import "DNLoginViewController.h"
-
-
 #import "DNPerfectInfoViewController.h"
 @interface DNHomePageViewController ()
 
@@ -38,8 +36,9 @@
 -(void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    self.url = @"http://www.baidu.com";
+    self.url = MainUrl(@"home");
     [self fastlogin];
+    [self getProductList];
     [self setupUI];
 }
 
@@ -117,6 +116,33 @@
     {
         
       
+    };
+    
+    [request excute];
+}
+
+
+-(void)getProductList
+{
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory getProduct];
+    
+    request.requestSuccess = ^(id response)
+    {
+        
+        DLJSONObject *object = response;
+        
+        DLJSONObject * dataObject = [object getJSONObject:@"data"];
+        
+        DLJSONArray *  productArray = [dataObject getJSONArray:@"product"];
+
+        [[NSUserDefaults standardUserDefaults] setObject:productArray.array forKey:@"kSessionProductArray"];
+        
+    };
+    
+    request.requestFaile = ^(NSError *error)
+    {
+        
+        
     };
     
     [request excute];

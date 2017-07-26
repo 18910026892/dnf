@@ -150,13 +150,31 @@
         _vipInfoLabel.frame = CGRectMake(14, 78.5, KScreenWidth-114, 21);
         _vipInfoLabel.textColor = [UIColor customColorWithString:@"000000"];
         
+        UIFont * font = (KScreenWidth==320)?[UIFont systemFontOfSize:13]:[UIFont systemFontOfSize:15];
  
-        NSMutableAttributedString * attributedString = [[NSMutableAttributedString alloc] initWithString:@"现在购买超值包年VIP只需要2100元"];
-        NSDictionary * attributedDict = @{ NSFontAttributeName:[UIFont systemFontOfSize:15],NSForegroundColorAttributeName:HexRGBAlpha(0xFb389c, 1),};
-        [attributedString setAttributes:attributedDict range:NSMakeRange(attributedString.length-5,4)];
+        NSMutableArray * array = [[NSUserDefaults standardUserDefaults] valueForKey:@"kSessionProductArray"];
+        
+        NSString * string;
+        NSString * title;
+        NSString * price;
+  
+        if (IS_ARRAY_CLASS(array)) {
+            
+            NSDictionary * dict = [array lastObject];
+            
+             title= [NSString stringWithFormat:@"%@",[dict valueForKey:@"title"]];
+             price= [NSString stringWithFormat:@"%@",[dict valueForKey:@"price"]];
+             string = [NSString stringWithFormat:@"现在购买超值%@只需要%@元",title,price];
+            
+        }
+        
+
+        NSMutableAttributedString * attributedString = [[NSMutableAttributedString alloc] initWithString:string];
+        NSDictionary * attributedDict = @{ NSFontAttributeName:font,NSForegroundColorAttributeName:HexRGBAlpha(0xFb389c, 1),};
+        [attributedString setAttributes:attributedDict range:NSMakeRange(attributedString.length-[price length]-1,[price length])];
 
         _vipInfoLabel.attributedText = attributedString;
-        _vipInfoLabel.font = [UIFont fontWithName:TextFontName_Light size:15];
+        _vipInfoLabel.font = font;
     }
     return _vipInfoLabel;
 }

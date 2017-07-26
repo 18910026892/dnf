@@ -17,7 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.url = @"http://www.meituan.com";
+     self.url = MainUrl(@"vr");
 }
 
 - (void)didReceiveMemoryWarning {

@@ -32,6 +32,8 @@
     //设置轻扫的方向
     swipeGestureTop.direction = UISwipeGestureRecognizerDirectionUp;
     [self.view addGestureRecognizer:swipeGestureTop];
+    
+    
 }
 
 
@@ -59,7 +61,10 @@
 
 -(void)startSearch:(NSString*)keyword
 {
-    
+    NSString * searchUrl = MainUrl(@"search");
+
+    self.url = [NSString stringWithFormat:@"%@?search=%@",searchUrl,keyword];
+
 }
 -(UIImageView*)searchImageView
 {

@@ -17,7 +17,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-        self.url = @"http://www.taobao.com";
+      self.url = MainUrl(@"video");
 }
 
 - (void)didReceiveMemoryWarning {

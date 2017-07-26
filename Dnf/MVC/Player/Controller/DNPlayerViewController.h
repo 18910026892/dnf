@@ -10,8 +10,10 @@
 #import <KRVideoPlayerController.h>
 #import "DNVideoInfoView.h"
 #import "DNTopUpViewController.h"
+#import "DNRecordModel.h"
 @interface DNPlayerViewController : DNWebViewController
 
+@property(nonatomic,strong)DNRecordModel * recordModel;
 @property(nonatomic,strong)KRVideoPlayerController  *videoController;
 @property(nonatomic,strong)DNVideoInfoView * videoInfoView;
 

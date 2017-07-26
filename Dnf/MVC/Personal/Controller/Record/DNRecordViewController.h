@@ -10,4 +10,6 @@
 
 @interface DNRecordViewController : DNBaseViewController
 
+@property(nonatomic,assign)NSInteger index;
+
 @end

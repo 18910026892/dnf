@@ -28,6 +28,8 @@
 
 @interface DLPageView : UIView
 
+@property(nonatomic, strong) UIScrollView *scrollView;
+
 
 /**
  *  添加是否可以滑动属性

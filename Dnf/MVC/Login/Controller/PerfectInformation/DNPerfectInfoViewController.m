@@ -13,6 +13,7 @@
 #import "DNTextField.h"
 #import "FullTimeView.h"
 #import "UIImage+Compress.h"
+#import "NSString+Date.h"
 @interface DNPerfectInfoViewController ()<UITextFieldDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,FinishPickView>
 
 @property(nonatomic,strong)UIButton * passButton;

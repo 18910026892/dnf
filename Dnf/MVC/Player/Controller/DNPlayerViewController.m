@@ -27,6 +27,7 @@
     [super viewWillAppear:animated];
 
     [self playVideo];
+
 }
 
 - (void)viewDidLoad {
@@ -46,13 +47,17 @@
     CGFloat y = KScreenWidth*(9.0/16.0)+110;
     self.webView.frame = CGRectMake(0, y, KScreenWidth, KScreenHeight-y);
     
-    self.url = @"http://www.baidu.com";
+    self.url = MainUrl(@"videoList");
 }
 
 -(void)playVideo{
-    NSURL *url = [NSURL URLWithString:@"http://v.cctv.com/flash/mp4video6/TMS/2011/01/05/cf752b1c12ce452b3040cab2f90bc265_h264818000nero_aac32-1.mp4"];
-    [self addVideoPlayerWithURL:url];
+
+    NSString * playUrl = [self.recordModel.play valueForKey:@"url"];
+    NSURL * videoURL = [NSURL URLWithString:playUrl];
+    [self addVideoPlayerWithURL:videoURL];
 }
+
+
 
 -(void)addVideoPlayerWithURL:(NSURL *)url{
    
@@ -72,31 +77,8 @@
 
 -(void)openButtonClick:(UIButton*)sender
 {
-    
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"VIP购买" message:@"非VIP用户，无法查看以下内容\n请购买VIP后再来观看" preferredStyle:UIAlertControllerStyleAlert];
-    
-    // Create the actions.
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        NSLog(@"The \"Okay/Cancel\" alert's cancel action occured.");
-    }];
-    
-    [cancelAction setValue:[UIColor blackColor] forKey:@"_titleTextColor"];
-    
-    UIAlertAction *otherAction = [UIAlertAction actionWithTitle:@"购买" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        NSLog(@"The \"Okay/Cancel\" alert's other action occured.");
-        DNTopUpViewController * topupVC = [DNTopUpViewController viewController];
-        [self.navigationController pushViewController:topupVC animated:YES];
-        
-    }];
-    
-    [otherAction setValue:kThemeColor forKey:@"_titleTextColor"];
-
-    
-    // Add the actions.
-    [alertController addAction:cancelAction];
-    [alertController addAction:otherAction];
-    
-    [self presentViewController:alertController animated:YES completion:nil];
+    DNTopUpViewController * topupVC = [DNTopUpViewController viewController];
+    [self.navigationController pushViewController:topupVC animated:YES];
 
 }
 
@@ -104,22 +86,38 @@
 -(void)collectButtonClick:(UIButton*)sender
 {
     NSLog(@"collection");
-    self.videoInfoView.collection = !self.videoInfoView.collection;
+    NSString * resource = [NSString stringWithFormat:@"%@",self.recordModel.resource];
+    
+    NSString * relationid;
+    if ([resource isEqualToString:@"video"]) {
+        relationid = [NSString stringWithFormat:@"%ld",(long)self.recordModel.videoid];
+    }else if([resource isEqualToString:@"vr"])
+    {
+        relationid = [NSString stringWithFormat:@"%ld",(long)self.recordModel.vrid];
+    }
+    
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory addCollecionResource:resource relationid:relationid];
+    
+    request.requestSuccess = ^(id response)
+    {
+      
+        self.videoInfoView.collection = YES;
+    };
+    
+    request.requestFaile   = ^(NSError *error)
+    {
+        
+        
+    };
+    
+    [request excute];
+
 }
 
 -(void)shareButtonClick:(UIButton*)sender
 {
     NSLog(@"share");
 }
-
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if (buttonIndex==1) {
-        DNTopUpViewController * topUp = [DNTopUpViewController viewController];
-        [self.navigationController pushViewController:topUp animated:YES];
-    }
-}
-
 
 -(DNVideoInfoView*)videoInfoView
 {
@@ -133,6 +131,34 @@
     }
     return _videoInfoView;
 }
+
+
+-(void)setRecordModel:(DNRecordModel *)recordModel
+{
+    _recordModel = recordModel;
+    
+    self.videoInfoView.collection = (recordModel.favoriteid==0)?NO:YES;
+    
+    if (self.videoInfoView.collection==YES) {
+        self.videoInfoView.collectionButton.userInteractionEnabled = NO;
+    }
+    
+    NSString * resource = [NSString stringWithFormat:@"%@",recordModel.resource];
+    
+    NSString * relationid;
+    if ([resource isEqualToString:@"video"]) {
+        relationid = [NSString stringWithFormat:@"%ld",(long)recordModel.videoid];
+    }else if([resource isEqualToString:@"vr"])
+    {
+        relationid = [NSString stringWithFormat:@"%ld",(long)recordModel.vrid];
+    }
+    
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory addRecordResource:resource relationid:relationid];
+
+    
+    [request excute];
+}
+
 
 
 - (void)didReceiveMemoryWarning {

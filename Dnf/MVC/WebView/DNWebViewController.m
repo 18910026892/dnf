@@ -137,6 +137,8 @@ typedef NS_ENUM(NSInteger, DLJSGotonativeType)
     NSURL * URL = [NSURL URLWithString:url];
     NSURLRequest * request = [NSURLRequest requestWithURL:URL];
     [self.webView loadRequest:request];
+    
+    
 }
 
 #pragma mark - NJKWebViewProgressDelegate
@@ -152,6 +154,7 @@ typedef NS_ENUM(NSInteger, DLJSGotonativeType)
 }
 - (void)webViewDidFinishLoad:(UIWebView *)webView;
 {
+
     
 }
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error;

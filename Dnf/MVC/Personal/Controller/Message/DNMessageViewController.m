@@ -7,6 +7,7 @@
 //
 
 #import "DNMessageViewController.h"
+#import "NSString+Date.h"
 #define TEN_MINUTE (60*10)
 #define TASK_USER_ID @"999"
 @interface DNMessageViewController ()
@@ -22,11 +23,19 @@
 
     //2拉取所有的数据
     [self requestMessageList];
+    
+    [self.leftButton addTarget:self action:@selector(showLeft) forControlEvents:UIControlEventTouchUpInside];
+}
+
+-(void)showLeft
+{
+    [self.xl_sldeMenu showLeftViewControllerAnimated:YES];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self scrollToEnd];
+  
 }
 
 - (NSMutableArray<DNMessageModel *> *)messageArray {
@@ -39,6 +48,14 @@
 //获取消息列表 可以先获取20调， 下拉根据array0的第一条发送时间再去获取
 - (void)requestMessageList {
     
+    if(IsStrEmpty(self.messageid))
+    {
+        self.messageid = @"0";
+    }
+    
+     [_noDataView hide];
+     [_noNetWorkView hide];
+    
     //掉接口获取数据
     DLHttpsBusinesRequest *request = [DLHttpRequestFactory getMessageListWithMessageid:self.messageid];
     
@@ -47,7 +64,9 @@
         
         DLJSONObject *object = response;
         
-        DLJSONArray * messageArray = [object getJSONArray:@"data"];
+        DLJSONObject *dataObject = [object getJSONObject:@"data"];
+        
+        DLJSONArray * messageArray = [dataObject getJSONArray:@"message"];
         
         for (int i=0; i<[messageArray.array count]; i++) {
             DNMessageModel *message = [[DNMessageModel alloc] init];
@@ -57,12 +76,22 @@
             message.sendTime =  [NSString timeSwitchTimestamp:addtime andFormatter:@"YYYY-MM-dd HH:mm:ss"];
             message.showSendTime = NO;
             message.message  = [messageArray.array[i] valueForKey:@"message_text"];
-            [self.messageArray addObject:message];
+           [self.messageArray addObject:message];
         }
-        
-        [self intervalTime:self.messageArray];
-        [self.messageTableView reloadData];
-        
+
+        if ([self.messageArray count]==0) {
+ 
+            CGRect rect  = CGRectMake(KScreenWidth/2-52, 165, 104, 80);
+            
+            [self showNoDataView:self.view noDataString:@"暂无消息" noDataImage:@"default_nomessage" imageViewFrame:rect];
+            
+        }else
+        {
+            [self intervalTime:self.messageArray];
+            [self.messageTableView reloadData];
+            [self scrollToEnd];
+            
+        }
         
     };
     
@@ -70,7 +99,7 @@
     {
         
         
-        
+         [self showNoNetWorkViewWithimageName:@"default_nonetwork"];
     };
     
     [request excute];
