@@ -16,6 +16,10 @@
 // 保存按钮
 @property (nonatomic, assign) NSUInteger showSaveBtn;
 
+//资源ID分享用
+@property(nonatomic,copy)NSString * relationid;
+
+
 // 显示
 - (void)show;
 

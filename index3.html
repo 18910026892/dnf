@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+<button onclick="share()">拉起底部分享</button> 
+<button onclick="jump()">跳转对应栏目</button> 
+<button onclick="jumpVideo()">视频</button> 
+<button onclick="jumpVr()">vr视频</button> 
+<button onclick="jumpImage()">图片</button> 
+<button onclick="collection()">收藏</button>
+<script>
+  clientInit() 
+  function clientInit() {
+    try {
+      // 注册事件监听
+      function connectWebViewJavascriptBridge(callback) {
+        if (window.WebViewJavascriptBridge) {
+          callback(WebViewJavascriptBridge)
+        } else {
+          document.addEventListener(
+            'WebViewJavascriptBridgeReady',
+            function() {
+              callback(WebViewJavascriptBridge)
+            },
+            false
+          )
+        }
+        if (window.WebViewJavascriptBridge) {
+          return callback(WebViewJavascriptBridge)
+        }
+        if (window.WVJBCallbacks) {
+          return window.WVJBCallbacks.push(callback)
+        }
+        window.WVJBCallbacks = [callback]
+        var WVJBIframe = document.createElement('iframe')
+        WVJBIframe.style.display = 'none'
+        WVJBIframe.src = 'https://__bridge_loaded__'
+        document.documentElement.appendChild(WVJBIframe)
+        setTimeout(function() {
+          document.documentElement.removeChild(WVJBIframe)
+        }, 0)
+      }
+
+      // 注册回调函数，第一次连接时调用 初始化函数
+      connectWebViewJavascriptBridge(function(bridge) {
+        // 初始化
+        bridge.init(function(message, responseCallback) {
+          var data = {
+            'Javascript Responds': 'Wee!'
+          }
+          responseCallback(data);
+        })
+
+        // 接收安卓发来的消息   并返回给安卓通知
+        bridge.registerHandler('76', function(data, responseCallback) {
+          // alert(data);
+          var responseData = '我接受到了安卓的调用'
+          responseCallback(responseData)
+        })
+      })
+    } catch (e) {
+      console.log("operation error:", e);
+    }
+  }
+  /**
+   * 
+   * @param {*} type String *必填
+   * @param {*} data Object *必填
+   */
+  function gotoNative(type, data, cb) {
+    console.log(window.WebViewJavascriptBridge)
+    try {
+      window.WebViewJavascriptBridge.callHandler(
+        'gotoNative', {
+          'type': type,
+          'data': data,
+        },
+        function(responseData) {
+          console.log(responseData)
+          cb && cb(responseData)
+        }
+      )
+    } catch (e) {
+      alert(JSON.stringify(e))
+      console.log(e);
+    }
+  }
+  function share() {
+    console.log(window)
+    alert(123)
+    var _type = 'toShare',
+        _data = {
+         resource: 'video',
+         relationid: 3006
+        };
+    gotoNative (_type, _data, function () {
+      console.log('成功')
+    });
+  }  
+  function jump() {
+    var _type = 'toColumn',
+        _data = {
+         target: 1,
+         query: ''
+        };
+    gotoNative (_type, _data, function () {
+      console.log('成功')
+    });
+  }  
+  
+  function jumpVideo() {
+    var _type = 'toVideo',
+        _data = {
+          videoid: 30006,
+          title: "别拿青春赌年华5",
+          vip: "N",
+          uid: 2000002,
+          duration: 400,
+          cover: "http://lorempixel.com/960/640/?89908",
+          width: 1024,
+          height: 2096,
+          detail: "高清自截唯美女生头像",
+          deleted: "N",
+          addtime: "2017-07-17 16:45:35",
+          modtime: "2017-07-17 16:45:35",
+          watches: 0,
+          favoriteid: 66,
+          play: {
+            has: "Y",
+            url: "http://v.cctv.com/flash/mp4video6/TMS/2011/01/05/cf752b1c12ce452b3040cab2f90bc265_h264818000nero_aac32-1.mp4",
+            code: 0,
+            message: ""
+          },
+          resource: "video"
+        };
+    gotoNative (_type, _data, function () {
+      console.log('成功')
+    });
+  } 
+  function jumpVr() {
+    var _type = 'toVideo',
+        _data = {
+          videoid: 30006,
+          title: "别拿青春赌年华5",
+          vip: "N",
+          uid: 2000002,
+          duration: 400,
+          cover: "http://lorempixel.com/960/640/?89908",
+          width: 1024,
+          height: 2096,
+          detail: "高清自截唯美女生头像",
+          deleted: "N",
+          addtime: "2017-07-17 16:45:35",
+          modtime: "2017-07-17 16:45:35",
+          watches: 0,
+          favoriteid: 66,
+          play: {
+            has: "Y",
+            url: "http://www.dnfe.tv/attachment/look/201707/10/zneUiAjeJaUpUjMekA0z.mp4",
+            code: 0,
+            message: ""
+          },
+          resource: "video"
+        };
+    gotoNative (_type, _data, function () {
+      console.log('成功')
+    });
+  } 
+  
+  function jumpImage() {
+    var _type = 'toPhoto',
+        _data = {
+          albumid: 30101
+        };
+    gotoNative (_type, _data, function () {
+      console.log('成功')
+    });
+  } 
+  function collection() {
+   var _type = 'toFavorite',
+        _data = {
+          videoid: 30006,
+          title: "别拿青春赌年华5",
+          vip: "N",
+          uid: 2000002,
+          duration: 400,
+          cover: "http://lorempixel.com/960/640/?89908",
+          width: 1024,
+          height: 2096,
+          detail: "高清自截唯美女生头像",
+          deleted: "N",
+          addtime: "2017-07-17 16:45:35",
+          modtime: "2017-07-17 16:45:35",
+          watches: 0,
+          favoriteid: 66,
+          play: {
+            has: "Y",
+            url: "http://www.dnfe.tv/attachment/look/201707/10/zneUiAjeJaUpUjMekA0z.mp4",
+            code: 0,
+            message: ""
+          },
+          resource: "video"
+        };
+    gotoNative (_type, _data, function (responseData) {
+      console.log(responseData)
+      alert(responseData)
+    }); 
+  }
+</script>
+</body>
+</html>

@@ -16,6 +16,38 @@
 @implementation DLHttpRequestFactory
 
 
++(nonnull DLHttpsBusinesRequest*)thirdLogInWithParamer:(nonnull  NSDictionary*)Paramer
+{
+    DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"msvr://user/active"
+                                                                     parameter:Paramer
+                                                                        method:DLHttpRequestMethodGet];
+    
+    request.isShowLoading    = YES;
+    request.isShowErrorToast = YES;
+    
+    return request;
+}
+
++(nonnull DLHttpsBusinesRequest*)getQQUnionidAccessTocken:(nonnull NSString *)accessTocken
+{
+    DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"https://graph.qq.com/oauth2.0/me"
+                                                                        method:DLHttpRequestMethodGet];
+    
+    request.isNeedAddcommonParameter = NO; // 不添加公共参数
+    
+    request.responseType             = DLResponseTypeData;
+    
+    request.isShowErrorToast = NO;
+    
+    [request addParameter:accessTocken key:@"access_token"];
+    [request addParameter:[NSString stringWithFormat:@"%d",1] key:@"unionid"];
+    
+    return request;
+    
+}
+
+
+
 +(nonnull DLHttpsBusinesRequest*)getCodeWithMobileNum:(nonnull NSString *)mobileNum
                                                  type:(nonnull NSString *)type
 {
@@ -373,7 +405,7 @@
     [request addParameter:@"video|vr" key:@"resource"];
     [request addParameter:number key:@"num"];
     [request addParameter:offset key:@"offset"];
-    
+    request.isShowErrorToast = NO;
     request.isShowLoading = NO;
     
     return request;
@@ -437,5 +469,30 @@
     
     return request;
 }
+
++(nonnull DLHttpsBusinesRequest*)recommendVideo
+{
+    DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"msvr://recommend/video"
+                                                                        method:DLHttpRequestMethodGet];
+    
+    
+    [request addParameter:@"20" key:@"num"];
+
+    
+    return request;
+}
++(nonnull DLHttpsBusinesRequest*)getPhoto:(nonnull NSString*)albumid
+{
+    DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"msvr://photo/getPhoto"
+                                                                        method:DLHttpRequestMethodGet];
+    
+    [request addParameter:albumid key:@"albumid"];
+    [request addParameter:@"100" key:@"num"];
+    request.isShowLoading = YES;
+    
+    return request;
+}
+
+
 
 @end

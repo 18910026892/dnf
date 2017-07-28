@@ -7,17 +7,9 @@
 //
 
 #import "DNWebViewController.h"
-
-typedef NS_ENUM(NSInteger, DLJSGotonativeType)
-{
-    DLJSGotonativeType_gotoPhoto = 1,//图片
-    DLJSGotonativeType_gotoVideo = 2,//小视频
-    DLJSGotonativeType_gotoVR = 3, // VR
-
-
-};
-
-
+#import "DNTopUpViewController.h"
+#import "DNPlayerViewController.h"
+#import "DNSearchViewController.h"
 @interface DNWebViewController ()
 
 @end
@@ -42,9 +34,8 @@ typedef NS_ENUM(NSInteger, DLJSGotonativeType)
     // Do any additional setup after loading the view.
     [self setNavTitle:_webTitle];
 
-    
     // 1、 开启日志
-    
+
     [WebViewJavascriptBridge enableLogging];
     
     // 2、给指定的webView建立js与Objc的沟通桥梁
@@ -55,42 +46,344 @@ typedef NS_ENUM(NSInteger, DLJSGotonativeType)
     
 }
 
+-(void)viewWillLayoutSubviews
+{
+    [super viewWillLayoutSubviews];
+
+}
+-(void)setCookie
+{
+    if (IsStrEmpty([DNSession sharedSession].token)) {
+        return;
+    }
+    
+    NSString *urlstr  = self.url; //[self.parameter valueForKey:DL_VC_PARAM_KEY_URL];
+    [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookieAcceptPolicy:NSHTTPCookieAcceptPolicyAlways];
+    
+    NSMutableDictionary *cookieProperties = [NSMutableDictionary dictionary];
+    [cookieProperties setObject:@"token" forKey:NSHTTPCookieName];
+    [cookieProperties setObject:[DNSession sharedSession].token forKey:NSHTTPCookieValue];
+    if ([urlstr containsString:@"192.168.1.161"]) {
+        [cookieProperties setObject:@"192.168.1.161" forKey:NSHTTPCookieDomain];
+    }
+    [cookieProperties setObject:@"/" forKey:NSHTTPCookiePath];
+    [cookieProperties setObject:@"0" forKey:NSHTTPCookieVersion];
+    [cookieProperties setObject:[[NSDate date] dateByAddingTimeInterval:2629743] forKey:NSHTTPCookieExpires];
+    
+    NSHTTPCookie *cookieuser = [NSHTTPCookie cookieWithProperties:cookieProperties];
+    [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:cookieuser];
+    
+    
+}
+
+- (void)deleteCookie{
+    
+    NSHTTPCookie *cookie;
+    NSHTTPCookieStorage *cookieJar = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    NSString *urlstr  = self.url;//[self.parameter valueForKey:DL_VC_PARAM_KEY_URL];
+    if (urlstr.length) {
+        NSArray *cookieAry = [cookieJar cookiesForURL: [NSURL URLWithString:[urlstr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
+        
+        for (cookie in cookieAry) {
+            
+            [cookieJar deleteCookie: cookie];
+            
+        }
+        
+    }
+}
+-(void)loadWeb
+{
+    [self deleteCookie];
+    [self setCookie];
+
+
+    NSString *urlstr  = self.url;
+
+    
+    if (urlstr && [urlstr length]) {
+        NSURL *url;
+        if ([urlstr hasPrefix:@"http://"] || [urlstr hasPrefix:@"https://"] ) {
+            url = [NSURL URLWithString:[urlstr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        }
+        
+        //[NSURL URLWithString:@"http://html5.dnfe.tv/test1.php"]
+        NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+        
+        
+        [_webView loadRequest:request];
+    }
+    
+   
+//    
+//    NSString *htmlpath = [[NSBundle mainBundle] pathForResource:@"index3" ofType:@"html"];
+//    NSString* appHtml = [NSString stringWithContentsOfFile:htmlpath encoding:NSUTF8StringEncoding error:nil];
+//    NSURL *baseURL = [NSURL fileURLWithPath:htmlpath];
+//    [self.webView loadHTMLString:appHtml baseURL:baseURL];
+  
+}
+
 #pragma mark -- jsBrige注册时间给Html5调用
 
 - (void)registerMethodToJs
 {
- 
-    
+    __weak DNWebViewController *weakSelf = self;
+
     [self.bridge registerHandler:@"gotoNative" handler:^(id data, WVJBResponseCallback responseCallback) {
-    
-        [self gotoNative:data];
+        
+        
+        DLJSONObject *object = [[DLJSONObject alloc]initWithDictionary:data];
+        
+        NSString * type = [object getString:@"type"];
+        
+        DLJSONObject *obj = [object getJSONObject:@"data"];
+
+        //收藏
+        if ([type isEqualToString:@"toColumn"]) {
+            [weakSelf toColumn:obj];
+        }else if([type isEqualToString:@"toShare"])
+        {
+            [weakSelf toShare:obj];
+        }else if([type isEqualToString:@"toVideo"])
+        {
+            [weakSelf toVideo:obj];
+        }else if([type isEqualToString:@"toPhoto"])
+        {
+            [weakSelf toPhoto:obj];
+            
+        }else if([type isEqualToString:@"toFavorite"])
+        {
+            NSString * resource = [obj getString:@"resource"];
+            NSString * relationid;
+            if ([resource isEqualToString:@"video"]) {
+                relationid = [NSString stringWithFormat:@"%@",[obj getString:@"videoid"]];
+            }else if([resource isEqualToString:@"vr"])
+            {
+                relationid = [NSString stringWithFormat:@"%@",[obj getString:@"vrid"]];
+            }
+            
+            DLHttpsBusinesRequest *request = [DLHttpRequestFactory addCollecionResource:resource relationid:relationid];
+            
+            request.requestSuccess = ^(id response)
+            {
+           
+                responseCallback(@"0");
+            };
+            
+            request.requestFaile   = ^(NSError *error)
+            {
+               
+                 responseCallback(@"1");
+            };
+            
+            [request excute];
+        }
+        
     }];
 
 }
 
-- (void)gotoNative:(NSDictionary *)object
+
+
+
+-(void)toPhoto:(DLJSONObject*)obj
 {
- 
-    NSInteger type = 1;
-    switch (type) {
-        case DLJSGotonativeType_gotoPhoto: // 图片浏览器
-        {
+
+    NSString * albumid = [obj getString:@"albumid"];
+    NSString * vip     = [obj getString:@"vip"];
+    NSString * relationid = [obj getString:@"relationid"];
+
+    if ([vip isEqualToString:@"N"]) {
+   
+            [self getPhotoData:albumid relationid:relationid];
+        
+    }else
+    {
+        if ([DNSession sharedSession].vip==NO) {
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"VIP购买" message:@"非VIP用户，无法查看以下内容\n请购买VIP后再来观看" preferredStyle:UIAlertControllerStyleAlert];
             
-        }
-            break;
-        case DLJSGotonativeType_gotoVideo: //视频播放
-        {
+            // Create the actions.
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                NSLog(@"The \"Okay/Cancel\" alert's cancel action occured.");
+            }];
             
-        }
-            break;
-        case DLJSGotonativeType_gotoVR: //vr
-        {
+            [cancelAction setValue:[UIColor blackColor] forKey:@"_titleTextColor"];
             
+            UIAlertAction *otherAction = [UIAlertAction actionWithTitle:@"购买" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                NSLog(@"The \"Okay/Cancel\" alert's other action occured.");
+                DNTopUpViewController * topUp = [DNTopUpViewController viewController];
+                [self.navigationController pushViewController:topUp animated:YES];
+                
+            }];
+            
+            [otherAction setValue:kThemeColor forKey:@"_titleTextColor"];
+            
+            
+            // Add the actions.
+            [alertController addAction:cancelAction];
+            [alertController addAction:otherAction];
+            
+            [self presentViewController:alertController animated:YES completion:nil];
+        }else
+            
+        {
+               [self getPhotoData:albumid relationid:relationid];
         }
-            break;
-        default:
-            break;
     }
+    
+    
+    
+    
+}
+
+-(void)getPhotoData:(NSString*)albumid
+         relationid:(NSString*)relationid
+{
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory getPhoto:albumid];
+    
+    request.requestSuccess = ^(id response)
+    {
+        DLJSONObject *object = response;
+        
+        DLJSONObject * dataObject = [object getJSONObject:@"data"];
+        
+        DLJSONArray * photo = [dataObject getJSONArray:@"photo"];
+        
+        [self showPhoto:photo relationid:relationid];
+        
+        
+    };
+    
+    request.requestFaile   = ^(NSError *error)
+    {
+        
+    };
+    
+    [request excute];
+}
+
+
+-(void)showPhoto:(DLJSONArray * )photo relationid:(NSString*)relationid
+{
+    //1.创建图片浏览器
+    MJPhotoBrowser *brower = [[MJPhotoBrowser alloc] init];
+    
+    //2.告诉图片浏览器显示所有的图片
+    NSMutableArray *photos = [NSMutableArray array];
+    
+    
+    for (int i = 0 ; i < photo.array.count; i++) {
+        NSDictionary * play = [photo.array[i] valueForKey:@"play"];
+        NSString *pic = [play valueForKey:@"url"];
+        //传递数据给浏览器
+        MJPhoto *photo = [[MJPhoto alloc] init];
+        photo.url = [NSURL URLWithString:pic];
+        [photos addObject:photo];
+    }
+    brower.photos = photos;
+    
+    //3.设置默认显示的图片索引
+    brower.currentPhotoIndex = 0;
+    
+    //4.显示浏览器
+    [brower show];
+    
+}
+
+-(void)toVideo:(DLJSONObject*)obj
+{
+    NSDictionary * videoDict = obj.dictionary;
+    DNRecordModel * model = [DNRecordModel mj_objectWithKeyValues:videoDict];
+    [self playVideo:model];
+}
+
+-(void)playVideo:(DNRecordModel*)recordModel
+{
+   
+    if ([recordModel.vip isEqualToString:@"N"]) {
+        DNPlayerViewController * player = [DNPlayerViewController viewController];
+        player.enterType = web;
+        player.recordModel = recordModel;
+        [self.navigationController pushViewController:player animated:YES];
+    }else
+    {
+        if ([DNSession sharedSession].vip==NO) {
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"VIP购买" message:@"非VIP用户，无法查看以下内容\n请购买VIP后再来观看" preferredStyle:UIAlertControllerStyleAlert];
+            
+            // Create the actions.
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                NSLog(@"The \"Okay/Cancel\" alert's cancel action occured.");
+            }];
+            
+            [cancelAction setValue:[UIColor blackColor] forKey:@"_titleTextColor"];
+            
+            UIAlertAction *otherAction = [UIAlertAction actionWithTitle:@"购买" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                NSLog(@"The \"Okay/Cancel\" alert's other action occured.");
+                DNTopUpViewController * topUp = [DNTopUpViewController viewController];
+                [self.navigationController pushViewController:topUp animated:YES];
+                
+            }];
+            
+            [otherAction setValue:kThemeColor forKey:@"_titleTextColor"];
+            
+            
+            // Add the actions.
+            [alertController addAction:cancelAction];
+            [alertController addAction:otherAction];
+            
+            [self presentViewController:alertController animated:YES completion:nil];
+        }else
+            
+        {
+            DNPlayerViewController * player = [DNPlayerViewController viewController];
+            player.enterType = web;
+            player.recordModel = recordModel;
+            [self.navigationController pushViewController:player animated:YES];
+        }
+    }
+    
+}
+
+
+-(void)toColumn:(DLJSONObject*)obj
+{
+    
+    NSInteger target = [obj getInteger:@"target"];
+    NSString * query  = [obj getString:@"query"];
+    
+    
+    if (target==5) {
+        //去搜索页
+        DNSearchViewController * searchVc = [DNSearchViewController viewController];
+        searchVc.searchTextField.text = query;
+        [self.navigationController pushViewController:searchVc animated:YES];
+ 
+    }else
+    {
+       [self.tabBar setTabBarSelectedIndex:target];
+    }
+    
+
+}
+
+-(void)toShare:(DLJSONObject*)obj
+{
+    
+    //浏览记录
+    NSString * resource = [obj getString:@"resource"];
+    
+    NSString * relationid = [obj getString:@"relationid"];
+    
+    NSDictionary * shareDict = [NSDictionary dictionaryWithObjectsAndKeys:relationid,@"relationid",nil];
+    
+    [DLShareView showMyShareViewWothSuperView:self.view
+                                  isShowLaHei:NO
+                                       userId:nil
+                                      andType:10
+                                resourcesType:resource
+                                    andRoomID:@"1"
+                                 andShareDict:shareDict
+                                    backColor:nil];
 }
 
 
@@ -101,7 +394,7 @@ typedef NS_ENUM(NSInteger, DLJSGotonativeType)
     _webViewProgress.webViewProxyDelegate = self;
     _webViewProgress.progressDelegate = self;
     
-    CGRect barFrame = CGRectMake(0,62,KScreenWidth,2);
+    CGRect barFrame = CGRectMake(0,64,KScreenWidth,2);
     _webViewProgressView = [[NJKWebViewProgressView alloc] initWithFrame:barFrame];
     _webViewProgressView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin;
     [_webViewProgressView setProgress:0 animated:YES];
@@ -131,19 +424,19 @@ typedef NS_ENUM(NSInteger, DLJSGotonativeType)
     return _webView;
 }
 
+
+
 -(void)setUrl:(NSString *)url
 {
     _url = url;
-    NSURL * URL = [NSURL URLWithString:url];
-    NSURLRequest * request = [NSURLRequest requestWithURL:URL];
-    [self.webView loadRequest:request];
-    
-    
+    [self loadWeb];
 }
 
 #pragma mark - NJKWebViewProgressDelegate
 -(void)webViewProgress:(NJKWebViewProgress *)webViewProgress updateProgress:(float)progress
 {
+    
+    NSLog(@"网络加载进度 %f",progress);
     [_webViewProgressView setProgress:progress animated:YES];
     
 }
@@ -155,7 +448,6 @@ typedef NS_ENUM(NSInteger, DLJSGotonativeType)
 - (void)webViewDidFinishLoad:(UIWebView *)webView;
 {
 
-    
 }
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error;
 {

@@ -99,6 +99,7 @@
         _vrLabel.frame = CGRectMake(0, 0, 45, 14);
         _vrLabel.text = @"VR视频";
         _vrLabel.hidden = YES;
+        _vrLabel.textAlignment = NSTextAlignmentCenter;
         _vrLabel.textColor = [UIColor whiteColor];
         _vrLabel.font = [UIFont fontWithName:TextFontName_Light size:11];
         UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_vrLabel.bounds byRoundingCorners:UIRectCornerBottomRight cornerRadii:CGSizeMake(5, 5)];
@@ -107,6 +108,7 @@
         maskLayer.path = maskPath.CGPath;
         _vrLabel.layer.mask = maskLayer;
         _vrLabel.backgroundColor = [[UIColor customColorWithString:@"7D49F1"] colorWithAlphaComponent:0.8];
+        
         
     }
     return _vrLabel;
@@ -117,10 +119,10 @@
     if (!_vipLabel) {
         _vipLabel = [[UILabel alloc]init];
         _vipLabel.frame = CGRectMake(self.width-26, 0, 26, 14);
-        _vipLabel.text = @"Vip";
+        _vipLabel.text = @"vip";
         _vipLabel.hidden = YES;
         _vipLabel.textColor = [UIColor whiteColor];
-        _vipLabel.textAlignment = NSTextAlignmentRight;
+        _vipLabel.textAlignment = NSTextAlignmentCenter;
         _vipLabel.font = [UIFont fontWithName:TextFontName_Light size:11];
         UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_vipLabel.bounds byRoundingCorners:UIRectCornerBottomLeft cornerRadii:CGSizeMake(5, 5)];
         CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];

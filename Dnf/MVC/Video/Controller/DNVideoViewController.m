@@ -14,10 +14,19 @@
 
 @implementation DNVideoViewController
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self setTabBarHide:NO];
+    
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
       self.url = MainUrl(@"video");
+    [self setNavTitle:@"视频"];
 }
 
 - (void)didReceiveMemoryWarning {

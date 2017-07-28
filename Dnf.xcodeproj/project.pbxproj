@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D20C26CC1F2ACF8F000F5612 /* index3.html in Resources */ = {isa = PBXBuildFile; fileRef = D20C26CB1F2ACF8F000F5612 /* index3.html */; };
 		D21225041F20465E0084771B /* DLShareContentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D21225011F20465E0084771B /* DLShareContentManager.m */; };
 		D21225051F20465E0084771B /* DLThirdShareManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D21225031F20465E0084771B /* DLThirdShareManager.m */; };
 		D212250D1F205F1F0084771B /* DLPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D21225091F205F1F0084771B /* DLPageView.m */; };
@@ -50,6 +51,7 @@
 		D2300BC71F1DA1D300EC5103 /* DNValidationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2300BC61F1DA1D300EC5103 /* DNValidationViewController.m */; };
 		D2300BCB1F1DB1E400EC5103 /* DNChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2300BCA1F1DB1E400EC5103 /* DNChangePasswordViewController.m */; };
 		D2300BCF1F1DB95500EC5103 /* DNPhoneInputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D2300BCE1F1DB95500EC5103 /* DNPhoneInputViewController.m */; };
+		D230B8EA1F29DD5D004CB767 /* DNVideoVipView.m in Sources */ = {isa = PBXBuildFile; fileRef = D230B8E91F29DD5D004CB767 /* DNVideoVipView.m */; };
 		D2438C571F19B35100B897D8 /* DNMessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2438C561F19B35100B897D8 /* DNMessageTableViewCell.m */; };
 		D2438C5B1F19B3A500B897D8 /* DNMessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2438C5A1F19B3A500B897D8 /* DNMessageModel.m */; };
 		D2438C5E1F19B54800B897D8 /* UIView+Extension.m in Sources */ = {isa = PBXBuildFile; fileRef = D2438C5D1F19B54800B897D8 /* UIView+Extension.m */; };
@@ -60,6 +62,8 @@
 		D2438C7E1F1A054900B897D8 /* DNRecordCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2438C7D1F1A054900B897D8 /* DNRecordCollectionViewCell.m */; };
 		D2438C811F1A056E00B897D8 /* DNRecordHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2438C801F1A056E00B897D8 /* DNRecordHeaderView.m */; };
 		D2438C851F1A08A100B897D8 /* DNRecordModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2438C841F1A08A100B897D8 /* DNRecordModel.m */; };
+		D2559E4A1F2ADE800087DC6A /* DNThirdLoginManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D2559E491F2ADE800087DC6A /* DNThirdLoginManager.m */; };
+		D2559E4D1F2AFDB70087DC6A /* NSString+DLPictureChoice.m in Sources */ = {isa = PBXBuildFile; fileRef = D2559E4C1F2AFDB70087DC6A /* NSString+DLPictureChoice.m */; };
 		D2A330AF1F146B7600B78079 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D2A330AE1F146B7600B78079 /* main.m */; };
 		D2A330BA1F146B7600B78079 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D2A330B91F146B7600B78079 /* Assets.xcassets */; };
 		D2A330BD1F146B7600B78079 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D2A330BB1F146B7600B78079 /* LaunchScreen.storyboard */; };
@@ -122,6 +126,7 @@
 		45896F5E11ACC9FE7284A165 /* Pods-Dnf.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Dnf.release.xcconfig"; path = "Pods/Target Support Files/Pods-Dnf/Pods-Dnf.release.xcconfig"; sourceTree = "<group>"; };
 		77383E51B876F5EBE814AC4E /* Pods-Dnf.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Dnf.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Dnf/Pods-Dnf.debug.xcconfig"; sourceTree = "<group>"; };
 		BAA4675A2CCEDC3301D9A212 /* libPods-Dnf.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Dnf.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D20C26CB1F2ACF8F000F5612 /* index3.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index3.html; sourceTree = "<group>"; };
 		D21225001F20465E0084771B /* DLShareContentManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLShareContentManager.h; sourceTree = "<group>"; };
 		D21225011F20465E0084771B /* DLShareContentManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLShareContentManager.m; sourceTree = "<group>"; };
 		D21225021F20465E0084771B /* DLThirdShareManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLThirdShareManager.h; sourceTree = "<group>"; };
@@ -209,6 +214,8 @@
 		D2300BCA1F1DB1E400EC5103 /* DNChangePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNChangePasswordViewController.m; sourceTree = "<group>"; };
 		D2300BCD1F1DB95500EC5103 /* DNPhoneInputViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNPhoneInputViewController.h; sourceTree = "<group>"; };
 		D2300BCE1F1DB95500EC5103 /* DNPhoneInputViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNPhoneInputViewController.m; sourceTree = "<group>"; };
+		D230B8E81F29DD5D004CB767 /* DNVideoVipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNVideoVipView.h; sourceTree = "<group>"; };
+		D230B8E91F29DD5D004CB767 /* DNVideoVipView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNVideoVipView.m; sourceTree = "<group>"; };
 		D2438C551F19B35100B897D8 /* DNMessageTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNMessageTableViewCell.h; sourceTree = "<group>"; };
 		D2438C561F19B35100B897D8 /* DNMessageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNMessageTableViewCell.m; sourceTree = "<group>"; };
 		D2438C591F19B3A500B897D8 /* DNMessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNMessageModel.h; sourceTree = "<group>"; };
@@ -229,6 +236,10 @@
 		D2438C801F1A056E00B897D8 /* DNRecordHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNRecordHeaderView.m; sourceTree = "<group>"; };
 		D2438C831F1A08A100B897D8 /* DNRecordModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNRecordModel.h; sourceTree = "<group>"; };
 		D2438C841F1A08A100B897D8 /* DNRecordModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNRecordModel.m; sourceTree = "<group>"; };
+		D2559E481F2ADE800087DC6A /* DNThirdLoginManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNThirdLoginManager.h; sourceTree = "<group>"; };
+		D2559E491F2ADE800087DC6A /* DNThirdLoginManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNThirdLoginManager.m; sourceTree = "<group>"; };
+		D2559E4B1F2AFDB70087DC6A /* NSString+DLPictureChoice.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+DLPictureChoice.h"; sourceTree = "<group>"; };
+		D2559E4C1F2AFDB70087DC6A /* NSString+DLPictureChoice.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+DLPictureChoice.m"; sourceTree = "<group>"; };
 		D2A330AA1F146B7600B78079 /* Dnf.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Dnf.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D2A330AE1F146B7600B78079 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D2A330B91F146B7600B78079 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -628,6 +639,8 @@
 			children = (
 				D2E19D471F177D5500E26126 /* DNVideoInfoView.h */,
 				D2E19D481F177D5500E26126 /* DNVideoInfoView.m */,
+				D230B8E81F29DD5D004CB767 /* DNVideoVipView.h */,
+				D230B8E91F29DD5D004CB767 /* DNVideoVipView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -796,9 +809,19 @@
 			path = RecordModel;
 			sourceTree = "<group>";
 		};
+		D2559E471F2ADE6F0087DC6A /* thirdLoginManager */ = {
+			isa = PBXGroup;
+			children = (
+				D2559E481F2ADE800087DC6A /* DNThirdLoginManager.h */,
+				D2559E491F2ADE800087DC6A /* DNThirdLoginManager.m */,
+			);
+			path = thirdLoginManager;
+			sourceTree = "<group>";
+		};
 		D2A330A11F146B7600B78079 = {
 			isa = PBXGroup;
 			children = (
+				D20C26CB1F2ACF8F000F5612 /* index3.html */,
 				D2A330D71F146FC900B78079 /* Podfile */,
 				D2A330AC1F146B7600B78079 /* Dnf */,
 				D2A330AB1F146B7600B78079 /* Products */,
@@ -1044,6 +1067,8 @@
 				D2DE2AD61F18C6FD00401113 /* NSString+Date.m */,
 				D218B8E51F1F27ED0062BBF9 /* NSString+MD5.h */,
 				D218B8E61F1F27ED0062BBF9 /* NSString+MD5.m */,
+				D2559E4B1F2AFDB70087DC6A /* NSString+DLPictureChoice.h */,
+				D2559E4C1F2AFDB70087DC6A /* NSString+DLPictureChoice.m */,
 			);
 			path = "NS+";
 			sourceTree = "<group>";
@@ -1211,6 +1236,7 @@
 		D2A331291F14B3E200B78079 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
+				D2559E471F2ADE6F0087DC6A /* thirdLoginManager */,
 				D21224FF1F20465E0084771B /* DNShareManager */,
 				D218B9201F1F32D50062BBF9 /* locationManager */,
 				D2A3312A1F14B41C00B78079 /* DNSession */,
@@ -1522,6 +1548,7 @@
 				D2E19D0B1F1718FF00E26126 /* MJPhotoBrowser.bundle in Resources */,
 				D2A330BA1F146B7600B78079 /* Assets.xcassets in Resources */,
 				D218B9371F1F3E130062BBF9 /* config.plist in Resources */,
+				D20C26CC1F2ACF8F000F5612 /* index3.html in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1583,6 +1610,7 @@
 				D218B92B1F1F368F0062BBF9 /* DLProgressView.m in Sources */,
 				D2B53BFB1F1C6C5D0016A69F /* DNLoginViewController.m in Sources */,
 				D218B9351F1F3CE70062BBF9 /* DLPath.m in Sources */,
+				D2559E4D1F2AFDB70087DC6A /* NSString+DLPictureChoice.m in Sources */,
 				D2438C851F1A08A100B897D8 /* DNRecordModel.m in Sources */,
 				D212250E1F205F1F0084771B /* DLTopBarView.m in Sources */,
 				D2438C571F19B35100B897D8 /* DNMessageTableViewCell.m in Sources */,
@@ -1622,6 +1650,7 @@
 				D2E19D1A1F171FEC00E26126 /* DNTopUpViewController.m in Sources */,
 				D225E5751F15D3350075F243 /* RNCachingURLProtocol.m in Sources */,
 				D2E19D0E1F1718FF00E26126 /* MJPhotoProgressView.m in Sources */,
+				D230B8EA1F29DD5D004CB767 /* DNVideoVipView.m in Sources */,
 				D2E19D0D1F1718FF00E26126 /* MJPhotoLoadingView.m in Sources */,
 				D2438C6D1F19CE1A00B897D8 /* DNSendTimeTableViewCell.m in Sources */,
 				D2E19D101F1718FF00E26126 /* MJPhotoView.m in Sources */,
@@ -1646,6 +1675,7 @@
 				D2A3312D1F14B42C00B78079 /* DNSession.m in Sources */,
 				D2B53C231F1C9E9F0016A69F /* UIUnderlinedButton.m in Sources */,
 				D2E19D1D1F171FFA00E26126 /* DNRecordViewController.m in Sources */,
+				D2559E4A1F2ADE800087DC6A /* DNThirdLoginManager.m in Sources */,
 				D21225181F209A6B0084771B /* MJPhotoCollectionViewCell.m in Sources */,
 				D2261C4E1F28714C0057EA68 /* DLNoNetView.m in Sources */,
 				D218B91F1F1F32A70062BBF9 /* DLDeviceOrientationMonitor.m in Sources */,
@@ -1811,13 +1841,14 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Dnf/Dnf-Prefix.pch";
 				INFOPLIST_FILE = Dnf/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Dnf/Lib/ShareSDK/Support/PlatformSDK/SinaWeiboSDK",
 					"$(PROJECT_DIR)/Dnf/Lib/ShareSDK/Support/PlatformSDK/WeChatSDK",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dreamer.dnf;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dreamer.tv;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "3734493e-f1d7-40ed-96b3-9a0f53a87bbd";
 				PROVISIONING_PROFILE_SPECIFIER = GNDreamDevelopment;
@@ -1845,13 +1876,14 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/Dnf/Dnf-Prefix.pch";
 				INFOPLIST_FILE = Dnf/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Dnf/Lib/ShareSDK/Support/PlatformSDK/SinaWeiboSDK",
 					"$(PROJECT_DIR)/Dnf/Lib/ShareSDK/Support/PlatformSDK/WeChatSDK",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.dreamer.dnf;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dreamer.tv;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 			};

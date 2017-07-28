@@ -60,7 +60,6 @@
         self.userId = userId;
         self.type = type;
         self.resourcesType = resourceType;
-        self.roomId = roomID;
         self.shareDict = dict;
         [self createUIIsShowLahei:bl backColor:backColor isFullScreen:YES];
     }
@@ -82,7 +81,6 @@
         self.userId = userId;
         self.type = type;
         self.resourcesType = resourceType;
-        self.roomId = roomID;
         self.shareDict = dict;
         [self createUIIsShowLahei:NO backColor:backColor isFullScreen:NO];
     }
@@ -218,239 +216,62 @@
     return bgView;
 }
 
--(void)tapPullBlackView
-{
-    
-    if (self.isExistsBlack) {
-        [self removeBlacklist];
-    }else{
-        [self addBlacklist];
-    }
-}
 
 
--(void)addBlacklist
-{
-}
-
--(void)removeBlacklist
-{
-}
-
--(void)tapReportView
-{
-    
-}
 
 -(void)tapShareView:(UITapGestureRecognizer *)tap
 {
-    NSString * relateid = [self getRelateid];
+
+ 
+       NSString * relateid = [self getRelateid];
     
-    if (self.type == 50) {
-
-        UIView *view = (UIView *)tap.view;
-
-        DLShareModel * shareModel = [[DLShareModel alloc]init];
-        
-        shareModel.shareImageUrl   = [self.shareDict valueForKey:@"imgUrl"];
-        shareModel.shareUrl     = [self.shareDict valueForKey:@"share_url"];
-        shareModel.shareTitle   = [self.shareDict valueForKey:@"share_title"];
-        shareModel.shareContent = [self.shareDict valueForKey:@"share_desc"];
-        
-        shareModel.bannerID     = [self.shareDict valueForKey:@"bannerID"];
-        shareModel.uid          = _userId;
-        shareModel.shareId      = [_shareDict valueForKey:@"shareid"];
-        shareModel.relateid     = [_shareDict valueForKey:@"relateid"];
-        shareModel.shareType    = [_shareDict valueForKey:@"shareType"];
-        shareModel.shareImage   = [_shareDict valueForKey:@"screenShot"];
-        
-        switch (view.tag - 2000) {
-            case weixin:{
-                
-                shareModel.shareTarget = @"wx";
-                [[DLThirdShareManager shareInstance] shareToWechat:shareModel];
-            }
-                break;
-            case pengyou:{
-
-                
-                shareModel.shareTarget = @"circle";
-                [[DLThirdShareManager shareInstance] shareToWechatQuan:shareModel];
-                
-            }
-                break;
-                
-            case weibo:{
-    
-                shareModel.shareTarget = @"weibo";
-                [[DLThirdShareManager shareInstance] shareToSinaWeiboWith:shareModel];
-            }
-                break;
-                
-            case qq:{
-                
-                shareModel.shareTarget = @"qq";
-                [[DLThirdShareManager shareInstance] shareToQQWithParams:shareModel];
-            }
-                break;
-            case kongjian:{
-
-                shareModel.shareTarget = @"qzone";
-                [[DLThirdShareManager shareInstance] shareToQQZoneWithParams:shareModel];
-                break;
-
-            case facebook:{
-                shareModel.shareTarget = @"facebook";
-                [[DLThirdShareManager shareInstance] shareToFaceBook:shareModel];
-                
-            }
-                break;
-                
-            case twitter:{
-
-                shareModel.shareTarget = @"twitter";
-                [[DLThirdShareManager shareInstance] shareToTwitter:shareModel];
-                
-            }
-                break;
-                
-            default:
-            {
-                
-            }
-                
-                break;
-                
-            }
-        }
-    }else{
-        
-        
         // target:分享目的地，wx|weibo|qq|qzone|circle 中文意思 微信好友，微博,QQ,qq空间，微信朋友圈
-        
-        NSString * authorId = [self.shareDict valueForKey:@"anchorid"];
-        NSString * nickname = [self.shareDict valueForKey:@"nickname"];
+    
         UIView *view = (UIView *)tap.view;
+    
     
         switch (view.tag - 2000) {
             case weixin:{
                 
-                [[DLShareContentManager shareInstance] getShareParamWithType:self.resourcesType author:authorId relateid:relateid target:@"wx" title:nickname Success:^(NSDictionary *obj) {
-                    
-                    [self shareToplatformWithNSDictionary:obj Liveid:self.roomId relateid:relateid Type:1 target:@"wx"];
-                    
-                } faile:^{
-                    
-                    
-                }];
+                [self shareToplatformWithNSDictionary:@{}  relateid:relateid Type:3 target:@"wx"];
+                
+
                 
             }
                 break;
             case pengyou:{
                 
-                [[DLShareContentManager shareInstance] getShareParamWithType:self.resourcesType author:authorId relateid:relateid target:@"circle" title:nickname Success:^(NSDictionary *obj) {
-                    
-                    
-                    [self shareToplatformWithNSDictionary:obj Liveid:self.roomId relateid:relateid Type:2 target:@"circle"];
-                    
-                } faile:^{
-                    
-                    
-                }];
+                [self shareToplatformWithNSDictionary:@{} relateid:@"" Type:1 target:@"circle"];
+                //
                 
+    
                 
             }
                 break;
             case weibo:{
-                
-                
-                [[DLShareContentManager shareInstance] getShareParamWithType:self.resourcesType author:authorId relateid:relateid target:@"weibo" title:nickname Success:^(NSDictionary *obj) {
-                    
-                    [self shareToplatformWithNSDictionary:obj Liveid:self.roomId relateid:relateid Type:5 target:@"weibo"];
-                    
-                } faile:^{
-                    
-                    
-                }];
+               
+                [self shareToplatformWithNSDictionary:@{} relateid:@"" Type:2 target:@"weibo"];
+
                 
             }
                 break;
                 
             case qq:{
                 
-                [[DLShareContentManager shareInstance] getShareParamWithType:self.resourcesType author:authorId relateid:relateid target:@"qq" title:nickname Success:^(NSDictionary *obj) {
-                    
-                    
-                    [self shareToplatformWithNSDictionary:obj Liveid:self.roomId relateid:relateid Type:3 target:@"qq"];
-                    
-                } faile:^{
-                    
-                    
-                }];
+                [self shareToplatformWithNSDictionary:@{}  relateid:relateid Type:4 target:@"qq"];
+                
+
             }
                 break;
             case kongjian:{
                 
+                [self shareToplatformWithNSDictionary:@{}  relateid:relateid Type:5 target:@"qzone"];
                 
-                [[DLShareContentManager shareInstance] getShareParamWithType:self.resourcesType author:authorId relateid:relateid target:@"qzone" title:nickname Success:^(NSDictionary *obj) {
-                    
-                    [self shareToplatformWithNSDictionary:obj Liveid:self.roomId relateid:relateid Type:4 target:@"qzone"];
-                    
-                } faile:^{
-                    
-                    
-                }];
-                
+
                 
             }
                 break;
-                
-            case facebook:{
-                [[DLShareContentManager shareInstance] getShareParamWithType:self.resourcesType author:authorId relateid:relateid target:@"facebook" title:nickname Success:^(NSDictionary *obj) {
-                    
-                    [self shareToplatformWithNSDictionary:obj Liveid:self.roomId relateid:relateid Type:6 target:@"facebook"];
-                    
-                } faile:^{
-                    
-                    
-                }];
-            }
-                break;
-                
-            case twitter:{
-                
-                [[DLShareContentManager shareInstance] getShareParamWithType:self.resourcesType author:authorId relateid:relateid target:@"twitter" title:nickname Success:^(NSDictionary *obj) {
-                    
-                    [self shareToplatformWithNSDictionary:obj Liveid:self.roomId relateid:relateid Type:7 target:@"twitter"];
-                    
-                } faile:^{
-                    
-                    
-                }];
-                
-            }
-                break;
-                
-            case instagram:{
-                //            if (self.type == 50) {
-                //                [[DLThirdShareManager shareInstance] shareToInstragram:self.shareDict];
-                //            }else{
-                //            [[DLShareContentManager shareInstance] getShareParamWithType:self.type targetId:[self.userId longLongValue] roomName:nil Success:^(NSDictionary *obj) {
-                //
-                //                NSMutableDictionary * shareDic=[obj mutableCopy];
-                //                if (_type == 20) {
-                //                    [shareDic setValue:self.roomId forKey:kShareRoomID];
-                //                }
-                //
-                //                [[DLThirdShareManager shareInstance] shareToInstragram:shareDic];
-                //
-                //            } faile:^{
-                //
-                //
-                //            }];
-                //            }
-            }
-                break;
+ 
                 
             default:
             {
@@ -458,23 +279,14 @@
             }
                 
         }
-    }
+   
 }
 
 - (NSString *)getRelateid
 {
     
-    NSString * relateid;
-    
-    if ([self.resourcesType isEqualToString:@"user"]) {
-        
-        relateid = [self.shareDict valueForKey:@"anchorid"];
-        
-    }else if([self.resourcesType isEqualToString:@"live"]||[self.resourcesType isEqualToString:@"replay"]||[self.resourcesType isEqualToString:@"video"]||[self.resourcesType isEqualToString:@"image"])
-    {
-        
-        relateid = self.roomId;
-    }
+    NSString * relateid = [self.shareDict valueForKey:@"relationid"];
+
     
     return relateid;
     
@@ -482,92 +294,50 @@
 }
 
 -(void)shareToplatformWithNSDictionary:(NSDictionary*)shareDict
-                                Liveid:(NSString*)liveid
                               relateid:(NSString*)relateid
                                   Type:(NSInteger)type
                                 target:(NSString*)target
 {
+
     
-    NSString * shareUrl;
-    NSString * token = [DNSession sharedSession].token;
-    NSString * userId = [DNSession sharedSession].uid;
-    NSString * title = [shareDict valueForKey:@"title"];
-    NSString * content = [shareDict valueForKey:@"content"];
-    NSString * shareId = [shareDict valueForKey:@"shareid"];
-    NSString * nickName = [self.shareDict valueForKey:@"nickname"];
-    NSString * anchorID =  [self.shareDict valueForKey:@"anchorid"];
-    NSString * imageUrl =  [self.shareDict valueForKey:@"avatar"] ;
-    NSString * region = [NSString stringWithFormat:@"%@",[DNSession sharedSession].regon];
-    NSString * language = [region isEqualToString:@"china"]?@"cn":@"en";
-    
-    if ([self.resourcesType isEqualToString:@"video"])
-    {
-        shareUrl = ShareVideoUrl(self.roomId, anchorID, userId, language, token);
-    }
-    else if ([self.resourcesType isEqualToString:@"image"])
-    {
-        shareUrl = SharePhotoUrl(self.roomId, anchorID, userId, language, token);
-        
-    }
-    
-    if (!liveid) {
-        liveid = @"0";
-    }
-    
+
     DLShareModel *shareModel = [[DLShareModel alloc]init];
-    
-    shareModel.shareUrl    = shareUrl;
-    shareModel.shareTitle  = imageUrl;
-    shareModel.shareContent   = content;
-    shareModel.shareImageUrl  = imageUrl;
-    shareModel.nickName       = nickName;
-    shareModel.shareId     = shareId;
+    shareModel.shareImage = [UIImage imageNamed:@"share_icon"];
+    shareModel.shareUrl    = @"http://xianyunys.com/shipin";
+    shareModel.shareContent   = @"身边的小伙伴都下载了大妞范，你还在等什么？";
+    shareModel.shareId     = @"1";
     shareModel.shareTarget = target;
-    shareModel.uid         = userId;
-    shareModel.anchorID    = anchorID;
-    shareModel.liveId      = liveid;
-    shareModel.shareTitle  = title;
+    shareModel.shareTitle  = @"大妞范";
     shareModel.resourcesType = self.resourcesType;
     shareModel.relateid      = relateid;
-    shareModel.shareType = self.resourcesType;
-    
+  
     switch (type) {
-        case 1:
+        case 3:
         {
             [[DLThirdShareManager shareInstance] shareToWechat:shareModel];
         }
             break;
-        case 2:
+        case 1:
         {
             [[DLThirdShareManager shareInstance] shareToWechatQuan:shareModel];
         }
             break;
-        case 3:
+        case 4:
         {
             [[DLThirdShareManager shareInstance] shareToQQWithParams:shareModel];
         }
             break;
-        case 4:
+        case 5:
         {
             [[DLThirdShareManager shareInstance] shareToQQZoneWithParams:shareModel];
         }
             break;
-        case 5:
+        case 2:
         {
             [[DLThirdShareManager shareInstance] shareToSinaWeiboWith:shareModel];
         }
             break;
-        case 6:
-        {
-            _hud =[MBProgressHUD showHUDAddedTo:self animated:YES];
-            [[DLThirdShareManager shareInstance] shareToFaceBook:shareModel];
-        }
-            break;
-        case 7:
-        {
-            [[DLThirdShareManager shareInstance] shareToTwitter:shareModel];
-        }
-            break;
+   
         default:
             break;
     }

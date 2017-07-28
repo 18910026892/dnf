@@ -133,14 +133,7 @@ static DLThirdShareManager *instance = nil;
 {
     NSString *alertMessage = [self getAlertMessage:type];
     
-    if (model.shareImage){
-    
-        [self shareScreemshotToPlatformWithType:type
-                                         params:model
-                                   alertMessage:alertMessage];
-        
-        return;
-    }
+    UIImage * shareImage = model.shareImage;
     
     //分享的头像
     NSString *imageUrl =  model.shareImageUrl;
@@ -154,77 +147,59 @@ static DLThirdShareManager *instance = nil;
     //分享的地址
     NSString * shareUrl = model.shareUrl;
     
-    //分享的昵称（当标题里面包含异常字符串替换用）
-    NSString * nickName = model.nickName;
-    
 
-    shareTitle = [self shareTitleWith:type shareTitle:shareTitle nickName:nickName];
-    shareDesc  = [self shareDesc:shareDesc nickname:nickName];
-    
     [self downloadShareImageWithShareImageUrl:imageUrl completed:^(UIImage *image) {
        
-        NSArray *imageArray = [self getImageArrayWithImage:image];
+        NSArray *imageArray = @[shareImage];
         
-        if (imageArray)
-        {
+        
+        NSString * url = [shareUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        
+        NSMutableDictionary *Params= [NSMutableDictionary dictionary];
+        
+        [Params SSDKSetupShareParamsByText:shareDesc
+                                    images:imageArray
+                                       url:[NSURL URLWithString:url]
+                                     title:shareTitle
+                                      type:SSDKContentTypeAuto];
+        
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
             
-            NSString *content = [self getShareContentWithPlatformType:type
-                                                             shareUrl:shareUrl
-                                                             shareDes:shareDesc];
+            [self shareToPlatForm:Params
+                     platFormType:type
+                       shareModel:model
+                     alertMessage:alertMessage];
             
-            NSString * url = [model.shareUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-            
-            NSMutableDictionary *Params= [NSMutableDictionary dictionary];
-            
-            [Params SSDKSetupShareParamsByText:content
-                                        images:imageArray
-                                           url:[NSURL URLWithString:url]
-                                         title:shareTitle
-                                          type:SSDKContentTypeAuto];
-            
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                
-                [self shareToPlatForm:Params
-                         platFormType:type
-                           shareModel:model
-                         alertMessage:alertMessage];
-                
-            });
-
-        }else
-        {
-            NSLog(@"imageArray 不能为nil");
-        }
-
+        });
         
     }];
     
 }
 
-- (void)shareScreemshotToPlatformWithType:(SSDKPlatformType)type
-                                   params:(DLShareModel *)model
-                             alertMessage:(NSString *)alertMessage{
-    
-   
-   NSString *image = [self switchPNGToJpg:model.shareImage];
-   
-    NSArray *imageArray = @[image];
-    
-    NSMutableDictionary *Params= [[NSMutableDictionary alloc]init];
-    
-    [Params SSDKSetupShareParamsByText:@"http://www.dreamlive.tv/"
-                                images:imageArray
-                                   url:nil
-                                 title:nil
-                                  type:SSDKContentTypeImage];
-    
-    [self shareToPlatForm:Params
-             platFormType:type
-               shareModel:model
-             alertMessage:alertMessage];
-    
-}
+//- (void)shareScreemshotToPlatformWithType:(SSDKPlatformType)type
+//                                   params:(DLShareModel *)model
+//                             alertMessage:(NSString *)alertMessage{
+//    
+//   
+//    NSString *image = [self switchPNGToJpg:model.shareImage];
+//   
+//    NSArray *imageArray = @[image];
+//    
+//    NSMutableDictionary *Params= [[NSMutableDictionary alloc]init];
+//    
+//    [Params SSDKSetupShareParamsByText:@"http://www.dreamlive.tv/"
+//                                images:imageArray
+//                                   url:nil
+//                                 title:nil
+//                                  type:SSDKContentTypeImage];
+//    
+//    [self shareToPlatForm:Params
+//             platFormType:type
+//               shareModel:model
+//             alertMessage:alertMessage];
+//    
+//}
 
 - (void)shareToPlatForm:(NSMutableDictionary *)Params
            platFormType:(SSDKPlatformType)platFormType
@@ -374,7 +349,7 @@ static DLThirdShareManager *instance = nil;
     {
         if (temShareTitle.length == 0)
         {
-            temShareTitle = @"梦想直播，有梦自带光芒";
+            temShareTitle = @"大妞范";
         }
     }
     
@@ -454,7 +429,7 @@ static DLThirdShareManager *instance = nil;
 - (void)shareCallback:(DLShareModel *)model
 {
     //分享统计
-    DLHttpsBusinesRequest *request = [DLHttpRequestFactory shareCallBackWithType:model.shareType // nil
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory shareCallBackWithType:model.resourcesType // nil
                                                                              uid:model.uid
                                                                         relateid:model.relateid // nil
                                                                           target:model.shareTarget

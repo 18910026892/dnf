@@ -60,18 +60,6 @@
 		<string>wxfc014246ac3d2bca</string>
 		<key>k_appKey_weixinAppSecret</key>
 		<string>1b9cb123c4a85a6565c9832cb113b72e</string>
-		<key>k_appKey_twitterAppID</key>
-		<string>2IR8wsaKGkUkKMm4OF4TH5Gq5</string>
-		<key>k_appKey_twitterAppSecret</key>
-		<string>jPMnEdteqo6uTPnlTCllZfFseHQn9m69Z7TbKPQUwJ3LD8QGUq</string>
-		<key>k_appKey_faceBookAppID</key>
-		<string>935612963235344</string>
-		<key>k_appKey_faceBookAppSecret</key>
-		<string>2cb0547925b441d0fd0c2cd6671ecc4d</string>
-		<key>k_appKey_instagramAppID</key>
-		<string>ae962ad1cc6b47d2bb85eb4c06121751</string>
-		<key>k_appKey_instagramAppSecret</key>
-		<string>8e59305468fe4ff8b7b984eeaf02195b</string>
 	</dict>
 	<key>MyProfileCell</key>
 	<array>

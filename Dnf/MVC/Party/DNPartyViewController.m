@@ -13,12 +13,18 @@
 @end
 
 @implementation DNPartyViewController
-
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self setTabBarHide:NO];
+    
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
     self.url = MainUrl(@"party");
+    [self setNavTitle:@"派对"];
 }
 
 - (void)didReceiveMemoryWarning {

@@ -12,6 +12,7 @@
 #import "DNEmailViewController.h"
 #import "UIUnderlinedButton.h"
 #import "DNTextField.h"
+#import "DNThirdLoginManager.h"
 @interface DNLoginViewController ()<UITextFieldDelegate>
 
 @property(nonatomic,strong)UILabel * accountLabel;
@@ -278,22 +279,23 @@
 -(void)otherLoginButtonClick:(UIButton*)sender
 {
     UIButton * btn = (UIButton*)sender;
-
+    [DNThirdLoginManager shareInstance].viewController = self;
     
     switch (btn.tag) {
         case 1000:
         {
+            [[DNThirdLoginManager shareInstance]threeLoginWithPlatform:SSDKPlatformTypeWechat];
             
         }
             break;
             case 1001:
         {
-            
+            [[DNThirdLoginManager shareInstance]threeLoginWithPlatform:SSDKPlatformTypeSinaWeibo];
         }
             break;
             case 1002:
         {
-            
+            [[DNThirdLoginManager shareInstance]threeLoginWithPlatform:SSDKPlatformTypeQQ];
         }
             break;
  

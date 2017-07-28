@@ -23,10 +23,8 @@
         [self addSubview:self.watchCountLabel];
         [self addSubview:self.collectionButton];
         [self addSubview:self.shareButton];
-        [self addSubview:self.vipInfoLabel];
-        [self addSubview:self.lineA];
-        [self addSubview:self.lineB];
-        [self addSubview:self.openButton];
+        [self addSubview:self.line];
+
     
         self.collection = NO;
     }
@@ -66,23 +64,16 @@
 }
 
 
--(UIView*)lineA
+-(UIView*)line
 {
-    if (!_lineA) {
-        _lineA = [[UIView alloc]initWithFrame:CGRectMake(0, 59.5, KScreenWidth-90, 0.5)];
-        _lineA.backgroundColor = [UIColor customColorWithString:@"eeeeee"];
+    if (!_line) {
+        _line = [[UIView alloc]initWithFrame:CGRectMake(0, 59.5, KScreenWidth-90, 0.5)];
+        _line.backgroundColor = [UIColor customColorWithString:@"eeeeee"];
     }
-    return _lineA;
+    return _line;
 }
 
--(UIView*)lineB
-{
-    if (!_lineB) {
-        _lineB = [[UIView alloc]initWithFrame:CGRectMake(0, 109.5, KScreenWidth-90, 0.5)];
-        _lineB.backgroundColor = [UIColor customColorWithString:@"eeeeee"];
-    }
-    return _lineB;
-}
+
 
 -(UILabel*)videoTitleLabel
 {
@@ -143,54 +134,6 @@
     return _shareButton;
 }
 
--(UILabel*)vipInfoLabel
-{
-    if (!_vipInfoLabel) {
-        _vipInfoLabel = [[UILabel alloc]init];
-        _vipInfoLabel.frame = CGRectMake(14, 78.5, KScreenWidth-114, 21);
-        _vipInfoLabel.textColor = [UIColor customColorWithString:@"000000"];
-        
-        UIFont * font = (KScreenWidth==320)?[UIFont systemFontOfSize:13]:[UIFont systemFontOfSize:15];
- 
-        NSMutableArray * array = [[NSUserDefaults standardUserDefaults] valueForKey:@"kSessionProductArray"];
-        
-        NSString * string;
-        NSString * title;
-        NSString * price;
-  
-        if (IS_ARRAY_CLASS(array)) {
-            
-            NSDictionary * dict = [array lastObject];
-            
-             title= [NSString stringWithFormat:@"%@",[dict valueForKey:@"title"]];
-             price= [NSString stringWithFormat:@"%@",[dict valueForKey:@"price"]];
-             string = [NSString stringWithFormat:@"现在购买超值%@只需要%@元",title,price];
-            
-        }
-        
-
-        NSMutableAttributedString * attributedString = [[NSMutableAttributedString alloc] initWithString:string];
-        NSDictionary * attributedDict = @{ NSFontAttributeName:font,NSForegroundColorAttributeName:HexRGBAlpha(0xFb389c, 1),};
-        [attributedString setAttributes:attributedDict range:NSMakeRange(attributedString.length-[price length]-1,[price length])];
-
-        _vipInfoLabel.attributedText = attributedString;
-        _vipInfoLabel.font = font;
-    }
-    return _vipInfoLabel;
-}
-
--(UIButton*)openButton
-{
-    if (!_openButton) {
-        _openButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _openButton.frame= CGRectMake(KScreenWidth-90, 60, 90, 50);
-        _openButton.backgroundColor = kThemeColor;
-        [_openButton setTitle:@"开通VIP" forState:UIControlStateNormal];
-        [_openButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-        _openButton.titleLabel.font = [UIFont fontWithName:TextFontName_Light size:15];
-    }
-    return _openButton;
-}
 
 
 @end

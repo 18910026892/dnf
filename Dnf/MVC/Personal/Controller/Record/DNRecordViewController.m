@@ -287,6 +287,7 @@
  
     if ([recordModel.vip isEqualToString:@"N"]) {
         DNPlayerViewController * player = [DNPlayerViewController viewController];
+        player.enterType = record;
         player.recordModel = recordModel;
         [self.navigationController pushViewController:player animated:YES];
     }else
@@ -320,6 +321,7 @@
             
         {
             DNPlayerViewController * player = [DNPlayerViewController viewController];
+            player.enterType = record;
             player.recordModel = recordModel;
             [self.navigationController pushViewController:player animated:YES];
         }

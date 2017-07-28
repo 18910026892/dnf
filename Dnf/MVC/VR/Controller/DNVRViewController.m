@@ -13,11 +13,17 @@
 @end
 
 @implementation DNVRViewController
-
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self setTabBarHide:NO];
+    
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
      self.url = MainUrl(@"vr");
+    [self setNavTitle:@"VR专区"];
 }
 
 - (void)didReceiveMemoryWarning {

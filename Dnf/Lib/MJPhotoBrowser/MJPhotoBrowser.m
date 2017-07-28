@@ -11,6 +11,7 @@
 #import "MJPhotoCollectionViewCell.h"
 #import <SDWebImage/SDWebImagePrefetcher.h>
 #import "DLShareView.h"
+#import "NSString+DLPictureChoice.h"
 #define kPadding 10
 #define kPhotoViewTagOffset 1000
 #define kPhotoViewIndex(photoView) ([photoView tag] - kPhotoViewTagOffset)
@@ -107,18 +108,14 @@
 
 -(void)shareButtonClick:(UIButton*)sender
 {
-    NSString * anchorID = @"123";
-    NSString * avatar = @"http://img2.inke.cn/MTQ5NzUxODQwODE0MSMzMTkjanBn.jpg";
-    NSString * nickname = @"大妞范";
-    NSString * sn = @"sn";
-    
-    NSDictionary * shareDict = [NSDictionary dictionaryWithObjectsAndKeys:anchorID,@"anchorid",avatar,@"avatar",nickname,@"nickname",sn,@"sn",nil];
+
+    NSDictionary * shareDict = [NSDictionary dictionaryWithObjectsAndKeys:self.relationid,@"relationid",nil];
     
     [DLShareView showMyShareViewWothSuperView:self.view
                                   isShowLaHei:NO
-                                       userId:anchorID
+                                       userId:nil
                                       andType:10
-                                resourcesType:@"live"
+                                resourcesType:@"photo"
                                     andRoomID:@"1"
                                  andShareDict:shareDict
                                     backColor:nil];
@@ -207,6 +204,7 @@
         _collectionView.delegate = self;
         _collectionView.scrollEnabled = YES;
         _collectionView.backgroundColor = [UIColor clearColor];
+        _collectionView.allowsMultipleSelection = NO;
         [_collectionView registerClass:[MJPhotoCollectionViewCell class] forCellWithReuseIdentifier:@"MJPhotoCollectionViewCell"];
     
     }
@@ -269,6 +267,9 @@
 - (void)setCurrentPhotoIndex:(NSUInteger)currentPhotoIndex
 {
     _currentPhotoIndex = currentPhotoIndex;
+    
+    _toolbar.currentPhotoIndex = _currentPhotoIndex;
+
     
     if (_photoScrollView) {
         _photoScrollView.contentOffset = CGPointMake(_currentPhotoIndex * _photoScrollView.frame.size.width, 0);
@@ -380,9 +381,12 @@
 {
     _currentPhotoIndex = _photoScrollView.contentOffset.x / _photoScrollView.frame.size.width;
     _toolbar.currentPhotoIndex = _currentPhotoIndex;
+
+    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_currentPhotoIndex inSection:0];
+    [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+    
+    
 }
-
-
 
 #pragma mark - MJPhotoViewDelegate
 - (void)photoViewSingleTap:(MJPhotoView *)photoView
@@ -424,10 +428,25 @@
 
 #pragma mark - UIScrollView Delegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-	[self showPhotos];
-    [self updateTollbarState];
+    
+    if([scrollView isKindOfClass:[UICollectionView class]])
+    {
+        return;
+    }
+
+     [self showPhotos];
 
 }
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+
+    //当滑动collecionView的时候暂时不需要处理任何事
+    if([scrollView isKindOfClass:[UICollectionView class]])
+    {
+        return;
+    }
+    [self updateTollbarState];
+}
+
 
 # pragma CollectionView Delegate
 
@@ -450,11 +469,21 @@
     {
         cell= (MJPhotoCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:@"MJPhotoCollectionViewCell" forIndexPath:indexPath];
     }
-   
     
+    cell.tag = 1000+indexPath.row;
+    
+    if (indexPath.row==_currentPhotoIndex) {
+        cell.selected = YES;
+    }else
+    {
+         cell.selected = NO;
+    }
+    
+  
+
     MJPhoto *photo= _photos[indexPath.row];
     [cell.coverImageView sd_setImageWithURL:photo.url];
-   
+ 
     return cell;
     
 }
@@ -462,9 +491,19 @@
 #pragma mark --UICollectionViewDelegate
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
+    
+    //野方法
+    NSIndexPath *index = [NSIndexPath indexPathForRow:0 inSection:0];
+    MJPhotoCollectionViewCell * cell = (MJPhotoCollectionViewCell*)[self.collectionView cellForItemAtIndexPath:index];
+    cell.selected = NO;
+ 
+    
+    
     self.toolbar.currentPhotoIndex = indexPath.row;
     [self setCurrentPhotoIndex:indexPath.row];
     
+    
+
 }
 //返回这个UICollectionView是否可以被选择
 -(BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath

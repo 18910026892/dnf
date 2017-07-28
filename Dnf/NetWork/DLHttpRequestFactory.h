@@ -11,6 +11,9 @@
 
 @interface DLHttpRequestFactory : NSObject
 
++(nonnull DLHttpsBusinesRequest*)thirdLogInWithParamer:(nonnull  NSDictionary*)Paramer;
++(nonnull DLHttpsBusinesRequest*)getQQUnionidAccessTocken:(nonnull NSString *)accessTocken;
+
 +(nonnull DLHttpsBusinesRequest*)getCodeWithMobileNum:(nonnull NSString *)mobileNum
                                                  type:(nonnull NSString *)type;
 
@@ -93,7 +96,7 @@
 +(nonnull DLHttpsBusinesRequest*)addCollecionResource:(nonnull NSString*)resource
                                         relationid:(nonnull NSString*)relationid;
 
-
-
++(nonnull DLHttpsBusinesRequest*)recommendVideo;
++(nonnull DLHttpsBusinesRequest*)getPhoto:(nonnull NSString*)albumid;
 @end
 

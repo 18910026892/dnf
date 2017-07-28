@@ -7,11 +7,11 @@
 //
 
 #import "KRVideoPlayerControlView.h"
-//color
+#import "UIButton+WebCache.h"
 #define HexRGBAlpha(rgbValue,a) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:(a)]
 
 #define kThemeColor  HexRGBAlpha(0xFF6BB7, 1)
-static const CGFloat kVideoControlBarHeight = 40.0;
+static const CGFloat kVideoControlBarHeight = 60.0;
 static const CGFloat kVideoTimeLabelWidth = 100.0;
 static const CGFloat kVideoControlAnimationTimeinterval = 0.3;
 static const CGFloat kVideoControlTimeLabelFontSize = 10.0;
@@ -39,8 +39,10 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
 - (instancetype)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
+    
     if (self) {
         self.backgroundColor = [UIColor clearColor];
+        [self addSubview:self.videoTitleLabel];
         [self addSubview:self.closeButton];
         [self addSubview:self.bottomBar];
         [self addSubview:self.playButton];
@@ -53,17 +55,37 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
         [self.bottomBar addSubview:self.timeLabel];
         [self.bottomBar addSubview:self.totalLabel];
         [self addSubview:self.indicatorView];
+      
+        [self addSubview:self.videoCollectionView];
+        
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
         [self addGestureRecognizer:tapGesture];
+        
+
+        
+        UISwipeGestureRecognizer * swipeUp =  [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeGesture:)];
+        //设置轻扫的方向
+        swipeUp.direction = UISwipeGestureRecognizerDirectionUp;
+        
+        UISwipeGestureRecognizer * swipeDown =  [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeGesture:)];
+        //设置轻扫的方向
+        swipeDown.direction = UISwipeGestureRecognizerDirectionDown;
+        
+        [self addGestureRecognizer:swipeUp];
+        [self addGestureRecognizer:swipeDown];
+
+        
     }
     return self;
 }
+
+
 
 - (void)layoutSubviews
 {
     [super layoutSubviews];
 
-    
+    self.videoTitleLabel.frame = CGRectMake(55, 35, CGRectGetWidth(self.bounds)-75, 24);
     self.closeButton.frame = CGRectMake(15, 27, CGRectGetWidth(self.closeButton.bounds), CGRectGetHeight(self.closeButton.bounds));
     self.bottomBar.frame = CGRectMake(CGRectGetMinX(self.bounds), CGRectGetHeight(self.bounds) - kVideoControlBarHeight, CGRectGetWidth(self.bounds), kVideoControlBarHeight);
     self.playButton.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
@@ -73,10 +95,12 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
     self.progressSlider.frame = CGRectMake(CGRectGetMinX(self.bottomBar.frame), CGRectGetHeight(self.bottomBar.bounds) - CGRectGetHeight(self.progressSlider.bounds)/2, CGRectGetWidth(self.bottomBar.frame), CGRectGetHeight(self.progressSlider.bounds));
     
     self.timeLabel.frame = CGRectMake(CGRectGetMinX(self.bottomBar.frame)+15,0,kVideoTimeLabelWidth, CGRectGetHeight(self.bottomBar.frame));
-    
     self.totalLabel.frame = CGRectMake(CGRectGetMaxX(self.bottomBar.frame)-47-100,0,kVideoTimeLabelWidth, CGRectGetHeight(self.bottomBar.frame));
-    
     self.indicatorView.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    
+    
+    self.videoCollectionView.frame = CGRectMake(0, CGRectGetHeight(self.bounds), CGRectGetWidth(self.bounds),172);
+
 }
 
 - (void)didMoveToSuperview
@@ -95,7 +119,7 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
         self.bottomBar.alpha = 0.0;
         self.playButton.alpha = 0.0;
         self.pauseButton.alpha = 0.0;
-        
+        self.videoTitleLabel.alpha = 0.0;
     } completion:^(BOOL finished) {
         self.isBarShowing = NO;
     }];
@@ -111,6 +135,7 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
         self.playButton.alpha = 1.0;
         self.pauseButton.alpha = 1.0;
         self.closeButton.alpha = 1.0;
+        self.videoTitleLabel.alpha = 1.0;
     } completion:^(BOOL finished) {
         self.isBarShowing = YES;
         [self autoFadeOutControlBar];
@@ -140,6 +165,36 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
             [self animateShow];
         }
     }
+}
+
+-(void)swipeGesture:(id)sender
+{
+    
+    UISwipeGestureRecognizer *swipe = sender;
+    
+    if (swipe.direction == UISwipeGestureRecognizerDirectionUp)
+    {
+        [UIView animateWithDuration:0.3 animations:^{
+            
+            self.videoCollectionView.frame = CGRectMake(0, CGRectGetHeight(self.bounds)-172, CGRectGetWidth(self.bounds), 172);
+            
+        } completion:^(BOOL finished) {
+            
+        }];
+    }
+    
+    else  if (swipe.direction == UISwipeGestureRecognizerDirectionDown)
+    {
+        [UIView animateWithDuration:0.3 animations:^{
+            
+            self.videoCollectionView.frame = CGRectMake(0, CGRectGetHeight(self.bounds), CGRectGetWidth(self.bounds), 172);
+            
+        } completion:^(BOOL finished) {
+            
+        }];
+     
+    }
+    
 }
 
 #pragma mark - Property
@@ -225,6 +280,18 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
     return _closeButton;
 }
 
+-(UILabel*)videoTitleLabel
+{
+    if (!_videoTitleLabel) {
+        _videoTitleLabel = [[UILabel alloc]init];
+        _videoTitleLabel.frame = CGRectZero;
+        _videoTitleLabel.font = [UIFont systemFontOfSize:17];
+        _videoTitleLabel.textColor = [UIColor whiteColor];
+        _videoTitleLabel.hidden = YES;
+    }
+    return _videoTitleLabel;
+}
+
 - (UILabel *)timeLabel
 {
     if (!_timeLabel) {
@@ -259,6 +326,113 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
     }
     return _indicatorView;
 }
+
+-(void)setVideoArray:(NSMutableArray *)videoArray
+{
+    _videoArray = videoArray;
+    
+    NSLog(@" video Array %@",videoArray);
+    
+    [self.videoCollectionView reloadData];
+}
+
+
+-(UICollectionView*)videoCollectionView
+{
+    if (!_videoCollectionView) {
+        
+        //普通集合视图布局
+        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc]init];
+        layout.minimumLineSpacing = 10;
+        layout.minimumInteritemSpacing = 10;
+        layout.itemSize = CGSizeMake(169,95);
+        layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+        
+        _videoCollectionView =[[UICollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:layout];
+        _videoCollectionView.showsHorizontalScrollIndicator = NO;
+        _videoCollectionView.dataSource = self;
+        _videoCollectionView.delegate = self;
+        _videoCollectionView.scrollEnabled = YES;
+        _videoCollectionView.backgroundColor = [UIColor clearColor];
+        _videoCollectionView.allowsMultipleSelection = NO;
+        _videoCollectionView.hidden = YES;
+        [_videoCollectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"UICollectionViewCell"];
+        
+    }
+    return _videoCollectionView;
+}
+
+
+# pragma CollectionView Delegate
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView;
+{
+    return 1;
+}
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section;
+{
+    return [self.videoArray count];
+    
+}
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath;
+{
+    
+    
+    UICollectionViewCell * cell;
+    
+    if(!cell)
+    {
+        cell= (UICollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:@"UICollectionViewCell" forIndexPath:indexPath];
+        
+    }
+    
+    UIButton * coverButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    coverButton.frame = CGRectMake(0, 0, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds));
+    coverButton.layer.cornerRadius = 3;
+    coverButton.layer.masksToBounds = YES;
+    [cell.contentView addSubview:coverButton];
+    
+    
+    UILabel * vipLabel= [[UILabel alloc]initWithFrame:CGRectMake(169-26, 0, 26, 14)];
+    vipLabel.text = @"VIP";
+    vipLabel.textAlignment = NSTextAlignmentCenter;
+    vipLabel.backgroundColor = HexRGBAlpha(0xe92b2b, .8);
+    vipLabel.textColor = [UIColor whiteColor];
+    vipLabel.font = [UIFont systemFontOfSize:11];
+    
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:vipLabel.bounds byRoundingCorners:UIRectCornerBottomLeft cornerRadii:CGSizeMake(5, 5)];
+    CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
+    maskLayer.frame = vipLabel.bounds;
+    maskLayer.path = maskPath.CGPath;
+    vipLabel.layer.mask = maskLayer;
+    vipLabel.hidden = YES;
+
+    [cell.contentView addSubview:vipLabel];
+ 
+    
+    NSDictionary * dict = self.videoArray[indexPath.row];
+
+    NSString * imageUrl = [dict valueForKey:@"cover"];
+    
+    [coverButton sd_setImageWithURL:[NSURL URLWithString:imageUrl] forState:UIControlStateNormal placeholderImage:nil];
+    
+    NSString * vip = [dict valueForKey:@"vip"];
+    vipLabel.hidden = ([vip isEqualToString:@"Y"])?NO:YES;
+    
+    
+    return cell;
+    
+}
+
+#pragma mark --UICollectionViewDelegate
+
+//返回这个UICollectionView是否可以被选择
+-(BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+
+
 
 #pragma mark - Private Method
 

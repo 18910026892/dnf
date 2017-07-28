@@ -10,14 +10,12 @@
 
 
 typedef enum {
-    weixin,
-    weibo,
     pengyou,
+    weibo,
+    weixin,
     qq,
     kongjian,
-    facebook,
-    twitter,
-    instagram,
+
 }Share;
 
 @interface DLShareView : UIView
@@ -29,8 +27,6 @@ typedef enum {
 @property(nonatomic,assign)int type;
 //分享的资源类型 （直播前，直播中，回放等）
 @property(nonatomic,copy)NSString * resourcesType;
-//房间号
-@property(nonatomic,copy)NSString *roomId;
 
 @property(nonatomic,strong)NSDictionary *shareDict;
 

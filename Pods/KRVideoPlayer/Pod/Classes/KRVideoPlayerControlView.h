@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface KRVideoPlayerControlView : UIView
+@interface KRVideoPlayerControlView : UIView<UICollectionViewDelegate,UICollectionViewDataSource>
 
 @property (nonatomic, strong, readonly) UIView *topBar;
 @property (nonatomic, strong, readonly) UIView *bottomBar;
@@ -21,6 +21,9 @@
 @property (nonatomic, strong, readonly) UILabel *timeLabel;
 @property (nonatomic, strong, readonly) UILabel *totalLabel;
 @property (nonatomic, strong, readonly) UIActivityIndicatorView *indicatorView;
+@property (nonatomic, strong) UILabel * videoTitleLabel;
+@property (nonatomic,strong)UICollectionView * videoCollectionView;
+@property (nonatomic,strong)NSMutableArray * videoArray;
 
 - (void)animateHide;
 - (void)animateShow;

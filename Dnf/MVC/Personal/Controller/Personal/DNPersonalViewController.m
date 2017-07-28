@@ -109,7 +109,14 @@
         for (NSDictionary * dict in accessArray.array) {
             
             NSString * cover = [dict valueForKey:@"cover"];
-            [self.recordImageArray addObject:cover];
+            
+             if(IsStrEmpty(cover)==NO)
+            {
+                
+                [self.recordImageArray addObject:cover];
+            }
+            
+     
         }
     
         [self.tableView reloadData];
@@ -152,7 +159,13 @@
         for (NSDictionary * dict in favoriteArray.array) {
             
             NSString * cover = [dict valueForKey:@"cover"];
-            [self.collectionImageArray addObject:cover];
+            
+            if(IsStrEmpty(cover)==NO)
+            {
+                 [self.collectionImageArray addObject:cover];
+            }
+            
+          
         }
         [self.tableView reloadData];
         

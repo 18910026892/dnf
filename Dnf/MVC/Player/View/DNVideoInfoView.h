@@ -31,14 +31,9 @@
 //分享按钮
 @property(nonatomic,strong)UIButton * shareButton;
 
-//vip
-@property(nonatomic,strong)UILabel * vipInfoLabel;
-
-//开通
-@property(nonatomic,strong)UIButton * openButton;
 
 //线条
-@property(nonatomic,strong)UIView* lineA,*lineB;
+@property(nonatomic,strong)UIView* line;
 
 
 

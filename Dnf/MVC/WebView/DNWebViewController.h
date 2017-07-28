@@ -10,6 +10,9 @@
 #import <NJKWebViewProgress.h>
 #import <NJKWebViewProgressView.h>
 #import "WebViewJavascriptBridge.h"
+#import "DNRecordModel.h"
+
+
 @interface DNWebViewController : DNBaseViewController
 <UIWebViewDelegate, NJKWebViewProgressDelegate>
 {

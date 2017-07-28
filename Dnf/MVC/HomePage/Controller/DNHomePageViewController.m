@@ -44,6 +44,7 @@
 
 -(void)fastlogin
 {
+    
     DLHttpsBusinesRequest *request = [DLHttpRequestFactory fastLogin:[DNSession sharedSession].token];
     
     request.requestSuccess = ^(id response)
@@ -167,7 +168,7 @@
 -(void)rightButtonClick:(UIButton*)sender
 {
     DNSearchViewController * searchVc = [DNSearchViewController viewController];
-    [self.navigationController pushViewController:searchVc animated:YES];
+   [self.navigationController pushViewController:searchVc animated:YES];
 
 }
 

@@ -182,8 +182,11 @@ static const CGFloat kVideoPlayerControllerAnimationTimeinterval = 0.3f;
         self.isFullscreenMode = YES;
         self.videoControl.fullScreenButton.hidden = YES;
         self.videoControl.shrinkScreenButton.hidden = NO;
+        self.videoControl.videoTitleLabel.hidden = NO;
+        self.videoControl.videoCollectionView.hidden =NO;
     }];
 }
+
 
 - (void)shrinkScreenButtonClick
 {
@@ -197,6 +200,9 @@ static const CGFloat kVideoPlayerControllerAnimationTimeinterval = 0.3f;
         self.isFullscreenMode = NO;
         self.videoControl.fullScreenButton.hidden = NO;
         self.videoControl.shrinkScreenButton.hidden = YES;
+        self.videoControl.videoTitleLabel.hidden = YES;
+        self.videoControl.videoCollectionView.hidden =YES;
+
     }];
 }
 
@@ -261,7 +267,13 @@ static const CGFloat kVideoPlayerControllerAnimationTimeinterval = 0.3f;
     [self.videoControl animateHide];
 }
 
+
+
 #pragma mark - Property
+
+
+
+
 
 - (KRVideoPlayerControlView *)videoControl
 {
@@ -288,6 +300,5 @@ static const CGFloat kVideoPlayerControllerAnimationTimeinterval = 0.3f;
     [self.videoControl setNeedsLayout];
     [self.videoControl layoutIfNeeded];
 }
-
 
 @end
