@@ -184,7 +184,7 @@ static const CGFloat kVideoPlayerControllerAnimationTimeinterval = 0.3f;
         self.videoControl.shrinkScreenButton.hidden = NO;
         self.videoControl.videoTitleLabel.hidden = NO;
         self.videoControl.videoCollectionView.hidden =NO;
-       
+        self.videoControl.vipButton.hidden = NO;
         
     }];
 }
@@ -204,6 +204,7 @@ static const CGFloat kVideoPlayerControllerAnimationTimeinterval = 0.3f;
         self.videoControl.shrinkScreenButton.hidden = YES;
         self.videoControl.videoTitleLabel.hidden = YES;
         self.videoControl.videoCollectionView.hidden =YES;
+        self.videoControl.vipButton.hidden = YES;
 
     }];
 }

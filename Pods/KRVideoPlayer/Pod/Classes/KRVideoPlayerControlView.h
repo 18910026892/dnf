@@ -22,6 +22,7 @@
 @property (nonatomic, strong, readonly) UILabel *totalLabel;
 @property (nonatomic, strong, readonly) UIActivityIndicatorView *indicatorView;
 @property (nonatomic, strong) UILabel * videoTitleLabel;
+@property (nonatomic,strong)UIButton * vipButton;
 @property (nonatomic,strong)UICollectionView * videoCollectionView;
 @property (nonatomic,strong)NSMutableArray * videoArray;
 

@@ -47,6 +47,7 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
     if (self) {
         self.backgroundColor = [UIColor clearColor];
         [self addSubview:self.videoTitleLabel];
+        [self addSubview:self.vipButton];
         [self addSubview:self.closeButton];
         [self addSubview:self.bottomBar];
         [self addSubview:self.playButton];
@@ -90,7 +91,9 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
 {
     [super layoutSubviews];
 
-    self.videoTitleLabel.frame = CGRectMake(55, 35, CGRectGetWidth(self.bounds)-75, 24);
+    self.videoTitleLabel.frame = CGRectMake(55, 35, CGRectGetWidth(self.bounds)-175, 24);
+    self.vipButton.frame = CGRectMake(CGRectGetWidth(self.bounds)-15-71, 36, 71, 22);
+    
     self.closeButton.frame = CGRectMake(15, 27, CGRectGetWidth(self.closeButton.bounds), CGRectGetHeight(self.closeButton.bounds));
     self.bottomBar.frame = CGRectMake(CGRectGetMinX(self.bounds), CGRectGetHeight(self.bounds) - kVideoControlBarHeight, CGRectGetWidth(self.bounds), kVideoControlBarHeight);
     self.playButton.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
@@ -125,6 +128,8 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
         self.playButton.alpha = 0.0;
         self.pauseButton.alpha = 0.0;
         self.videoTitleLabel.alpha = 0.0;
+        self.vipButton.alpha = 0.0;
+        
     } completion:^(BOOL finished) {
         self.isBarShowing = NO;
     }];
@@ -141,6 +146,7 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
         self.pauseButton.alpha = 1.0;
         self.closeButton.alpha = 1.0;
         self.videoTitleLabel.alpha = 1.0;
+        self.vipButton.alpha = 1.0;
     } completion:^(BOOL finished) {
         self.isBarShowing = YES;
         [self autoFadeOutControlBar];
@@ -301,6 +307,20 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
         _videoTitleLabel.hidden = YES;
     }
     return _videoTitleLabel;
+}
+
+-(UIButton*)vipButton
+{
+    if (!_vipButton) {
+        _vipButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _vipButton.backgroundColor = HexRGBAlpha(0xf750a5,1);
+        [_vipButton setTitle:@"VIP购买" forState:UIControlStateNormal];
+        [_vipButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        _vipButton.titleLabel.font = [UIFont systemFontOfSize:13];
+        _vipButton.layer.cornerRadius = 11;
+        _vipButton.hidden = YES;
+    }
+    return _vipButton;
 }
 
 - (UILabel *)timeLabel

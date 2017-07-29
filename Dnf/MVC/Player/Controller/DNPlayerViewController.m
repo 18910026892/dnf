@@ -146,6 +146,8 @@
     
     self.videoController.videoControl.videoTitleLabel.text = [NSString stringWithFormat:@"%@",self.recordModel.title];
     
+    [self.videoController.videoControl.vipButton addTarget:self action:@selector(openButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    
 }
 
 
