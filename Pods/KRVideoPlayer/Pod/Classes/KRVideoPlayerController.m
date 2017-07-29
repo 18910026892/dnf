@@ -184,6 +184,8 @@ static const CGFloat kVideoPlayerControllerAnimationTimeinterval = 0.3f;
         self.videoControl.shrinkScreenButton.hidden = NO;
         self.videoControl.videoTitleLabel.hidden = NO;
         self.videoControl.videoCollectionView.hidden =NO;
+       
+        
     }];
 }
 

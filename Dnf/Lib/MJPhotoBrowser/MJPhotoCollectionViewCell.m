@@ -22,20 +22,7 @@
     return self;
     
 }
-- (void)setSelected:(BOOL)selected{
-    [super setSelected:selected];
-    if (selected) {
-        //选中时
-        self.layer.borderWidth = 1;
-        self.layer.borderColor = kThemeColor.CGColor;
-        self.layer.masksToBounds = YES;
-    }else{
-        //非选中
-        self.layer.borderWidth = 0;
-    }
-    
-    // Configure the view for the selected state
-}
+
 
 -(UIImageView*)coverImageView
 {

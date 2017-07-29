@@ -195,7 +195,7 @@
 
     if ([vip isEqualToString:@"N"]) {
    
-            [self getPhotoData:albumid relationid:relationid];
+        [self getPhotoData:albumid relationid:relationid];
         
     }else
     {

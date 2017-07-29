@@ -7,17 +7,18 @@
 //
 
 #import "KRVideoPlayerControlView.h"
-#import "UIButton+WebCache.h"
+#import "UIImageView+WebCache.h"
 #define HexRGBAlpha(rgbValue,a) [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:(a)]
 
 #define kThemeColor  HexRGBAlpha(0xFF6BB7, 1)
+
 static const CGFloat kVideoControlBarHeight = 60.0;
 static const CGFloat kVideoTimeLabelWidth = 100.0;
 static const CGFloat kVideoControlAnimationTimeinterval = 0.3;
 static const CGFloat kVideoControlTimeLabelFontSize = 10.0;
 static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
 
-@interface KRVideoPlayerControlView ()
+@interface KRVideoPlayerControlView () <UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) UIView *topBar;
 @property (nonatomic, strong) UIView *bottomBar;
@@ -30,7 +31,10 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
 @property (nonatomic, strong) UILabel *timeLabel;
 @property (nonatomic, strong) UILabel *totalLabel;
 @property (nonatomic, assign) BOOL isBarShowing;
+@property (nonatomic, assign) BOOL isCollecionViewShow;
 @property (nonatomic, strong) UIActivityIndicatorView *indicatorView;
+
+
 
 @end
 
@@ -59,6 +63,7 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
         [self addSubview:self.videoCollectionView];
         
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
+        tapGesture.delegate = self;
         [self addGestureRecognizer:tapGesture];
         
 
@@ -74,7 +79,7 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
         [self addGestureRecognizer:swipeUp];
         [self addGestureRecognizer:swipeDown];
 
-        
+  
     }
     return self;
 }
@@ -99,7 +104,7 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
     self.indicatorView.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
     
     
-    self.videoCollectionView.frame = CGRectMake(0, CGRectGetHeight(self.bounds), CGRectGetWidth(self.bounds),172);
+    self.videoCollectionView.frame = CGRectMake(0, CGRectGetHeight(self.bounds), CGRectGetWidth(self.bounds),115);
 
 }
 
@@ -158,6 +163,8 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
 
 - (void)onTap:(UITapGestureRecognizer *)gesture
 {
+
+    
     if (gesture.state == UIGestureRecognizerStateRecognized) {
         if (self.isBarShowing) {
             [self animateHide];
@@ -176,7 +183,9 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
     {
         [UIView animateWithDuration:0.3 animations:^{
             
-            self.videoCollectionView.frame = CGRectMake(0, CGRectGetHeight(self.bounds)-172, CGRectGetWidth(self.bounds), 172);
+            self.videoCollectionView.frame = CGRectMake(0, CGRectGetHeight(self.bounds)-115, CGRectGetWidth(self.bounds), 115);
+            
+            _isCollecionViewShow = YES;
             
         } completion:^(BOOL finished) {
             
@@ -187,7 +196,8 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
     {
         [UIView animateWithDuration:0.3 animations:^{
             
-            self.videoCollectionView.frame = CGRectMake(0, CGRectGetHeight(self.bounds), CGRectGetWidth(self.bounds), 172);
+            self.videoCollectionView.frame = CGRectMake(0, CGRectGetHeight(self.bounds), CGRectGetWidth(self.bounds),115);
+            _isCollecionViewShow = NO;
             
         } completion:^(BOOL finished) {
             
@@ -275,7 +285,8 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
     if (!_closeButton) {
         _closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_closeButton setImage:[UIImage imageNamed:@"video_back_normal"] forState:UIControlStateNormal];
-        _closeButton.bounds = CGRectMake(0, 0, kVideoControlBarHeight, kVideoControlBarHeight);
+        _closeButton.bounds = CGRectMake(0, 0, 40, 40);
+     
     }
     return _closeButton;
 }
@@ -330,8 +341,7 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
 -(void)setVideoArray:(NSMutableArray *)videoArray
 {
     _videoArray = videoArray;
-    
-    NSLog(@" video Array %@",videoArray);
+
     
     [self.videoCollectionView reloadData];
 }
@@ -385,13 +395,14 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
         cell= (UICollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:@"UICollectionViewCell" forIndexPath:indexPath];
         
     }
+
     
-    UIButton * coverButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    coverButton.frame = CGRectMake(0, 0, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds));
-    coverButton.layer.cornerRadius = 3;
-    coverButton.layer.masksToBounds = YES;
-    [cell.contentView addSubview:coverButton];
+
+    UIImageView * cover = [[UIImageView alloc]init];
+    cover.frame = CGRectMake(0, 0, 169, 95);
+    [cell.contentView addSubview:cover];
     
+
     
     UILabel * vipLabel= [[UILabel alloc]initWithFrame:CGRectMake(169-26, 0, 26, 14)];
     vipLabel.text = @"VIP";
@@ -406,19 +417,21 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
     maskLayer.path = maskPath.CGPath;
     vipLabel.layer.mask = maskLayer;
     vipLabel.hidden = YES;
-
     [cell.contentView addSubview:vipLabel];
- 
+    
     
     NSDictionary * dict = self.videoArray[indexPath.row];
-
+    
     NSString * imageUrl = [dict valueForKey:@"cover"];
     
-    [coverButton sd_setImageWithURL:[NSURL URLWithString:imageUrl] forState:UIControlStateNormal placeholderImage:nil];
+    [cover sd_setImageWithURL:[NSURL URLWithString:imageUrl]];
     
     NSString * vip = [dict valueForKey:@"vip"];
     vipLabel.hidden = ([vip isEqualToString:@"Y"])?NO:YES;
-    
+
+    cell.layer.cornerRadius = 3;
+    cell.layer.masksToBounds = YES;
+
     
     return cell;
     
@@ -432,7 +445,24 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
     return YES;
 }
 
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    //根据idenxPath获取对应的cell
+    UICollectionViewCell *cell =  [collectionView cellForItemAtIndexPath:indexPath];
+    cell.layer.borderWidth = 1;
+    cell.layer.borderColor = kThemeColor.CGColor;
+    cell.layer.masksToBounds = YES;
+  
+    NSDictionary * dict = self.videoArray[indexPath.row];
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"DLChangeVideo" object:dict];
+}
 
+
+- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath{
+    UICollectionViewCell *cell =  [collectionView cellForItemAtIndexPath:indexPath];
+    cell.layer.borderWidth = 0;
+    
+}
 
 #pragma mark - Private Method
 
@@ -444,5 +474,14 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
     }
     return nil;
 }
+
+
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    
+ 
+    return !_isCollecionViewShow;
+}
+
+
 
 @end

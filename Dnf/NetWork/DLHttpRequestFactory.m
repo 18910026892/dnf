@@ -477,8 +477,8 @@
     
     
     [request addParameter:@"20" key:@"num"];
+    request.isShowErrorToast = NO;
 
-    
     return request;
 }
 +(nonnull DLHttpsBusinesRequest*)getPhoto:(nonnull NSString*)albumid

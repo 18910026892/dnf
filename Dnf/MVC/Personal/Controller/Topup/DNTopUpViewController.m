@@ -7,7 +7,7 @@
 //
 
 #import "DNTopUpViewController.h"
-
+#import "DNLoginViewController.h"
 @interface DNTopUpViewController ()
 
 @end
@@ -101,7 +101,37 @@
 }
 -(void)didSelectPriceButton:(DNTopUpModel*)topUpModel;
 {
- 
+    if ([[DNSession sharedSession] isLogin]==NO) {
+    
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"您还没有登录，请先完成登录" preferredStyle:UIAlertControllerStyleAlert];
+        
+        // Create the actions.
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            NSLog(@"The \"Okay/Cancel\" alert's cancel action occured.");
+        }];
+        
+        [cancelAction setValue:[UIColor blackColor] forKey:@"_titleTextColor"];
+        
+        UIAlertAction *otherAction = [UIAlertAction actionWithTitle:@"登录" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            NSLog(@"The \"Okay/Cancel\" alert's other action occured.");
+            DNLoginViewController * login = [DNLoginViewController viewController];
+            [self.navigationController pushViewController:login animated:YES];
+            
+        }];
+        
+        [otherAction setValue:kThemeColor forKey:@"_titleTextColor"];
+        
+        
+        // Add the actions.
+        [alertController addAction:cancelAction];
+        [alertController addAction:otherAction];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+        
+    }else
+    {
+        NSLog(@"购买");
+    }
 }
 
 -(NSMutableArray*)dataArray

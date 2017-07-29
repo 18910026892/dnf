@@ -89,6 +89,7 @@
 		D2B53C221F1C9E9F0016A69F /* DNTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B53C1E1F1C9E9F0016A69F /* DNTextField.m */; };
 		D2B53C231F1C9E9F0016A69F /* UIUnderlinedButton.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B53C211F1C9E9F0016A69F /* UIUnderlinedButton.m */; };
 		D2B53C261F1C9ED50016A69F /* DNChosseCountryTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2B53C251F1C9ED50016A69F /* DNChosseCountryTableViewCell.m */; };
+		D2C1D3E81F2C45E2004B1AC8 /* MJPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = D2C1D3E71F2C45E2004B1AC8 /* MJPhotoBrowser.m */; };
 		D2CFC46E1F1F67CF009BECF4 /* DLShareModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D2CFC46B1F1F67CF009BECF4 /* DLShareModel.m */; };
 		D2CFC46F1F1F67CF009BECF4 /* DLShareView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2CFC46D1F1F67CF009BECF4 /* DLShareView.m */; };
 		D2CFC4C41F1F6A55009BECF4 /* DLThirdShareSDKInitiingizer.m in Sources */ = {isa = PBXBuildFile; fileRef = D2CFC4C31F1F6A55009BECF4 /* DLThirdShareSDKInitiingizer.m */; };
@@ -99,7 +100,6 @@
 		D2DE2AD71F18C6FD00401113 /* NSString+Date.m in Sources */ = {isa = PBXBuildFile; fileRef = D2DE2AD61F18C6FD00401113 /* NSString+Date.m */; };
 		D2E19D0A1F1718FF00E26126 /* MJPhoto.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E19CFE1F1718FF00E26126 /* MJPhoto.m */; };
 		D2E19D0B1F1718FF00E26126 /* MJPhotoBrowser.bundle in Resources */ = {isa = PBXBuildFile; fileRef = D2E19CFF1F1718FF00E26126 /* MJPhotoBrowser.bundle */; };
-		D2E19D0C1F1718FF00E26126 /* MJPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E19D011F1718FF00E26126 /* MJPhotoBrowser.m */; };
 		D2E19D0D1F1718FF00E26126 /* MJPhotoLoadingView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E19D031F1718FF00E26126 /* MJPhotoLoadingView.m */; };
 		D2E19D0E1F1718FF00E26126 /* MJPhotoProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E19D051F1718FF00E26126 /* MJPhotoProgressView.m */; };
 		D2E19D0F1F1718FF00E26126 /* MJPhotoToolbar.m in Sources */ = {isa = PBXBuildFile; fileRef = D2E19D071F1718FF00E26126 /* MJPhotoToolbar.m */; };
@@ -291,6 +291,7 @@
 		D2B53C211F1C9E9F0016A69F /* UIUnderlinedButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UIUnderlinedButton.m; sourceTree = "<group>"; };
 		D2B53C241F1C9ED50016A69F /* DNChosseCountryTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNChosseCountryTableViewCell.h; sourceTree = "<group>"; };
 		D2B53C251F1C9ED50016A69F /* DNChosseCountryTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNChosseCountryTableViewCell.m; sourceTree = "<group>"; };
+		D2C1D3E71F2C45E2004B1AC8 /* MJPhotoBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPhotoBrowser.m; sourceTree = "<group>"; };
 		D2CFC46A1F1F67CF009BECF4 /* DLShareModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLShareModel.h; sourceTree = "<group>"; };
 		D2CFC46B1F1F67CF009BECF4 /* DLShareModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLShareModel.m; sourceTree = "<group>"; };
 		D2CFC46C1F1F67CF009BECF4 /* DLShareView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLShareView.h; sourceTree = "<group>"; };
@@ -311,7 +312,6 @@
 		D2E19CFE1F1718FF00E26126 /* MJPhoto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPhoto.m; sourceTree = "<group>"; };
 		D2E19CFF1F1718FF00E26126 /* MJPhotoBrowser.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MJPhotoBrowser.bundle; sourceTree = "<group>"; };
 		D2E19D001F1718FF00E26126 /* MJPhotoBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPhotoBrowser.h; sourceTree = "<group>"; };
-		D2E19D011F1718FF00E26126 /* MJPhotoBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPhotoBrowser.m; sourceTree = "<group>"; };
 		D2E19D021F1718FF00E26126 /* MJPhotoLoadingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPhotoLoadingView.h; sourceTree = "<group>"; };
 		D2E19D031F1718FF00E26126 /* MJPhotoLoadingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJPhotoLoadingView.m; sourceTree = "<group>"; };
 		D2E19D041F1718FF00E26126 /* MJPhotoProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPhotoProgressView.h; sourceTree = "<group>"; };
@@ -1365,7 +1365,7 @@
 				D2E19CFE1F1718FF00E26126 /* MJPhoto.m */,
 				D2E19CFF1F1718FF00E26126 /* MJPhotoBrowser.bundle */,
 				D2E19D001F1718FF00E26126 /* MJPhotoBrowser.h */,
-				D2E19D011F1718FF00E26126 /* MJPhotoBrowser.m */,
+				D2C1D3E71F2C45E2004B1AC8 /* MJPhotoBrowser.m */,
 				D2E19D021F1718FF00E26126 /* MJPhotoLoadingView.h */,
 				D2E19D031F1718FF00E26126 /* MJPhotoLoadingView.m */,
 				D2E19D041F1718FF00E26126 /* MJPhotoProgressView.h */,
@@ -1657,12 +1657,12 @@
 				D225E57B1F15D6F10075F243 /* DNSearchViewController.m in Sources */,
 				D2A3311C1F14A13300B78079 /* DNVRViewController.m in Sources */,
 				D218B9071F1F2DD90062BBF9 /* DLDataConvertionUtil.m in Sources */,
+				D2C1D3E81F2C45E2004B1AC8 /* MJPhotoBrowser.m in Sources */,
 				D2CFC46F1F1F67CF009BECF4 /* DLShareView.m in Sources */,
 				D2261C4D1F28714C0057EA68 /* DLNoDataView.m in Sources */,
 				D218B9231F1F32D50062BBF9 /* DLLocationManager.m in Sources */,
 				D2F8BE191F1DFE4600E53B11 /* NIMKitUtil.m in Sources */,
 				D2A331041F149E4100B78079 /* DNWebViewController.m in Sources */,
-				D2E19D0C1F1718FF00E26126 /* MJPhotoBrowser.m in Sources */,
 				D2E19D2C1F17214E00E26126 /* DNTopUpTableViewCell.m in Sources */,
 				D2A3310A1F14A0DE00B78079 /* DNHomePageViewController.m in Sources */,
 				D2DE2ACF1F188C8100401113 /* DNEditTableViewCell.m in Sources */,

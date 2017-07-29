@@ -471,14 +471,6 @@
     }
     
     cell.tag = 1000+indexPath.row;
-    
-    if (indexPath.row==_currentPhotoIndex) {
-        cell.selected = YES;
-    }else
-    {
-         cell.selected = NO;
-    }
-    
   
 
     MJPhoto *photo= _photos[indexPath.row];
@@ -489,22 +481,29 @@
 }
 
 #pragma mark --UICollectionViewDelegate
--(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-    //野方法
-    NSIndexPath *index = [NSIndexPath indexPathForRow:0 inSection:0];
-    MJPhotoCollectionViewCell * cell = (MJPhotoCollectionViewCell*)[self.collectionView cellForItemAtIndexPath:index];
-    cell.selected = NO;
- 
+
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    //根据idenxPath获取对应的cell
+    UICollectionViewCell *cell =  [collectionView cellForItemAtIndexPath:indexPath];
+    cell.layer.borderWidth = 1;
+    cell.layer.borderColor = kThemeColor.CGColor;
+    cell.layer.masksToBounds = YES;
     
     
     self.toolbar.currentPhotoIndex = indexPath.row;
     [self setCurrentPhotoIndex:indexPath.row];
     
     
-
 }
+
+
+- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath{
+    UICollectionViewCell *cell =  [collectionView cellForItemAtIndexPath:indexPath];
+    cell.layer.borderWidth = 0;
+    
+}
+
+
 //返回这个UICollectionView是否可以被选择
 -(BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {

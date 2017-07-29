@@ -7,9 +7,10 @@
 //
 
 #import "DNPlayerViewController.h"
-
+#import "DNLoginViewController.h"
 @interface DNPlayerViewController ()
 
+@property(nonatomic,copy)NSString * videoUrl;
 
 @end
 
@@ -39,8 +40,7 @@
 {
     [super viewWillDisappear:animated];
     
-    [self.videoController dismiss];
-    
+
     // 开启返回手势
     if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
         self.navigationController.interactivePopGestureRecognizer.enabled = YES;
@@ -49,6 +49,10 @@
     self.xl_sldeMenu.slideEnabled = YES;
 }
 
+-(void)dealloc
+{
+     [self.videoController dismiss];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -56,6 +60,17 @@
     [self setNavigationBarHide:YES];
     [self setupUI];
     [self getVideoList];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeVideo:) name:@"DLChangeVideo" object:nil];
+
+}
+
+
+-(void)changeVideo:(NSNotification*)notice
+{
+    
+    NSDictionary * noticeDic= (NSDictionary*)notice.object;
+    self.recordModel = [DNRecordModel mj_objectWithKeyValues:noticeDic];
 
 }
 
@@ -67,7 +82,6 @@
     [self playVideo];
     
     self.url = MainUrl(@"videoList");
-    
 
 }
 
@@ -90,9 +104,7 @@
 
 -(void)playVideo{
 
-    
-//     NSURL *url = [NSURL URLWithString:@"http://v.cctv.com/flash/mp4video6/TMS/2011/01/05/cf752b1c12ce452b3040cab2f90bc265_h264818000nero_aac32-1.mp4"];
-    NSURL * videoURL = [NSURL URLWithString:[self.recordModel.play valueForKey:@"url"]];
+    NSURL * videoURL = [NSURL URLWithString:self.videoUrl];
     [self addVideoPlayerWithURL:videoURL];
 }
 
@@ -115,8 +127,7 @@
     
     request.requestFaile = ^(NSError *error)
     {
-        
-        
+      
     };
     
     [request excute];
@@ -163,31 +174,65 @@
 -(void)collectButtonClick:(UIButton*)sender
 {
     NSLog(@"collection");
-    NSString * resource = [NSString stringWithFormat:@"%@",self.recordModel.resource];
     
-    NSString * relationid;
-    if ([resource isEqualToString:@"video"]) {
-        relationid = [NSString stringWithFormat:@"%ld",(long)self.recordModel.videoid];
-    }else if([resource isEqualToString:@"vr"])
+    if ([[DNSession sharedSession] isLogin]==NO) {
+        
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"您还没有登录，请先完成登录" preferredStyle:UIAlertControllerStyleAlert];
+        
+        // Create the actions.
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            NSLog(@"The \"Okay/Cancel\" alert's cancel action occured.");
+        }];
+        
+        [cancelAction setValue:[UIColor blackColor] forKey:@"_titleTextColor"];
+        
+        UIAlertAction *otherAction = [UIAlertAction actionWithTitle:@"登录" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            NSLog(@"The \"Okay/Cancel\" alert's other action occured.");
+            DNLoginViewController * login = [DNLoginViewController viewController];
+            [self.navigationController pushViewController:login animated:YES];
+            
+        }];
+        
+        [otherAction setValue:kThemeColor forKey:@"_titleTextColor"];
+        
+        
+        // Add the actions.
+        [alertController addAction:cancelAction];
+        [alertController addAction:otherAction];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+        
+    }else
     {
-        relationid = [NSString stringWithFormat:@"%ld",(long)self.recordModel.vrid];
+        NSString * resource = [NSString stringWithFormat:@"%@",self.recordModel.resource];
+        
+        NSString * relationid;
+        if ([resource isEqualToString:@"video"]) {
+            relationid = [NSString stringWithFormat:@"%ld",(long)self.recordModel.videoid];
+        }else if([resource isEqualToString:@"vr"])
+        {
+            relationid = [NSString stringWithFormat:@"%ld",(long)self.recordModel.vrid];
+        }
+        
+        DLHttpsBusinesRequest *request = [DLHttpRequestFactory addCollecionResource:resource relationid:relationid];
+        
+        request.requestSuccess = ^(id response)
+        {
+            
+            self.videoInfoView.collection = YES;
+        };
+        
+        request.requestFaile   = ^(NSError *error)
+        {
+            
+            
+        };
+        
+        [request excute];
     }
     
-    DLHttpsBusinesRequest *request = [DLHttpRequestFactory addCollecionResource:resource relationid:relationid];
     
-    request.requestSuccess = ^(id response)
-    {
-      
-        self.videoInfoView.collection = YES;
-    };
-    
-    request.requestFaile   = ^(NSError *error)
-    {
-        
-        
-    };
-    
-    [request excute];
+
 
 }
 
@@ -247,17 +292,68 @@
 {
     _recordModel = recordModel;
     
+    NSString * vip = recordModel.vip;
 
+    if ([vip isEqualToString:@"N"]) {
+        
+        [self updateInfo:recordModel];
+        
+    }else
+    {
+        if ([DNSession sharedSession].vip==NO) {
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"VIP购买" message:@"非VIP用户，无法查看以下内容\n请购买VIP后再来观看" preferredStyle:UIAlertControllerStyleAlert];
+            
+            // Create the actions.
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                NSLog(@"The \"Okay/Cancel\" alert's cancel action occured.");
+            }];
+            
+            [cancelAction setValue:[UIColor blackColor] forKey:@"_titleTextColor"];
+            
+            UIAlertAction *otherAction = [UIAlertAction actionWithTitle:@"购买" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                NSLog(@"The \"Okay/Cancel\" alert's other action occured.");
+                DNTopUpViewController * topUp = [DNTopUpViewController viewController];
+                [self.navigationController pushViewController:topUp animated:YES];
+                
+            }];
+            
+            [otherAction setValue:kThemeColor forKey:@"_titleTextColor"];
+            
+            
+            // Add the actions.
+            [alertController addAction:cancelAction];
+            [alertController addAction:otherAction];
+            
+            [self presentViewController:alertController animated:YES completion:nil];
+        }else
+            
+        {
+            [self updateInfo:recordModel];
+        }
+    }
+    
+    
+ 
+    
+}
+
+-(void)updateInfo:(DNRecordModel*)recordModel
+{
+    self.videoUrl = [self.recordModel.play valueForKey:@"url"];
+    //视频地址
+    self.videoController.contentURL =  [NSURL URLWithString:self.videoUrl];
+    
+    //视频信息
     self.videoInfoView.collection = (recordModel.favoriteid==0)?NO:YES;
     
     if (self.videoInfoView.collection==YES) {
         self.videoInfoView.collectionButton.userInteractionEnabled = NO;
     }
-
+    
     
     self.videoInfoView.videoTitleLabel.text =  [NSString stringWithFormat:@"%@",recordModel.title];
     self.videoInfoView.watchCountLabel.text = [NSString stringWithFormat:@"%ld次播放",recordModel.watches];
-
+    
     
     //浏览记录
     NSString * resource = [NSString stringWithFormat:@"%@",recordModel.resource];
@@ -271,7 +367,6 @@
     }
     
     [self recordResource:resource relationid:relationid];
-    
 }
 
 -(void)recordResource:(NSString*)resource
