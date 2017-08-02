@@ -17,11 +17,16 @@
 @implementation DNPlayerViewController
 
 
+
+
+
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
 
-
+    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
+    
+    [self playVideo];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -40,18 +45,23 @@
 {
     [super viewWillDisappear:animated];
     
-
+    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+    
+    
     // 开启返回手势
     if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
         self.navigationController.interactivePopGestureRecognizer.enabled = YES;
     }
     
     self.xl_sldeMenu.slideEnabled = YES;
+    
+    [self.videoController dismiss];
+    
 }
 
 -(void)dealloc
 {
-     [self.videoController dismiss];
+    
 }
 
 - (void)viewDidLoad {
@@ -59,7 +69,7 @@
     // Do any additional setup after loading the view.
     [self setNavigationBarHide:YES];
     [self setupUI];
-    [self getVideoList];
+    self.view.backgroundColor = [UIColor whiteColor];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeVideo:) name:@"DLChangeVideo" object:nil];
 
@@ -79,8 +89,8 @@
     [self setTabBarHide:YES];
     [self.view addSubview:self.videoInfoView];
     [self checkVip];
-    [self playVideo];
-    
+    [self getvideoList];
+
     self.url = MainUrl(@"videoList");
 
 }
@@ -101,37 +111,33 @@
     
 }
 
+-(void)getvideoList
+{
+    //浏览记录
+    NSString * resource = [NSString stringWithFormat:@"%@",self.recordModel.resource];
+    
+    NSString * relationid;
+    if ([resource isEqualToString:@"video"]) {
+        relationid = [NSString stringWithFormat:@"%ld",(long)self.recordModel.videoid];
+    }else if([resource isEqualToString:@"vr"])
+    {
+        relationid = [NSString stringWithFormat:@"%ld",(long)self.recordModel.vrid];
+    }else if([resource isEqualToString:@"party"])
+    {
+        relationid = [NSString stringWithFormat:@"%ld",(long)self.recordModel.partyid];
+    }
+    
+    
+    [self getRecommendResource:resource relationid:relationid];
+    
+}
+
 
 -(void)playVideo{
 
     NSURL * videoURL = [NSURL URLWithString:self.videoUrl];
+
     [self addVideoPlayerWithURL:videoURL];
-}
-
-
--(void)getVideoList
-{
-    DLHttpsBusinesRequest *request = [DLHttpRequestFactory recommendVideo];
-    
-    request.requestSuccess = ^(id response)
-    {
-        
-        DLJSONObject *object = response;
-        
-        DLJSONObject * dataObject = [object getJSONObject:@"data"];
-        
-        self.videoController.videoControl.videoArray = [dataObject getJSONArray:@"recommend"].array;
-        
-    
-    };
-    
-    request.requestFaile = ^(NSError *error)
-    {
-      
-    };
-    
-    [request excute];
-    
 }
 
 -(void)addVideoPlayerWithURL:(NSURL *)url{
@@ -156,10 +162,10 @@
 {
     
     if (self.enterType==web) {
-         [self.navigationController popToRootViewControllerAnimated:YES];
+         [self.navigationController popToRootViewControllerAnimated:NO];
     }else
     {
-        [self.navigationController popViewControllerAnimated:YES];
+        [self.navigationController popViewControllerAnimated:NO];
     }
     
    
@@ -214,6 +220,9 @@
         }else if([resource isEqualToString:@"vr"])
         {
             relationid = [NSString stringWithFormat:@"%ld",(long)self.recordModel.vrid];
+        }else if([resource isEqualToString:@"party"])
+        {
+            relationid = [NSString stringWithFormat:@"%ld",(long)self.recordModel.partyid];
         }
         
         DLHttpsBusinesRequest *request = [DLHttpRequestFactory addCollecionResource:resource relationid:relationid];
@@ -249,6 +258,9 @@
     }else if([resource isEqualToString:@"vr"])
     {
         relationid = [NSString stringWithFormat:@"%ld",(long)self.recordModel.vrid];
+    }else if([resource isEqualToString:@"party"])
+    {
+        relationid = [NSString stringWithFormat:@"%ld",(long)self.recordModel.partyid];
     }
     
     
@@ -366,9 +378,42 @@
     }else if([resource isEqualToString:@"vr"])
     {
         relationid = [NSString stringWithFormat:@"%ld",(long)recordModel.vrid];
+    }else if([resource isEqualToString:@"party"])
+    {
+         relationid = [NSString stringWithFormat:@"%ld",(long)recordModel.partyid];
     }
     
     [self recordResource:resource relationid:relationid];
+    
+
+    
+}
+
+-(void)getRecommendResource:(NSString*)resource
+           relationid:(NSString*)relationid
+{
+    
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory recommendVideoResource:resource relationid:relationid];
+    
+    request.requestSuccess = ^(id response)
+    {
+        
+        DLJSONObject *object = response;
+        
+        DLJSONObject * dataObject = [object getJSONObject:@"data"];
+        
+        self.videoController.videoControl.videoArray = [dataObject getJSONArray:@"recommend"].array;
+        
+        
+    };
+    
+    request.requestFaile = ^(NSError *error)
+    {
+        
+    };
+    
+    [request excute];
+    
 }
 
 -(void)recordResource:(NSString*)resource
@@ -379,7 +424,6 @@
 
     [request excute];
 }
-
 
 
 

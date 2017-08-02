@@ -89,10 +89,15 @@
     _indexLabel.attributedText = firstPart;
     
     
-    MJPhoto *photo = _photos[_currentPhotoIndex];
-    // 按钮
-    _saveImageBtn.enabled = photo.image != nil && !photo.save;
-    _saveImageBtn.hidden =!_showSaveBtn;
+    if(IS_ARRAY_CLASS(_photos))
+    {
+        MJPhoto *photo = _photos[_currentPhotoIndex];
+        // 按钮
+        _saveImageBtn.enabled = photo.image != nil && !photo.save;
+        _saveImageBtn.hidden =!_showSaveBtn;
+    }
+    
+  
 }
 
 @end

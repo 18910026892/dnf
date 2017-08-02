@@ -38,6 +38,7 @@
 
 
 // ** Category ** //
+#import "UIButton+EnlargeTouch.h"
 #import "NSString+Validation.h"
 #import "UIColor+Category.h"
 #import "UIView+Extension.h"

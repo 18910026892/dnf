@@ -31,7 +31,7 @@
     infoModel.uid      =  [DNSession sharedSession].uid;
     infoModel.nickName =  [DNSession sharedSession].nickname;
     infoModel.gender   =  [DNSession sharedSession].sex;
-    infoModel.birth    =  [DNSession sharedSession].birthday;
+ //   infoModel.birth    =  [DNSession sharedSession].birthday;
 
 }
 
@@ -96,12 +96,12 @@
 
     
     // 生日
-    
-    if (!IsStrEmpty(infoModel.birth)&& infoModel.birth !=  [DNSession sharedSession].birthday) {
-        
-        [profile putWithString:infoModel.birth key:@"birth"];
-        
-    }
+//    
+//    if (!IsStrEmpty(infoModel.birth)&& infoModel.birth !=  [DNSession sharedSession].birthday) {
+//        
+//        [profile putWithString:infoModel.birth key:@"birth"];
+//        
+//    }
 
     
     // 头像
@@ -167,7 +167,7 @@
             return 3;
             break;
         case 1:
-            return 2;
+            return 1;
             break;
  
         default:
@@ -240,17 +240,12 @@
             switch (indexPath.row) {
                 case 0:
                 {
-                    cell.cellTitle.text= @"生日";
-                    cell.cellDesc.text = infoModel.birth;
-                }
-                    break;
-                    case 1:
-                {
                     cell.cellTitle.text= @"性别";
- 
+                    
                     cell.cellDesc.text = ([infoModel.gender isEqualToString:@"M"])?@"男":@"女";
                 }
                     break;
+              
                 default:
                     break;
             }
@@ -330,42 +325,18 @@
                 {
         
 
-                    BOOL isHavePick = NO;
-                    for (UIView * view in self.view.subviews) {
-                        if ([[view  class] isSubclassOfClass:[FullTimeView class]]) {
-                            isHavePick = YES;
-                            return;
-                        }
-                    }
-                    if (!isHavePick) {
-                      
-
-                        [self.view addSubview:self.pickView];
-                        if ([DNSession sharedSession].birthday.length&&[[DNSession sharedSession].birthday isEqualToString:@"0000-00-00"]==NO) {
-                            NSDate * date = [NSDate dateWithTimeIntervalSince1970: [[DNSession sharedSession].birthday dateStringWithFormateStyle:@"yyyy-MM-dd"]/1000];
-                            self.pickView.curDate = date;
-                        }else{
-                            NSString * birthday=@"1990-01-01";
-                            self.pickView.curDate=[NSDate dateWithTimeIntervalSince1970: [birthday dateStringWithFormateStyle:@"yyyy-MM-dd"]/1000];
-                        }
-                        self.pickView.delegate = self;
-                    }
-
-                }
-                    break;
-                case 1:
-                {
                     UIActionSheet * userSexActionSheet =[[UIActionSheet alloc] initWithTitle:@"性别修改" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"男",@"女", nil];
                     userSexActionSheet.delegate = self;
                     userSexActionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
                     userSexActionSheet.tag = 9002;
-             
+                    
                     [[UIView appearance] setTintColor:[UIColor blackColor]];
                     [userSexActionSheet showInView:self.view];
 
-                    
+
                 }
                     break;
+         
                 default:
                     break;
             }
@@ -378,15 +349,15 @@
 }
 
 
--(void)didFinishPickView:(NSDate*)date {
-    NSDateFormatter * formate=[[NSDateFormatter alloc]init];
-    [formate setDateFormat:@"yyyy-MM-dd"];
-    NSString * gradeTime=[formate stringFromDate:date];
-
-    infoModel.birth = gradeTime;
-    NSIndexPath *indexPath=[NSIndexPath indexPathForRow:0 inSection:1];
-    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
-}
+//-(void)didFinishPickView:(NSDate*)date {
+//    NSDateFormatter * formate=[[NSDateFormatter alloc]init];
+//    [formate setDateFormat:@"yyyy-MM-dd"];
+//    NSString * gradeTime=[formate stringFromDate:date];
+//
+//    infoModel.birth = gradeTime;
+//    NSIndexPath *indexPath=[NSIndexPath indexPathForRow:0 inSection:1];
+//    [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
+//}
 
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 
@@ -475,7 +446,7 @@
             }
             
             
-            NSIndexPath *indexPath=[NSIndexPath indexPathForRow:1 inSection:1];
+            NSIndexPath *indexPath=[NSIndexPath indexPathForRow:0 inSection:1];
             [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexPath,nil] withRowAnimation:UITableViewRowAnimationNone];
         
         }
@@ -579,14 +550,14 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
     return _avatarImageView;
 }
 
--(FullTimeView*)pickView
-{
-    if (!_pickView) {
-        _pickView = [[FullTimeView alloc]initWithFrame:CGRectMake(0, KScreenHeight-220, KScreenWidth, 220)];
-        _pickView.delegate = self;
-    }
-    return _pickView;
-}
+//-(FullTimeView*)pickView
+//{
+//    if (!_pickView) {
+//        _pickView = [[FullTimeView alloc]initWithFrame:CGRectMake(0, KScreenHeight-220, KScreenWidth, 220)];
+//        _pickView.delegate = self;
+//    }
+//    return _pickView;
+//}
 
 
 - (void)didReceiveMemoryWarning {

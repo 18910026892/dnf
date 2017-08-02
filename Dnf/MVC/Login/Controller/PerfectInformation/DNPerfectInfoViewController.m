@@ -11,10 +11,10 @@
 #import <AVFoundation/AVCaptureDevice.h>
 #import <AVFoundation/AVMediaFormat.h>
 #import "DNTextField.h"
-#import "FullTimeView.h"
+//#import "FullTimeView.h"
 #import "UIImage+Compress.h"
-#import "NSString+Date.h"
-@interface DNPerfectInfoViewController ()<UITextFieldDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate,UINavigationControllerDelegate,FinishPickView>
+//#import "NSString+Date.h"
+@interface DNPerfectInfoViewController ()<UITextFieldDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UIActionSheetDelegate,UINavigationControllerDelegate>
 
 @property(nonatomic,strong)UIButton * passButton;
 
@@ -34,19 +34,21 @@
 
 @property(nonatomic,strong)UIButton * womanButton;
 
-@property(nonatomic,strong)UIImageView * birthdayImageView;
+@property(nonatomic,strong)UIView * line;
 
-@property(nonatomic,strong)UIButton * birthdayButton;
-
-@property(nonatomic,strong)UIImageView * arrowImageView;
+//@property(nonatomic,strong)UIImageView * birthdayImageView;
+//
+//@property(nonatomic,strong)UIButton * birthdayButton;
+//
+//@property(nonatomic,strong)UIImageView * arrowImageView;
 
 @property(nonatomic,strong)UIButton * nextBtn;
 
-@property(nonatomic,strong)FullTimeView*pickView;
+//@property(nonatomic,strong)FullTimeView*pickView;
 
 @property(nonatomic,assign)BOOL isWoman;
 
-@property(nonatomic,copy)NSString * birthday;
+//@property(nonatomic,copy)NSString * birthday;
 
 @end
 
@@ -78,27 +80,21 @@
     [self.view addSubview:self.sexImageView];
     [self.view addSubview:self.womanButton];
     [self.view addSubview:self.manButton];
-    [self.view addSubview:self.birthdayImageView];
-    [self.view addSubview:self.birthdayButton];
-    [self.view addSubview:self.arrowImageView];
+    [self.view addSubview:self.line];
+//    [self.view addSubview:self.birthdayImageView];
+//    [self.view addSubview:self.birthdayButton];
+//    [self.view addSubview:self.arrowImageView];
     [self.view addSubview:self.nextBtn];
-    [self initLines];
-}
-
--(void)initLines
-{
-    for (int i=0; i<2; i++) {
-        UIView * lineView = [[UIView alloc]initWithFrame:CGRectMake(80, 332+i*133.5, KScreenWidth-130, 0.5)];
-        lineView.backgroundColor = [UIColor customColorWithString:@"eeeeee"];
-        [self.view addSubview:lineView];
-    }
-}
-
--(void)hiddenDatePickerView
-{
-    _pickView.hidden = YES;
 
 }
+
+
+//
+//-(void)hiddenDatePickerView
+//{
+//    _pickView.hidden = YES;
+//
+//}
 
 -(void)avatarButtonClick:(UIButton*)sender
 {
@@ -121,30 +117,30 @@
     self.isWoman = NO;
     [DNSession sharedSession].sex = @"M";
 }
-
--(void)birthdayButtonClick:(UIButton*)sender
-{
-    BOOL isHavePick = NO;
-    for (UIView * view in self.view.subviews) {
-        if ([[view  class] isSubclassOfClass:[FullTimeView class]]) {
-            isHavePick = YES;
-            return;
-        }
-    }
-    if (!isHavePick) {
-        
-        
-        [self.view addSubview:self.pickView];
-        if ([DNSession sharedSession].birthday.length&&[[DNSession sharedSession].birthday isEqualToString:@"0000-00-00"]==NO) {
-            NSDate * date = [NSDate dateWithTimeIntervalSince1970: [[DNSession sharedSession].birthday dateStringWithFormateStyle:@"yyyy-MM-dd"]/1000];
-            self.pickView.curDate = date;
-        }else{
-            NSString * birthday=@"1990-01-01";
-            self.pickView.curDate=[NSDate dateWithTimeIntervalSince1970: [birthday dateStringWithFormateStyle:@"yyyy-MM-dd"]/1000];
-        }
-        self.pickView.delegate = self;
-    }
-}
+//
+//-(void)birthdayButtonClick:(UIButton*)sender
+//{
+//    BOOL isHavePick = NO;
+//    for (UIView * view in self.view.subviews) {
+//        if ([[view  class] isSubclassOfClass:[FullTimeView class]]) {
+//            isHavePick = YES;
+//            return;
+//        }
+//    }
+//    if (!isHavePick) {
+//        
+//        
+//        [self.view addSubview:self.pickView];
+//        if ([DNSession sharedSession].birthday.length&&[[DNSession sharedSession].birthday isEqualToString:@"0000-00-00"]==NO) {
+//            NSDate * date = [NSDate dateWithTimeIntervalSince1970: [[DNSession sharedSession].birthday dateStringWithFormateStyle:@"yyyy-MM-dd"]/1000];
+//            self.pickView.curDate = date;
+//        }else{
+//            NSString * birthday=@"1990-01-01";
+//            self.pickView.curDate=[NSDate dateWithTimeIntervalSince1970: [birthday dateStringWithFormateStyle:@"yyyy-MM-dd"]/1000];
+//        }
+//        self.pickView.delegate = self;
+//    }
+//}
 
 -(void)passButtonClick:(UIButton*)sender
 {
@@ -155,7 +151,7 @@
 {
     [self.view endEditing:YES];
     [self.nickNameTextField resignFirstResponder];
-    _pickView.hidden = YES;
+  //  _pickView.hidden = YES;
     
     
     DLJSONObject *profile = [[DLJSONObject alloc]initWithMutableDictionary:[[NSMutableDictionary alloc]init]];
@@ -178,11 +174,11 @@
     
     // 生日
     
-    if ([self.birthday length]) {
-        
-        [profile putWithString:self.birthday key:@"birth"];
-        
-    }
+//    if ([self.birthday length]) {
+//        
+//        [profile putWithString:self.birthday key:@"birth"];
+//        
+//    }
     
     [profile putWithString:[DNSession sharedSession].avatar key:@"avatar"];
     
@@ -221,15 +217,15 @@
   
 }
 
--(void)didFinishPickView:(NSDate*)date {
-    NSDateFormatter * formate=[[NSDateFormatter alloc]init];
-    [formate setDateFormat:@"yyyy-MM-dd"];
-    self.birthday=[formate stringFromDate:date];
-    [DNSession sharedSession].birthday = self.birthday;
-    [self.birthdayButton setTitle:self.birthday forState:UIControlStateNormal];
-    [self hiddenDatePickerView];
-    [self changeNextBtnState];
-}
+//-(void)didFinishPickView:(NSDate*)date {
+//    NSDateFormatter * formate=[[NSDateFormatter alloc]init];
+//    [formate setDateFormat:@"yyyy-MM-dd"];
+//    self.birthday=[formate stringFromDate:date];
+//    [DNSession sharedSession].birthday = self.birthday;
+//    [self.birthdayButton setTitle:self.birthday forState:UIControlStateNormal];
+//    [self hiddenDatePickerView];
+//    [self changeNextBtnState];
+//}
 
 
 -(void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -348,9 +344,9 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
     [request excute];
     
 }
-- (void)didCanclePickView {
-    [self hiddenDatePickerView];
-}
+//- (void)didCanclePickView {
+//    [self hiddenDatePickerView];
+//}
 
 
 #pragma mark - textField
@@ -366,11 +362,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
 }
 
 
-- (void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    [self hiddenDatePickerView];
-    
-}
+
 
 - (void)textFieldDidEndEditing:(UITextField *)textField
 {
@@ -380,7 +372,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
 
 - (void)changeNextBtnState
 {
-    if ([DNSession sharedSession].avatar.length && self.nickNameTextField.text.length && self.birthday.length) {
+    if ([DNSession sharedSession].avatar.length && self.nickNameTextField.text.length ) {
         
         self.nextBtn.enabled = YES;
         self.nextBtn.backgroundColor = kThemeColor;
@@ -541,47 +533,59 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
     }
     return _manButton;
 }
+//
+//-(UIImageView*)birthdayImageView
+//{
+//    if (!_birthdayImageView) {
+//        _birthdayImageView =[[UIImageView alloc]initWithFrame:CGRectMake(35, 438, 24, 21)];
+//        _birthdayImageView.image = [UIImage imageNamed:@"login_birthdayicon"];
+//    }
+//    return _birthdayImageView;
+//}
+//
+//-(UIButton*)birthdayButton
+//{
+//    if (!_birthdayButton) {
+//        _birthdayButton = [UIButton buttonWithType:UIButtonTypeCustom];
+//        _birthdayButton.frame = CGRectMake(73, 429, 200, 38);
+//        _birthdayButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+//        [_birthdayButton setTitleColor:[UIColor customColorWithString:@"999999"] forState:UIControlStateNormal];
+//        [_birthdayButton setTitle:@"请输入你的生日" forState:UIControlStateNormal];
+//        _birthdayButton.titleLabel.font = [UIFont fontWithName:TextFontName_Light size:15];
+//        _birthdayButton.titleLabel.textAlignment = NSTextAlignmentLeft;
+//        [_birthdayButton addTarget:self action:@selector(birthdayButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+//    }
+//    return _birthdayButton;
+//}
+//
+//-(UIImageView*)arrowImageView
+//{
+//    if (!_arrowImageView) {
+//        _arrowImageView = [[UIImageView alloc]initWithFrame:CGRectMake(KScreenWidth-68, 437, 28, 28)];
+//        _arrowImageView.image = [UIImage imageNamed:@"settings_into_normal"];
+//        
+//    }
+//    return _arrowImageView;
+//}
 
--(UIImageView*)birthdayImageView
+-(UIView*)line
 {
-    if (!_birthdayImageView) {
-        _birthdayImageView =[[UIImageView alloc]initWithFrame:CGRectMake(35, 438, 24, 21)];
-        _birthdayImageView.image = [UIImage imageNamed:@"login_birthdayicon"];
+    if (!_line) {
+        _line = [[UIView alloc]initWithFrame:CGRectMake(80, 332, KScreenWidth-130, 0.5)];
+        _line.backgroundColor = [UIColor customColorWithString:@"eeeeee"];
     }
-    return _birthdayImageView;
-}
-
--(UIButton*)birthdayButton
-{
-    if (!_birthdayButton) {
-        _birthdayButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _birthdayButton.frame = CGRectMake(73, 429, 200, 38);
-        _birthdayButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        [_birthdayButton setTitleColor:[UIColor customColorWithString:@"999999"] forState:UIControlStateNormal];
-        [_birthdayButton setTitle:@"请输入你的生日" forState:UIControlStateNormal];
-        _birthdayButton.titleLabel.font = [UIFont fontWithName:TextFontName_Light size:15];
-        _birthdayButton.titleLabel.textAlignment = NSTextAlignmentLeft;
-        [_birthdayButton addTarget:self action:@selector(birthdayButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _birthdayButton;
-}
-
--(UIImageView*)arrowImageView
-{
-    if (!_arrowImageView) {
-        _arrowImageView = [[UIImageView alloc]initWithFrame:CGRectMake(KScreenWidth-68, 437, 28, 28)];
-        _arrowImageView.image = [UIImage imageNamed:@"settings_into_normal"];
-        
-    }
-    return _arrowImageView;
+    return _line;
 }
 
 -(UIButton*)nextBtn
 {
     if (!_nextBtn) {
+        
+        CGFloat y = (KScreenHeight ==480)?440:460;
+        
         _nextBtn = [UIButton buttonWithType:UIButtonTypeCustom];
         _nextBtn.backgroundColor = kThemeColor;
-        _nextBtn.frame = CGRectMake(38, KScreenHeight-63, KScreenWidth-72, 36);
+        _nextBtn.frame = CGRectMake(38, y, KScreenWidth-72, 36);
         [_nextBtn setTitle:@"下一步" forState:UIControlStateNormal];
         [_nextBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _nextBtn.titleLabel.font = [UIFont fontWithName:TextFontName_Light size:16];
@@ -593,14 +597,14 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
     return _nextBtn;
 }
 
--(FullTimeView*)pickView
-{
-    if (!_pickView) {
-        _pickView = [[FullTimeView alloc]initWithFrame:CGRectMake(0, KScreenHeight-220, KScreenWidth, 220)];
-        _pickView.delegate = self;
-    }
-    return _pickView;
-}
+//-(FullTimeView*)pickView
+//{
+//    if (!_pickView) {
+//        _pickView = [[FullTimeView alloc]initWithFrame:CGRectMake(0, KScreenHeight-220, KScreenWidth, 220)];
+//        _pickView.delegate = self;
+//    }
+//    return _pickView;
+//}
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

@@ -18,7 +18,7 @@
         
         CGFloat y = KScreenWidth*(9.0/16.0)+60;
         self.frame = CGRectMake(0, y, KScreenWidth, 50);
-        
+        self.backgroundColor = [UIColor customColorWithString:@"fafafa"];
         [self addSubview:self.vipInfoLabel];
         [self addSubview:self.openButton];
         [self addSubview:self.line];

@@ -99,7 +99,7 @@
 - (void)textFieldDidChange:(id)sender {
     
     
-    if (self.accoutTextField.text.length&&self.passwordTextField.text.length)
+    if (self.accoutTextField.text.length&&[self.passwordTextField.text isValidPassword])
     {
         self.loginButton.enabled = YES;
         self.loginButton.backgroundColor = kThemeColor;
@@ -161,6 +161,8 @@
         
         [DNSession sharedSession].sex  = [resultData getString:@"gender"];
         
+        [self cheakIsVip];
+        
         [[NSNotificationCenter defaultCenter]postNotificationName:@"DNUserInfoChange" object:nil];
         
         if (0 == resultCode) {
@@ -218,6 +220,33 @@
     [request excute];
     
 }
+
+
+-(void)cheakIsVip
+{
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory checkIsVip];
+    
+    request.requestSuccess = ^(id response)
+    {
+        DLJSONObject *object = response;
+        
+        DLJSONObject * dataObject = [object getJSONObject:@"data"];
+        
+        NSString * isvip = [dataObject getString:@"isvip"];
+        
+        [DNSession sharedSession].vip = ([isvip isEqualToString:@"Y"])?YES:NO;
+        
+    };
+    
+    request.requestFaile   = ^(NSError *error)
+    {
+        
+        
+    };
+    
+    [request excute];
+}
+
 
 -(void)forgetButtonClick:(UIButton*)sender
 {

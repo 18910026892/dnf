@@ -54,8 +54,6 @@ static DNMainTabBarViewController* _myTabBarVC = nil;
     [self initSubView];
 
     [self.view addSubview:self.tabBariew];
-    
-    [self.view addSubview:self.lineView];
 
 }
 
@@ -94,6 +92,8 @@ static DNMainTabBarViewController* _myTabBarVC = nil;
     NSInteger selectindex = gesture.view.tag;
 
     [self setTabBarSelectedIndex:selectindex];
+    
+    [self jitterView:self.tabBariew.subviews[selectindex]];
 
 }
 
@@ -106,7 +106,7 @@ static DNMainTabBarViewController* _myTabBarVC = nil;
     [self addChildViewController:vc];
     
     CGFloat SubItemWidth = self.tabBariew.frame.size.width/5;
-    DNTabBarItem *subitem = [[DNTabBarItem alloc]initWithFrame:CGRectMake(SubItemWidth*number, 0,SubItemWidth, 49)];
+    DNTabBarItem *subitem = [[DNTabBarItem alloc]initWithFrame:CGRectMake(SubItemWidth*number, 0,SubItemWidth, 54)];
     subitem.item = item;
     subitem.userInteractionEnabled = YES;
     subitem.tag =number;
@@ -159,18 +159,32 @@ static DNMainTabBarViewController* _myTabBarVC = nil;
     
     if(hidden){
         
-        self.tabBariew.frame = CGRectMake(0,KScreenHeight+9 ,KScreenWidth,49);
+        self.tabBariew.frame = CGRectMake(0,KScreenHeight+6,KScreenWidth,54);
    
         self.lineView.hidden = YES;
         
     }else{
         
-        self.tabBariew.frame = CGRectMake(0,KScreenHeight-49 ,KScreenWidth, 49);
+        self.tabBariew.frame = CGRectMake(0,KScreenHeight-54 ,KScreenWidth, 54);
     
         self.lineView.hidden = NO;
     }
     [UIView commitAnimations];
 }
+
+// 抖动动画
+-(void)jitterView:(DNTabBarItem*)subitem
+{
+    CABasicAnimation*pulse = [CABasicAnimation animationWithKeyPath:@"transform.scale"];
+    pulse.timingFunction= [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
+    pulse.duration = 0.15;
+    pulse.repeatCount= 1;
+    pulse.autoreverses= YES;
+    pulse.fromValue= [NSNumber numberWithFloat:0.85];
+    pulse.toValue= [NSNumber numberWithFloat:1.15];
+    [[subitem.iconImageView layer]addAnimation:pulse forKey:nil];
+}
+
 
 
 #pragma mark - Getters and Setters
@@ -179,22 +193,19 @@ static DNMainTabBarViewController* _myTabBarVC = nil;
     if (!_tabBariew) {
         
         _tabBariew = [[UIView alloc] init];
-        _tabBariew.frame = CGRectMake(0,KScreenHeight-49, KScreenWidth, 49);
+        _tabBariew.frame = CGRectMake(0,KScreenHeight-54, KScreenWidth,54);
         _tabBariew.userInteractionEnabled = YES;
         _tabBariew.backgroundColor = [[UIColor customColorWithString:@"#FAFAFA"] colorWithAlphaComponent:0.96];
         
+        
+        
+        _tabBariew.layer.shadowColor = [UIColor grayColor].CGColor;//shadowColor阴影颜色
+        _tabBariew.layer.shadowOffset = CGSizeMake(0,-6);//shadowOffset阴影偏移,x向右偏移4，y向下偏移4，默认(0, -3),这个跟shadowRadius配合使用
+        _tabBariew.layer.shadowOpacity = 0.1;//阴影透明度，默认0
+        _tabBariew.layer.shadowRadius = 6;//阴影半径，默认3
+ 
     }
     return _tabBariew;
-}
--(UIView*)lineView
-{
-    if(!_lineView)
-    {
-        _lineView = [[UIView alloc]init];
-        _lineView.frame = CGRectMake(0, KScreenHeight-49.5,KScreenWidth,0.5);
-        _lineView.backgroundColor = [[UIColor customColorWithString:@"000000"] colorWithAlphaComponent:0.3];
-    }
-    return _lineView;
 }
 
 /*

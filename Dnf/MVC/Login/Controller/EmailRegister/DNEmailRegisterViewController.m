@@ -33,6 +33,8 @@
 
 @property(nonatomic,strong)UIButton * nextBtn;
 
+@property(nonatomic,strong)UILabel * promptLabel;
+
 @end
 
 @implementation DNEmailRegisterViewController
@@ -57,6 +59,7 @@
     [self.view addSubview:self.passwordImageView];
     [self.view addSubview:self.passWordTextField];
     [self.view addSubview:self.showPasswordButton];
+    [self.view addSubview:self.promptLabel];
     [self.view addSubview:self.accountImageView];
     [self.view addSubview:self.nickNameTextField];
     [self.view addSubview:self.nextBtn];
@@ -298,7 +301,7 @@
 -(DNTextField*)validationTextField
 {
     if (!_validationTextField) {
-        _validationTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,209, KScreenWidth-200,27)];
+        _validationTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,209, KScreenWidth-190,27)];
         _validationTextField.placeholder = @"验证码";
         _validationTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _validationTextField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -361,6 +364,19 @@
     return _passWordTextField;
     
 }
+
+-(UILabel*)promptLabel
+{
+    if (!_promptLabel) {
+        _promptLabel = [[UILabel alloc]initWithFrame:CGRectMake(78, 287+36, KScreenWidth-100, 16)];
+        _promptLabel.text = @"密码长度为6至20个字";
+        _promptLabel.font = [UIFont fontWithName:TextFontName_Light size:12];
+        _promptLabel.textColor = [UIColor customColorWithString:@"999999"];
+    }
+    return _promptLabel;
+}
+
+
 
 -(UIButton*)showPasswordButton
 {

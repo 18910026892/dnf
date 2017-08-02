@@ -96,7 +96,21 @@
 +(nonnull DLHttpsBusinesRequest*)addCollecionResource:(nonnull NSString*)resource
                                         relationid:(nonnull NSString*)relationid;
 
-+(nonnull DLHttpsBusinesRequest*)recommendVideo;
++(nonnull DLHttpsBusinesRequest*)recommendVideoResource:(nonnull NSString*)resource
+                                        relationid:(nonnull NSString*)relationid;
+
 +(nonnull DLHttpsBusinesRequest*)getPhoto:(nonnull NSString*)albumid;
+
+
+//充值相关
++(nonnull DLHttpsBusinesRequest*)topUpWithSource:(nonnull NSString*)source
+                                          amount:(nonnull NSString*)amount
+                                          userid:(nonnull NSString*)userToken
+                                        currency:(nonnull NSString*)currency
+                                       productid:(nonnull NSString*)productid;
+
+
++(nonnull DLHttpsBusinesRequest*)alipayPayWithOrderId:(nonnull NSString *)orderId
+                                            andStatus:(nonnull NSString *)status;
 @end
 

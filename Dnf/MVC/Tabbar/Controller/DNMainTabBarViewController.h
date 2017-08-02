@@ -14,7 +14,7 @@
 #import "DNVideoViewController.h"
 #import "DNVRViewController.h"
 #import "DNPartyViewController.h"
-@interface DNMainTabBarViewController : UITabBarController<UITabBarControllerDelegate>
+@interface DNMainTabBarViewController : UITabBarController<UITabBarControllerDelegate,CAAnimationDelegate>
 {
     //标签元素
     DNTabBarItem *tempSelectItem;

@@ -8,8 +8,12 @@
 
 #import "DNTopUpViewController.h"
 #import "DNLoginViewController.h"
+#import <AlipaySDK/AlipaySDK.h>
 @interface DNTopUpViewController ()
 
+@property(nonatomic,copy)NSString * orderid;
+@property(nonatomic,copy)NSString * money;
+@property(nonatomic,copy)NSString * productid;
 @end
 
 @implementation DNTopUpViewController
@@ -19,9 +23,9 @@
     // Do any additional setup after loading the view.
     [self creatUserInterface];
     [self operationData];
-    
- 
+
 }
+
 
 -(void)setFormMenu:(BOOL)formMenu
 {
@@ -131,8 +135,103 @@
     }else
     {
         NSLog(@"购买");
+        [self creatOrder:topUpModel];
+        
     }
 }
+
+-(void)creatOrder:(DNTopUpModel*)topUpModel
+{
+    _money = [NSString stringWithFormat:@"%@",topUpModel.price];
+    _productid = [NSString stringWithFormat:@"%ld",(long)topUpModel.id];
+    
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory topUpWithSource:@"alipay" amount:_money userid:[DNSession sharedSession].token currency:@"CNY" productid:_productid];
+    
+    request.requestSuccess = ^(id response){
+        
+        
+        DLJSONObject * object = response;
+        
+        DLJSONObject * dataObject = [object getJSONObject:@"data"];
+        
+        _orderid = [dataObject getString:@"orderid"];
+        
+        NSString * orderStr = [dataObject getString:@"alipayStr"];
+        
+        [self zhifubaoMethod:orderStr];
+        
+
+    };
+    
+    request.requestFaile = ^(NSError *error)
+    {
+        
+        
+    };
+    
+    [request excute];
+}
+
+#pragma mark
+#pragma mark ===========AliPay=============
+//支付宝
+-(void)zhifubaoMethod:(NSString*)payorder;
+{
+    NSLog(@"调起支付宝");
+    
+    BOOL hadInstalledAlipay = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"alipay://"]];
+    
+    if (hadInstalledAlipay) {
+        NSString *appScheme = @"dnfAliPay";
+        
+
+        [[AlipaySDK defaultService] payOrder:payorder fromScheme:appScheme callback:^(NSDictionary *resultDic) {
+            NSLog(@"resultDic = %@",resultDic);
+  
+            [self alipayResult:resultDic];
+         
+        }];
+    }else if (!hadInstalledAlipay)
+    {
+        NSLog(@"没安装支付宝");
+        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您的手机未安装支付宝客户端，请先安装" delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
+        
+        [alert show];
+        
+    }
+ 
+}
+
+
+-(void)alipayResult:(NSDictionary*)resultDic
+{
+    NSString *message = @"";
+    switch([[resultDic objectForKey:@"resultStatus"] integerValue])
+    {
+        case 9000:message = @"订单支付成功";break;
+        case 8000:message = @"正在处理中";break;
+        case 4000:message = @"订单支付失败";break;
+        case 6001:message = @"用户中途取消";break;
+        case 6002:message = @"网络连接错误";break;
+        default:message = @"未知错误";
+
+            
+    }
+    
+    if ([[resultDic objectForKey:@"resultStatus"] integerValue] ==9000) {
+        [DNSession sharedSession].vip = YES;
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"DNReloadWebView" object:nil];
+        
+    }
+    
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+    [alert addAction:[UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleCancel handler:nil]];
+    [self.navigationController presentViewController:alert animated:YES completion:nil];
+
+    
+    
+}
+
 
 -(NSMutableArray*)dataArray
 {
@@ -150,7 +249,8 @@
         _tableView.delegate=self;
         _tableView.dataSource=self;
         _tableView.backgroundColor=[UIColor clearColor];
-
+        _tableView.separatorColor = [UIColor customColorWithString:@"eeeeee"];
+        
     }
     return _tableView;
 }

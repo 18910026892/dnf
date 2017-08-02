@@ -141,7 +141,7 @@
         _timeLabel.frame = CGRectMake(self.width-40, self.height-18, 40, 18);
         _timeLabel.hidden = YES;
         _timeLabel.textColor = [UIColor whiteColor];
-        _timeLabel.textAlignment = NSTextAlignmentRight;
+        _timeLabel.textAlignment = NSTextAlignmentCenter;
         _timeLabel.font = [UIFont fontWithName:TextFontName_Light size:11];
         UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_timeLabel.bounds byRoundingCorners:UIRectCornerTopLeft cornerRadii:CGSizeMake(5, 5)];
         CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];

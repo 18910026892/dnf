@@ -48,6 +48,12 @@
 
 //收藏图片数组
 @property(nonatomic,strong)NSMutableArray * collectionImageArray;
+
+
+@property(nonatomic,strong)UIView * guideView;
+@property(nonatomic,strong)UIImageView * guideImageView,*guideImageView1;
+@property(nonatomic,strong)UILabel * guideLabel,*guideLabel1,*guideLabel2;
+
 @end
 
 @implementation DNPersonalViewController
@@ -68,8 +74,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userInfoChange) name:@"DNUserInfoChange" object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkHasMessage) name:@"DNShowLeftViewController" object:nil];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(leftControllerShow) name:@"DNShowLeftViewController" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(operationData) name:@"DNRecordListChange" object:nil];
 }
@@ -187,8 +192,25 @@
     self.nickNameLabel.text = [DNSession sharedSession].nickname;
 }
 
+-(void)leftControllerShow
+{
+    
+    NSLog(@"left controller show");
+    
+   if ([[NSUserDefaults standardUserDefaults] valueForKey:@"DNPersonalGuide"]==NO) {
+       
+       [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"DNPersonalGuide"];
+       
+        [[UIApplication sharedApplication].keyWindow addSubview:self.guideView];
+   }
+    
+    [self checkHasMessage];
+}
+
 -(void)checkHasMessage
 {
+    
+    
  
     DLHttpsBusinesRequest *request = [DLHttpRequestFactory checkHasNewMessage];
     
@@ -480,15 +502,110 @@
 {
     if (buttonIndex == 1)
     {
-     
+
         [[DNSession sharedSession] removeUserInfo];
         
+
         //显示主视图
         [self.xl_sldeMenu showRootViewControllerAnimated:true];
  
     }
 
 }
+-(void)guideOnTap:(UITapGestureRecognizer *)gesture
+{
+    
+
+    [self.guideView removeFromSuperview];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"DNPersonalGuide"];
+
+    
+}
+
+
+-(UIView*)guideView
+{
+    if (!_guideView) {
+        _guideView = [[UIView alloc]init];
+        _guideView.frame = CGRectMake(0, 0, KScreenWidth, KScreenHeight);
+        _guideView.backgroundColor  = [[UIColor blackColor] colorWithAlphaComponent:0.7];
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(guideOnTap:)];
+        [_guideView addGestureRecognizer:tapGesture];
+        [_guideView addSubview:self.guideImageView];
+        [_guideView addSubview:self.guideImageView1];
+        [_guideView addSubview:self.guideLabel];
+        [_guideView addSubview:self.guideLabel1];
+        [_guideView addSubview:self.guideLabel2];
+        
+    }
+    return _guideView;
+}
+
+-(UIImageView*)guideImageView
+{
+    if (!_guideImageView) {
+        _guideImageView = [[UIImageView alloc]init];
+        _guideImageView.frame = CGRectMake(KScreenWidth*0.8/2-40, 123, 80, 80);
+        _guideImageView.image = [UIImage imageNamed:@"guide_click_on"];
+        
+    }
+    return _guideImageView;
+}
+
+-(UIImageView*)guideImageView1
+{
+    if (!_guideImageView1) {
+        _guideImageView1 = [[UIImageView alloc]init];
+        _guideImageView1.frame = CGRectMake((KScreenWidth-293)/2,KScreenHeight-82-50-16,293, 82);
+        _guideImageView1.image = [UIImage imageNamed:@"guide_bubble"];
+    }
+    return _guideImageView1;
+}
+
+
+-(UILabel*)guideLabel
+{
+    if (!_guideLabel) {
+        _guideLabel = [[UILabel alloc]init];
+        _guideLabel.frame = CGRectMake(KScreenWidth/2-100, KScreenHeight-98-21-16, 201, 21);
+        _guideLabel.text = @"点击头像更换封面，编辑资料";
+        _guideLabel.font = [UIFont systemFontOfSize:15];
+        _guideLabel.textAlignment = NSTextAlignmentCenter;
+        _guideLabel.textColor = [UIColor whiteColor];
+        
+    }
+    return _guideLabel;
+}
+
+
+-(UILabel*)guideLabel1
+{
+    if (!_guideLabel1) {
+        _guideLabel1 = [[UILabel alloc]init];
+        _guideLabel1.frame = CGRectMake(KScreenWidth/2-131, 213, 262, 21);
+        _guideLabel1.text = @"点击头像更换封面，编辑资料";
+        _guideLabel1.font = [UIFont systemFontOfSize:15];
+        _guideLabel1.textAlignment = NSTextAlignmentCenter;
+        _guideLabel1.textColor = [UIColor whiteColor];
+        
+    }
+    return _guideLabel1;
+}
+
+-(UILabel*)guideLabel2
+{
+    if (!_guideLabel2) {
+        _guideLabel2 = [[UILabel alloc]init];
+        _guideLabel2.frame = CGRectMake(50,KScreenHeight-28-34,100, 18);
+        _guideLabel2.text = @"清空浏览记录";
+        _guideLabel2.font = [UIFont systemFontOfSize:13];
+        _guideLabel2.textAlignment = NSTextAlignmentLeft;
+        _guideLabel2.textColor = [UIColor whiteColor];
+        
+    }
+    return _guideLabel2;
+}
+
 
 
 -(UITableView*)tableView

@@ -97,18 +97,9 @@ static DLJSONObject *ShareSDKKeys; //地址列表
                                      case SSDKPlatformTypeWechat:
                                      {
                                      
+                                         [appInfo SSDKSetupWeChatByAppId:[ShareSDKKeys optString:@"k_appKey_weixinAppID" defaultValue:nil]
+                                                               appSecret:[ShareSDKKeys optString:@"k_appKey_weixinAppSecret" defaultValue:nil]];
                                          
-                                         if ( [[DNSession sharedSession]isLogin] == YES)
-                                         {
-                                             [appInfo SSDKSetupWeChatByAppId:@"wxd6e4cd2feff4a7ed"
-                                                                   appSecret:@"a3f51154e37c0f85f10988fc402b965e"];
-                                             
-                                         }else
-                                         {
-                                             [appInfo SSDKSetupWeChatByAppId:[ShareSDKKeys optString:@"k_appKey_weixinAppID" defaultValue:nil]
-                                                                   appSecret:[ShareSDKKeys optString:@"k_appKey_weixinAppSecret" defaultValue:nil]];
-                                             
-                                         }
                                          
                                      }
                                          break;

@@ -157,6 +157,7 @@ static DNSession *sharedManager=nil;
 
 -(NSString*)token
 {
+
     return [self getValueForKey:kSessionToken];
 }
 
@@ -223,7 +224,7 @@ static DNSession *sharedManager=nil;
 
 
 
--(BOOL)isVip
+-(BOOL)vip
 {
     return [self getBoolValueForKey:kSeesionVip];
 }

@@ -45,21 +45,21 @@
 	<key>ShareSDKAppKeys</key>
 	<dict>
 		<key>k_appKey_shareSDKAppSecret</key>
-		<string>ef774f924a5a72465f09fd8257b8df4c</string>
+		<string>db86c07e64e0324a0ffc4a29cd4f863c</string>
 		<key>k_appKey_shareSDKAppKey</key>
-		<string>1774be6d7a062</string>
+		<string>1fbd2b8f2aa06</string>
 		<key>k_appKey_QQAppID</key>
-		<string>1105719522</string>
+		<string>1106282880</string>
 		<key>k_appKey_QQAppKey</key>
-		<string>0q1r5wIM1oReaJVL</string>
+		<string>LaIGkgegOiYwrOnS</string>
 		<key>k_appKey_sinaAppKey</key>
-		<string>2039695421</string>
+		<string>830815707</string>
 		<key>k_appKey_sinaAppSecret</key>
-		<string>2f331984ab156717d17bf844a3b9737e</string>
+		<string>3d5367a198f996a75bf041117b2be1c5</string>
 		<key>k_appKey_weixinAppID</key>
-		<string>wxfc014246ac3d2bca</string>
+		<string>wxe64807d25a552a65</string>
 		<key>k_appKey_weixinAppSecret</key>
-		<string>1b9cb123c4a85a6565c9832cb113b72e</string>
+		<string>b22a878c995e437536fe70e59a48e89c</string>
 	</dict>
 	<key>MyProfileCell</key>
 	<array>

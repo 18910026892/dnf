@@ -199,22 +199,12 @@
         [_customNavigationBar addSubview:self.rightButton];
         [_customNavigationBar addSubview:self.leftButton];
         [_customNavigationBar addSubview:self.titleLabel];
-        [_customNavigationBar addSubview:self.lineView];
+      
         
     }
     return _customNavigationBar;
 }
 
--(UIView*)lineView
-{
-    if(!_lineView)
-    {
-        _lineView = [[UIView alloc]init];
-        _lineView.frame = CGRectMake(0, 63.5, KScreenWidth, 0.5);
-        _lineView.backgroundColor = [[UIColor customColorWithString:@"000000"] colorWithAlphaComponent:0.3];
-    }
-    return _lineView;
-}
 
 -(UIButton*)leftButton
 {

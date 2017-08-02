@@ -170,7 +170,14 @@ static NSString     *DLMainServerAddress = @"";
 {
     NSMutableDictionary *mDic = [[NSMutableDictionary alloc]init];
     
-    NSString *tocken = [NSString stringWithFormat:@"token=%@",[DNSession sharedSession].token];
+    NSString *tocken;
+    
+    if (IsStrEmpty([DNSession sharedSession].token)) {
+        tocken = @"";
+    }else
+    {
+        tocken = [NSString stringWithFormat:@"token=%@",[DNSession sharedSession].token];
+    }
     
     [mDic setValue:tocken forKey:@"Cookie"];
     

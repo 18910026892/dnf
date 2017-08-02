@@ -10,6 +10,7 @@
 #import "DNTopUpViewController.h"
 #import "DNPlayerViewController.h"
 #import "DNSearchViewController.h"
+#import "DNLoginViewController.h"
 @interface DNWebViewController ()
 
 @end
@@ -30,6 +31,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
+    
     [self creatUserInterface];
     // Do any additional setup after loading the view.
     [self setNavTitle:_webTitle];
@@ -44,13 +47,27 @@
     [self registerMethodToJs];
     
     
+    //3 注册通知
+    [self addNotifi];
+    
 }
-
--(void)viewWillLayoutSubviews
+-(void)dealloc
 {
-    [super viewWillLayoutSubviews];
-
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
+
+-(void)addNotifi
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadWebView) name:@"DNReloadWebView" object:nil];
+}
+
+
+-(void)reloadWebView
+{
+    [self.webView reload];
+}
+
+
 -(void)setCookie
 {
     if (IsStrEmpty([DNSession sharedSession].token)) {
@@ -153,30 +170,68 @@
             
         }else if([type isEqualToString:@"toFavorite"])
         {
-            NSString * resource = [obj getString:@"resource"];
-            NSString * relationid;
-            if ([resource isEqualToString:@"video"]) {
-                relationid = [NSString stringWithFormat:@"%@",[obj getString:@"videoid"]];
-            }else if([resource isEqualToString:@"vr"])
+            
+            if ([[DNSession sharedSession] isLogin]==NO) {
+                
+                UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"您还没有登录，请先完成登录" preferredStyle:UIAlertControllerStyleAlert];
+                
+                // Create the actions.
+                UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                    NSLog(@"The \"Okay/Cancel\" alert's cancel action occured.");
+                }];
+                
+                [cancelAction setValue:[UIColor blackColor] forKey:@"_titleTextColor"];
+                
+                UIAlertAction *otherAction = [UIAlertAction actionWithTitle:@"登录" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                    NSLog(@"The \"Okay/Cancel\" alert's other action occured.");
+                    DNLoginViewController * login = [DNLoginViewController viewController];
+                    [self.navigationController pushViewController:login animated:YES];
+                    
+                }];
+                
+                [otherAction setValue:kThemeColor forKey:@"_titleTextColor"];
+                
+                
+                // Add the actions.
+                [alertController addAction:cancelAction];
+                [alertController addAction:otherAction];
+                
+                [self presentViewController:alertController animated:YES completion:nil];
+                
+            }else
             {
-                relationid = [NSString stringWithFormat:@"%@",[obj getString:@"vrid"]];
+                NSString * resource = [obj getString:@"resource"];
+                NSString * relationid;
+                if ([resource isEqualToString:@"video"]) {
+                    relationid = [NSString stringWithFormat:@"%@",[obj getString:@"videoid"]];
+                }else if([resource isEqualToString:@"vr"])
+                {
+                    relationid = [NSString stringWithFormat:@"%@",[obj getString:@"vrid"]];
+                }else if([resource isEqualToString:@"party"])
+                {
+                    relationid = [NSString stringWithFormat:@"%@",[obj getString:@"partyid"]];
+                }
+                
+                DLHttpsBusinesRequest *request = [DLHttpRequestFactory addCollecionResource:resource relationid:relationid];
+                
+                request.requestSuccess = ^(id response)
+                {
+                    
+                    responseCallback(@"0");
+                };
+                
+                request.requestFaile   = ^(NSError *error)
+                {
+                    
+                    responseCallback(@"1");
+                };
+                
+                [request excute];
             }
+
             
-            DLHttpsBusinesRequest *request = [DLHttpRequestFactory addCollecionResource:resource relationid:relationid];
-            
-            request.requestSuccess = ^(id response)
-            {
-           
-                responseCallback(@"0");
-            };
-            
-            request.requestFaile   = ^(NSError *error)
-            {
-               
-                 responseCallback(@"1");
-            };
-            
-            [request excute];
+       
+         
         }
         
     }];
@@ -195,7 +250,7 @@
 
     if ([vip isEqualToString:@"N"]) {
    
-        [self getPhotoData:albumid relationid:relationid];
+        [self getPhotoData:albumid];
         
     }else
     {
@@ -227,7 +282,7 @@
         }else
             
         {
-               [self getPhotoData:albumid relationid:relationid];
+               [self getPhotoData:albumid];
         }
     }
     
@@ -237,8 +292,8 @@
 }
 
 -(void)getPhotoData:(NSString*)albumid
-         relationid:(NSString*)relationid
 {
+    
     DLHttpsBusinesRequest *request = [DLHttpRequestFactory getPhoto:albumid];
     
     request.requestSuccess = ^(id response)
@@ -249,7 +304,7 @@
         
         DLJSONArray * photo = [dataObject getJSONArray:@"photo"];
         
-        [self showPhoto:photo relationid:relationid];
+        [self showPhoto:photo];
         
         
     };
@@ -263,7 +318,7 @@
 }
 
 
--(void)showPhoto:(DLJSONArray * )photo relationid:(NSString*)relationid
+-(void)showPhoto:(DLJSONArray * )photo
 {
     //1.创建图片浏览器
     MJPhotoBrowser *brower = [[MJPhotoBrowser alloc] init];
@@ -307,7 +362,14 @@
         [self.navigationController pushViewController:player animated:YES];
     }else
     {
-        if ([DNSession sharedSession].vip==NO) {
+        
+        if ([DNSession sharedSession].vip==YES) {
+            DNPlayerViewController * player = [DNPlayerViewController viewController];
+            player.enterType = web;
+            player.recordModel = recordModel;
+            [self.navigationController pushViewController:player animated:YES];
+        }else
+        {
             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"VIP购买" message:@"非VIP用户，无法查看以下内容\n请购买VIP后再来观看" preferredStyle:UIAlertControllerStyleAlert];
             
             // Create the actions.
@@ -330,15 +392,8 @@
             // Add the actions.
             [alertController addAction:cancelAction];
             [alertController addAction:otherAction];
-            
             [self presentViewController:alertController animated:YES completion:nil];
-        }else
-            
-        {
-            DNPlayerViewController * player = [DNPlayerViewController viewController];
-            player.enterType = web;
-            player.recordModel = recordModel;
-            [self.navigationController pushViewController:player animated:YES];
+
         }
     }
     
@@ -405,6 +460,7 @@
 
 -(void)creatUserInterface
 {
+    self.view.backgroundColor = [UIColor customColorWithString:@"fafafa"];
     [self.view addSubview:self.webView];
     [self initProgressView];
 }
@@ -412,8 +468,8 @@
 -(UIWebView*)webView
 {
     if (!_webView) {
-        _webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 64, KScreenWidth, KScreenHeight-113)];
-        _webView.backgroundColor = [UIColor clearColor];
+        _webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 64, KScreenWidth, KScreenHeight-64-54)];
+        _webView.backgroundColor = [UIColor customColorWithString:@"fafafa"];
         _webView.delegate = self;
         _webView.opaque  = NO;
         _webView.tag = 1;

@@ -51,7 +51,7 @@
 {
     if(!_titleLabel)
     {
-        _titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, self.frame.size.height-17, self.frame.size.width, 15)];
+        _titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, self.frame.size.height-19, self.frame.size.width, 13)];
         _titleLabel.textAlignment = NSTextAlignmentCenter;
         _titleLabel.font = [UIFont fontWithName:TextFontName size:10];
     }
@@ -61,7 +61,7 @@
 -(UIImageView*)iconImageView
 {
     if (!_iconImageView) {
-        _iconImageView =[[UIImageView alloc]initWithFrame:CGRectMake(self.frame.size.width/2-10,9, 20,20)];
+        _iconImageView =[[UIImageView alloc]initWithFrame:CGRectMake(self.frame.size.width/2-11,8, 22,22)];
         _iconImageView.userInteractionEnabled = NO;
         
     }

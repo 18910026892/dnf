@@ -8,7 +8,6 @@
 #import "MJPhoto.h"
 #import "MJPhotoView.h"
 #import "MJPhotoToolbar.h"
-#import "MJPhotoCollectionViewCell.h"
 #import <SDWebImage/SDWebImagePrefetcher.h>
 #import "DLShareView.h"
 #import "NSString+DLPictureChoice.h"
@@ -27,6 +26,10 @@
 @property (strong, nonatomic) UICollectionView * collectionView;
 @property (nonatomic, assign) BOOL isBarShowing;
 
+@property (nonatomic, assign) BOOL guide;
+@property(nonatomic,strong)UIView * guideView;
+@property(nonatomic,strong)UIImageView * guideImageView;
+@property(nonatomic,strong)UILabel * guideLabel;
 @end
 
 @implementation MJPhotoBrowser
@@ -38,7 +41,7 @@
     self = [super init];
     if (self) {
         _showSaveBtn = YES;
-        
+        _guide = NO;
         
     }
     return self;
@@ -55,6 +58,9 @@
      
         self.closeButton.alpha = 0.0;
         self.shareButton.alpha = 0.0;
+        self.collectionView.y = KScreenHeight;
+        self.toolbar.y = self.view.frame.size.height - 27;
+        
     } completion:^(BOOL finished) {
         self.isBarShowing = NO;
     }];
@@ -68,6 +74,7 @@
     [UIView animateWithDuration:0.3 animations:^{
         self.closeButton.alpha = 1.0;
         self.shareButton.alpha = 1.0;
+    
         
     } completion:^(BOOL finished) {
         self.isBarShowing = YES;
@@ -121,13 +128,73 @@
                                     backColor:nil];
 }
 
+-(void)guideOnTap:(UITapGestureRecognizer *)gesture
+{
+    
+    if (_guide==NO) {
+
+        _guide = YES;
+        
+         self.guideLabel.text = @"向上拖动显示预览";
+         self.guideImageView.image = [UIImage imageNamed:@"guide_upwards"];
+        
+    }else
+    {
+        
+        [self.guideView removeFromSuperview];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"DNPhotoControllerGuide"];
+    }
+    
+}
+
+
 #pragma mark - get M
+
+-(UIView*)guideView
+{
+    if (!_guideView) {
+        _guideView = [[UIView alloc]init];
+        _guideView.backgroundColor  = [[UIColor blackColor] colorWithAlphaComponent:0.7];
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(guideOnTap:)];
+        [_guideView addGestureRecognizer:tapGesture];
+        [_guideView addSubview:self.guideImageView];
+        [_guideView addSubview:self.guideLabel];
+ 
+    }
+    return _guideView;
+}
+
+-(UIImageView*)guideImageView
+{
+    if (!_guideImageView) {
+        _guideImageView = [[UIImageView alloc]init];
+        _guideImageView.image = [UIImage imageNamed:@"guide_click_on"];
+        
+    }
+    return _guideImageView;
+}
+
+
+-(UILabel*)guideLabel
+{
+    if (!_guideLabel) {
+        _guideLabel = [[UILabel alloc]init];
+        _guideLabel.text = @"单机屏幕呼出菜单";
+        _guideLabel.font = [UIFont systemFontOfSize:15];
+        _guideLabel.textAlignment = NSTextAlignmentCenter;
+        _guideLabel.textColor = [UIColor whiteColor];
+        
+    }
+    return _guideLabel;
+}
+
+
 
 -(UIButton*)closeButton
 {
     if (!_closeButton) {
         _closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _closeButton.frame = CGRectMake(15, 27, 30, 30);
+        _closeButton.frame = CGRectMake(5, 17, 50, 50);
         _closeButton.alpha = 0.0;
         [_closeButton setImage:[UIImage imageNamed:@"photo_close"] forState:UIControlStateNormal];
         [_closeButton addTarget:self action:@selector(closeButtonClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -205,7 +272,7 @@
         _collectionView.scrollEnabled = YES;
         _collectionView.backgroundColor = [UIColor clearColor];
         _collectionView.allowsMultipleSelection = NO;
-        [_collectionView registerClass:[MJPhotoCollectionViewCell class] forCellWithReuseIdentifier:@"MJPhotoCollectionViewCell"];
+        [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"UICollectionViewCell"];
     
     }
     return _collectionView;
@@ -240,6 +307,15 @@
         [self.view addSubview:self.collectionView];
         [self updateTollbarState];
         [self showPhotos];
+        
+        
+       if ([[NSUserDefaults standardUserDefaults] valueForKey:@"DNPhotoControllerGuide"]==NO) {
+          
+            self.guideView.frame = self.view.bounds;
+            self.guideImageView.frame = CGRectMake(CGRectGetMidX(self.view.bounds)-40, CGRectGetMidY(self.view.bounds)-40, 80, 80);
+            self.guideLabel.frame = CGRectMake(CGRectGetMidX(self.view.bounds)-62, CGRectGetMidY(self.view.bounds)+50, 124, 21);
+            [self.view addSubview:self.guideView];
+       }
     }
     //渐变显示
     self.view.alpha = 0;
@@ -391,6 +467,8 @@
 #pragma mark - MJPhotoViewDelegate
 - (void)photoViewSingleTap:(MJPhotoView *)photoView
 {
+
+    
     if (self.isBarShowing) {
         [self animateHide];
     } else {
@@ -404,26 +482,38 @@
 }
 - (void)showPhotoCollectionView
 {
-    [UIView animateWithDuration:0.3 animations:^{
+    
+    if (self.collectionView.y == KScreenHeight) {
         
-        self.collectionView.y = KScreenHeight-114;
-        self.toolbar.y = self.view.frame.size.height - 27-114;
+        self.collectionView.alpha = 1.0;
+        [UIView animateWithDuration:0.3 animations:^{
+            
+            self.collectionView.y = KScreenHeight-114;
+            self.toolbar.y = self.view.frame.size.height - 27-114;
+      
+            
+        } completion:^(BOOL finished) {
+            
+        }];
+    }
+    
 
-        
-    } completion:^(BOOL finished) {
-
-    }];
 }
 - (void)hidePhotoCollectionView
 {
-    [UIView animateWithDuration:0.3 animations:^{
-        
-        self.collectionView.y = KScreenHeight;
-        self.toolbar.y = self.view.frame.size.height - 27;
-        
-    } completion:^(BOOL finished) {
-        
-    }];
+    
+    if (self.collectionView.y == KScreenHeight-114) {
+        [UIView animateWithDuration:0.3 animations:^{
+            
+            self.collectionView.y = KScreenHeight;
+            self.toolbar.y = self.view.frame.size.height - 27;
+            
+        } completion:^(BOOL finished) {
+            
+        }];
+    }
+    
+ 
 }
 
 #pragma mark - UIScrollView Delegate
@@ -463,18 +553,25 @@
 {
     
     
-    MJPhotoCollectionViewCell * cell;
+    UICollectionViewCell * cell;
     
     if(!cell)
     {
-        cell= (MJPhotoCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:@"MJPhotoCollectionViewCell" forIndexPath:indexPath];
+        cell= (UICollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:@"UICollectionViewCell" forIndexPath:indexPath];
     }
     
-    cell.tag = 1000+indexPath.row;
-  
-
+    
+    UIImageView * cover = [[UIImageView alloc]init];
+    cover.frame = CGRectMake(0, 0, 71,114);
+    [cell.contentView addSubview:cover];
+    
+    UIView * maskView = [[UIView alloc]initWithFrame:CGRectMake(0, 0,71,114)];
+    maskView.backgroundColor = HexRGBAlpha(0x000000, .2);
+    maskView.tag = 2000+indexPath.row;
+    [cell.contentView addSubview:maskView];
+    
     MJPhoto *photo= _photos[indexPath.row];
-    [cell.coverImageView sd_setImageWithURL:photo.url];
+    [cover sd_setImageWithURL:photo.url];
  
     return cell;
     
@@ -488,7 +585,8 @@
     cell.layer.borderWidth = 1;
     cell.layer.borderColor = kThemeColor.CGColor;
     cell.layer.masksToBounds = YES;
-    
+    UIView * maskView  = (UIView*)[cell viewWithTag:2000+indexPath.row];
+    maskView.hidden = YES;
     
     self.toolbar.currentPhotoIndex = indexPath.row;
     [self setCurrentPhotoIndex:indexPath.row];
@@ -500,6 +598,9 @@
 - (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath{
     UICollectionViewCell *cell =  [collectionView cellForItemAtIndexPath:indexPath];
     cell.layer.borderWidth = 0;
+    
+    UIView * maskView  = (UIView*)[cell viewWithTag:2000+indexPath.row];
+    maskView.hidden = NO;
     
 }
 

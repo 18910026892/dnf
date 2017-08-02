@@ -7,10 +7,9 @@
 //
 
 #import "DNHomePageViewController.h"
-#import "DNPlayerViewController.h"
 #import "DNSearchViewController.h"
 #import "DNLoginViewController.h"
-#import "DNPerfectInfoViewController.h"
+
 @interface DNHomePageViewController ()
 
 @property(nonatomic,strong)UIImageView * navlogoView;
@@ -33,6 +32,11 @@
 
 }
 
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 -(void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
@@ -40,7 +44,10 @@
     [self fastlogin];
     [self getProductList];
     [self setupUI];
+
+
 }
+
 
 -(void)fastlogin
 {
@@ -78,7 +85,7 @@
             [[NSNotificationCenter defaultCenter]postNotificationName:@"DNUserInfoChange" object:nil];
             
             //获取vip信息
-            [self cheakIsVip];
+           [self cheakIsVip];
             
         }else
             
@@ -167,7 +174,7 @@
 
 -(void)rightButtonClick:(UIButton*)sender
 {
-    DNSearchViewController * searchVc = [DNSearchViewController viewController];
+   DNSearchViewController * searchVc = [DNSearchViewController viewController];
    [self.navigationController pushViewController:searchVc animated:YES];
 
 }
@@ -175,15 +182,16 @@
 -(void)leftButtonClick:(UIButton*)sender
 {
 
-   if ([[DNSession sharedSession] isLogin]==YES) {
-   
-        [self.xl_sldeMenu showLeftViewControllerAnimated:true];
     
-    }else
-    {
+    NSString * token = [DNSession sharedSession].token;
+    
+    if (IsStrEmpty(token)) {
         DNLoginViewController * loginVc = [DNLoginViewController viewController];
         [self.navigationController pushViewController:loginVc animated:YES];
-   }
+    }else
+    {
+       [self.xl_sldeMenu showLeftViewControllerAnimated:true];
+    }
 
 
 }

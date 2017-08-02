@@ -21,4 +21,7 @@ pod 'MOBFoundation'
 pod 'ShareSDK3/ShareSDKPlatforms/QQ'
 pod 'ShareSDK3/ShareSDKPlatforms/SinaWeibo'
 pod 'ShareSDK3/ShareSDKPlatforms/WeChat'
+
+#支付
+pod 'iOS-AlipaySDK'
 end

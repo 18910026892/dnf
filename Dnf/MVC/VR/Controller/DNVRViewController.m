@@ -7,8 +7,11 @@
 //
 
 #import "DNVRViewController.h"
-
+#import "DNSearchViewController.h"
+#import "DNLoginViewController.h"
 @interface DNVRViewController ()
+
+@property(nonatomic,strong)UIImageView * navlogoView;
 
 @end
 
@@ -23,8 +26,56 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
      self.url = MainUrl(@"vr");
-    [self setNavTitle:@"VR专区"];
+    [self setupUI];
 }
+
+-(void)setupUI
+{
+    [self.customNavigationBar addSubview:self.navlogoView];
+    
+    [self.rightButton setImage:[UIImage imageNamed:@"nav_search_normal"] forState:UIControlStateNormal];
+    
+    [self.rightButton addTarget:self action:@selector(rightButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    [self.leftButton setImage:[UIImage imageNamed:@"nav_menu_normal"] forState:UIControlStateNormal];
+    
+    [self.leftButton addTarget:self action:@selector(leftButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+
+-(void)rightButtonClick:(UIButton*)sender
+{
+    DNSearchViewController * searchVc = [DNSearchViewController viewController];
+    [self.navigationController pushViewController:searchVc animated:YES];
+    
+}
+
+-(void)leftButtonClick:(UIButton*)sender
+{
+    
+    if ([[DNSession sharedSession] isLogin]==YES) {
+        
+        [self.xl_sldeMenu showLeftViewControllerAnimated:true];
+        
+    }else
+    {
+        DNLoginViewController * loginVc = [DNLoginViewController viewController];
+        [self.navigationController pushViewController:loginVc animated:YES];
+    }
+    
+    
+}
+
+-(UIImageView*)navlogoView
+{
+    if (!_navlogoView) {
+        _navlogoView = [[UIImageView alloc]initWithFrame:CGRectMake(KScreenWidth/2-36,32, 72, 20)];
+        _navlogoView.image = [UIImage imageNamed:@"nav_logo"];
+    }
+    return _navlogoView;
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];

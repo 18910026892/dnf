@@ -303,7 +303,7 @@
 
     DLShareModel *shareModel = [[DLShareModel alloc]init];
     shareModel.shareImage = [UIImage imageNamed:@"share_icon"];
-    shareModel.shareUrl    = @"http://xianyunys.com/shipin";
+    shareModel.shareUrl    = MainUrl(@"share");
     shareModel.shareContent   = @"身边的小伙伴都下载了大妞范，你还在等什么？";
     shareModel.shareId     = @"1";
     shareModel.shareTarget = target;

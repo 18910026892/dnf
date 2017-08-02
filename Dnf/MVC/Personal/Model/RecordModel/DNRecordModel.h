@@ -20,6 +20,8 @@
 
 @property(nonatomic,assign)NSInteger accessid;
 
+@property(nonatomic,assign)NSInteger partyid;
+
 @property(nonatomic,assign)NSInteger uid;
 
 @property(nonatomic,copy)NSString * resource;

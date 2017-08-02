@@ -282,6 +282,7 @@
     
   
     [request addParameter:@"vip" key:@"type"];
+
     request.isShowLoading = NO;
     request.isShowErrorToast = NO;
     
@@ -467,14 +468,17 @@
     request.isShowLoading = YES;
     request.isShowErrorToast = YES;
     
-    return request;
+    return request; 
 }
 
-+(nonnull DLHttpsBusinesRequest*)recommendVideo
++(nonnull DLHttpsBusinesRequest*)recommendVideoResource:(nonnull NSString*)resource
+                                             relationid:(nonnull NSString*)relationid;
 {
-    DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"msvr://recommend/video"
+    DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"msvr://recommend/next"
                                                                         method:DLHttpRequestMethodGet];
     
+    [request addParameter:resource key:@"resource"];
+    [request addParameter:relationid key:@"relationid"];
     
     [request addParameter:@"20" key:@"num"];
     request.isShowErrorToast = NO;
@@ -492,6 +496,46 @@
     
     return request;
 }
+
+
+
+
++(nonnull DLHttpsBusinesRequest*)topUpWithSource:(nonnull NSString*)source
+                                          amount:(nonnull NSString*)amount
+                                          userid:(nonnull NSString*)userToken
+                                        currency:(nonnull NSString*)currency
+                                       productid:(nonnull NSString*)productid
+
+
+{
+    DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"msvr://deposit/prepare"
+                                      
+                                                                        method:DLHttpRequestMethodGet];
+    
+    [request addParameter:source key:@"source"];
+    [request addParameter:amount key:@"amount"];
+    [request addParameter:userToken key:@"userid"];
+    [request addParameter:currency key:@"currency"];
+    [request addParameter:productid key:@"productid"];
+    request.isShowErrorToast = YES;
+    request.isShowLoading = YES;
+    
+    return request;
+}
+
+
++(nonnull DLHttpsBusinesRequest*)alipayPayWithOrderId:(nonnull NSString *)orderId
+                                            andStatus:(nonnull NSString *)status
+{
+    DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"http://api.dreamlive.tv/deposit/notify_alipay"
+                                      
+                                                                        method:DLHttpRequestMethodGet];
+    [request addParameter:orderId key:@"orderid"];
+    [request addParameter:status key:@"status"];
+    
+    return request;
+}
+
 
 
 

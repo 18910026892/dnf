@@ -65,8 +65,6 @@
 //用户生日
 @property(nonatomic,copy)NSString * birthday;
 
-
-
 //是否是vip
 @property(nonatomic,assign)BOOL vip;
 

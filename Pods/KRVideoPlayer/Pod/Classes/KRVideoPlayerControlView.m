@@ -12,11 +12,10 @@
 
 #define kThemeColor  HexRGBAlpha(0xFF6BB7, 1)
 
-static const CGFloat kVideoControlBarHeight = 60.0;
-static const CGFloat kVideoTimeLabelWidth = 100.0;
+static const CGFloat kVideoControlBarHeight = 46.0;
 static const CGFloat kVideoControlAnimationTimeinterval = 0.3;
 static const CGFloat kVideoControlTimeLabelFontSize = 10.0;
-static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
+static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 10.0;
 
 @interface KRVideoPlayerControlView () <UIGestureRecognizerDelegate>
 
@@ -29,9 +28,8 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
 @property (nonatomic, strong) UISlider *progressSlider;
 @property (nonatomic, strong) UIButton *closeButton;
 @property (nonatomic, strong) UILabel *timeLabel;
-@property (nonatomic, strong) UILabel *totalLabel;
+//@property (nonatomic, strong) UILabel *totalLabel;
 @property (nonatomic, assign) BOOL isBarShowing;
-@property (nonatomic, assign) BOOL isCollecionViewShow;
 @property (nonatomic, strong) UIActivityIndicatorView *indicatorView;
 
 
@@ -46,37 +44,44 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
     
     if (self) {
         self.backgroundColor = [UIColor clearColor];
-        [self addSubview:self.videoTitleLabel];
-        [self addSubview:self.vipButton];
+    
+        _fullScreen = NO;
+        _guide = NO;
+        
+        [self addSubview:self.topBar];
         [self addSubview:self.closeButton];
         [self addSubview:self.bottomBar];
-        [self addSubview:self.playButton];
-        [self addSubview:self.pauseButton];
+        [self.bottomBar addSubview:self.playButton];
+        [self.bottomBar addSubview:self.pauseButton];
         self.pauseButton.hidden = YES;
         [self.bottomBar addSubview:self.fullScreenButton];
         [self.bottomBar addSubview:self.shrinkScreenButton];
         self.shrinkScreenButton.hidden = YES;
         [self.bottomBar addSubview:self.progressSlider];
         [self.bottomBar addSubview:self.timeLabel];
-        [self.bottomBar addSubview:self.totalLabel];
         [self addSubview:self.indicatorView];
-      
+
+        
+        
+        [self addSubview:self.videoTitleLabel];
+        [self addSubview:self.vipButton];
         [self addSubview:self.videoCollectionView];
+      
         
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTap:)];
         tapGesture.delegate = self;
         [self addGestureRecognizer:tapGesture];
         
-
         
         UISwipeGestureRecognizer * swipeUp =  [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeGesture:)];
+        
+ 
         //设置轻扫的方向
         swipeUp.direction = UISwipeGestureRecognizerDirectionUp;
         
         UISwipeGestureRecognizer * swipeDown =  [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeGesture:)];
         //设置轻扫的方向
         swipeDown.direction = UISwipeGestureRecognizerDirectionDown;
-        
         [self addGestureRecognizer:swipeUp];
         [self addGestureRecognizer:swipeDown];
 
@@ -91,24 +96,54 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
 {
     [super layoutSubviews];
 
-    self.videoTitleLabel.frame = CGRectMake(55, 35, CGRectGetWidth(self.bounds)-175, 24);
+    self.videoTitleLabel.frame = CGRectMake(86, 35, CGRectGetWidth(self.bounds)-176, 24);
     self.vipButton.frame = CGRectMake(CGRectGetWidth(self.bounds)-15-71, 36, 71, 22);
+    self.closeButton.frame = CGRectMake(12, 24,  kVideoControlBarHeight,  kVideoControlBarHeight);
     
-    self.closeButton.frame = CGRectMake(15, 27, CGRectGetWidth(self.closeButton.bounds), CGRectGetHeight(self.closeButton.bounds));
-    self.bottomBar.frame = CGRectMake(CGRectGetMinX(self.bounds), CGRectGetHeight(self.bounds) - kVideoControlBarHeight, CGRectGetWidth(self.bounds), kVideoControlBarHeight);
-    self.playButton.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    CGFloat videoCollectionViewY= (self.fullScreen==NO)?CGRectGetHeight(self.bounds):
+    CGRectGetHeight(self.bounds) - 25;
+    self.videoCollectionView.frame = CGRectMake(0,videoCollectionViewY, CGRectGetWidth(self.bounds),115);
+
+    
+    CGFloat bottomBary= (self.fullScreen==NO)?CGRectGetHeight(self.bounds) - kVideoControlBarHeight:
+    CGRectGetHeight(self.bounds) - kVideoControlBarHeight/2-50;
+    self.bottomBar.frame = CGRectMake(CGRectGetMinX(self.bounds), bottomBary, CGRectGetWidth(self.bounds), kVideoControlBarHeight);
+    
+    
+    
+    self.topBar.frame = CGRectMake(CGRectGetMinX(self.bounds), CGRectGetMinY(self.bounds), CGRectGetWidth(self.bounds), kVideoControlBarHeight);
+    self.playButton.frame = CGRectMake(CGRectGetMinX(self.bottomBar.bounds), CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.playButton.bounds)/2, CGRectGetWidth(self.playButton.bounds), CGRectGetHeight(self.playButton.bounds));
     self.pauseButton.frame = self.playButton.frame;
     self.fullScreenButton.frame = CGRectMake(CGRectGetWidth(self.bottomBar.bounds) - CGRectGetWidth(self.fullScreenButton.bounds), CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.fullScreenButton.bounds)/2, CGRectGetWidth(self.fullScreenButton.bounds), CGRectGetHeight(self.fullScreenButton.bounds));
     self.shrinkScreenButton.frame = self.fullScreenButton.frame;
-    self.progressSlider.frame = CGRectMake(CGRectGetMinX(self.bottomBar.frame), CGRectGetHeight(self.bottomBar.bounds) - CGRectGetHeight(self.progressSlider.bounds)/2, CGRectGetWidth(self.bottomBar.frame), CGRectGetHeight(self.progressSlider.bounds));
-    
-    self.timeLabel.frame = CGRectMake(CGRectGetMinX(self.bottomBar.frame)+15,0,kVideoTimeLabelWidth, CGRectGetHeight(self.bottomBar.frame));
-    self.totalLabel.frame = CGRectMake(CGRectGetMaxX(self.bottomBar.frame)-47-100,0,kVideoTimeLabelWidth, CGRectGetHeight(self.bottomBar.frame));
+    self.timeLabel.frame = CGRectMake(CGRectGetWidth(self.bottomBar.bounds) - 87, CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.fullScreenButton.bounds)/2, 41, CGRectGetHeight(self.fullScreenButton.bounds));
     self.indicatorView.center = CGPointMake(CGRectGetMidX(self.bounds), CGRectGetMidY(self.bounds));
+    self.progressSlider.frame = CGRectMake(CGRectGetMaxX(self.playButton.frame), CGRectGetHeight(self.bottomBar.bounds)/2 - CGRectGetHeight(self.progressSlider.bounds)/2, CGRectGetMinX(self.timeLabel.frame) - CGRectGetMaxX(self.playButton.frame)-7, CGRectGetHeight(self.progressSlider.bounds));
     
-    
-    self.videoCollectionView.frame = CGRectMake(0, CGRectGetHeight(self.bounds), CGRectGetWidth(self.bounds),115);
 
+    
+   BOOL guide = [[NSUserDefaults standardUserDefaults] valueForKey:@"DNPlayerControllerGuide"];
+    if (guide==NO) {
+    
+        self.guideView.frame = self.bounds;
+        self.guideImageView1.frame =  CGRectMake(CGRectGetMidX(self.bounds)-40, CGRectGetMidY(self.bounds)-40, 80, 80);
+        self.guideLabel1.frame =  CGRectMake(CGRectGetMidX(self.bounds)-65, CGRectGetMidY(self.bounds)+50,130, 21);
+        
+        self.guideImageView2.frame =  CGRectMake(CGRectGetMidX(self.bounds)+50, CGRectGetMidY(self.bounds)-40, 80, 80);
+        self.guideLabel2.frame =  CGRectMake(CGRectGetMidX(self.bounds)+10, CGRectGetMidY(self.bounds)+50,160, 21);
+    
+        self.guideImageView3.frame = CGRectMake(CGRectGetMaxX(self.bounds)-11-24, CGRectGetMaxY(self.bounds)-62,24, 24);
+    
+        self.guideLabel3.frame =  CGRectMake(CGRectGetMaxX(self.bounds)-71, CGRectGetMaxY(self.bounds)-99,62, 21);
+    
+        self.guideImageView4.frame =  CGRectMake(CGRectGetMaxX(self.bounds)-186-130, CGRectGetMaxY(self.bounds)-84, 186, 50);
+    
+        self.guideLabel4.frame =  CGRectMake(CGRectGetMaxX(self.bounds)-147-148, CGRectGetMaxY(self.bounds)-18-56, 147, 18);
+    
+    }
+    
+
+    
 }
 
 - (void)didMoveToSuperview
@@ -125,10 +160,10 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
     [UIView animateWithDuration:kVideoControlAnimationTimeinterval animations:^{
         self.closeButton.alpha = 0.0;
         self.bottomBar.alpha = 0.0;
-        self.playButton.alpha = 0.0;
-        self.pauseButton.alpha = 0.0;
         self.videoTitleLabel.alpha = 0.0;
         self.vipButton.alpha = 0.0;
+        self.videoCollectionView.alpha = 0.0;
+
         
     } completion:^(BOOL finished) {
         self.isBarShowing = NO;
@@ -142,11 +177,11 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
     }
     [UIView animateWithDuration:kVideoControlAnimationTimeinterval animations:^{
         self.bottomBar.alpha = 1.0;
-        self.playButton.alpha = 1.0;
-        self.pauseButton.alpha = 1.0;
         self.closeButton.alpha = 1.0;
         self.videoTitleLabel.alpha = 1.0;
         self.vipButton.alpha = 1.0;
+        self.videoCollectionView.alpha = 1.0;
+      
     } completion:^(BOOL finished) {
         self.isBarShowing = YES;
         [self autoFadeOutControlBar];
@@ -169,8 +204,9 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
 
 - (void)onTap:(UITapGestureRecognizer *)gesture
 {
-
     
+    [self videoRecommendHide];
+
     if (gesture.state == UIGestureRecognizerStateRecognized) {
         if (self.isBarShowing) {
             [self animateHide];
@@ -178,6 +214,32 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
             [self animateShow];
         }
     }
+}
+-(void)guideOnTap:(UITapGestureRecognizer *)gesture
+{
+    
+    if (_guide==NO) {
+        
+        self.guideImageView1.frame =  CGRectMake(CGRectGetMidX(self.bounds)-130, CGRectGetMidY(self.bounds)-40, 80, 80);
+        self.guideLabel1.frame =  CGRectMake(CGRectGetMidX(self.bounds)-155, CGRectGetMidY(self.bounds)+50,130, 21);
+        self.guideLabel1.text = @"单击屏幕关闭菜单";
+        self.guideLabel1.textAlignment = NSTextAlignmentLeft;
+        self.guideImageView2.hidden = NO;
+        self.guideLabel2.hidden = NO;
+        self.guideImageView3.hidden = NO;
+        self.guideLabel3.hidden = NO;
+        self.guideImageView4.hidden = NO;
+        self.guideLabel4.hidden = NO;
+        
+        _guide = YES;
+        
+    }else
+    {
+        
+        [self.guideView removeFromSuperview];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"DNPlayerControllerGuide"];
+    }
+
 }
 
 -(void)swipeGesture:(id)sender
@@ -187,33 +249,173 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
     
     if (swipe.direction == UISwipeGestureRecognizerDirectionUp)
     {
-        [UIView animateWithDuration:0.3 animations:^{
-            
-            self.videoCollectionView.frame = CGRectMake(0, CGRectGetHeight(self.bounds)-115, CGRectGetWidth(self.bounds), 115);
-            
-            _isCollecionViewShow = YES;
-            
-        } completion:^(BOOL finished) {
-            
-        }];
+        [self videoRecommendShow];
     }
     
     else  if (swipe.direction == UISwipeGestureRecognizerDirectionDown)
     {
-        [UIView animateWithDuration:0.3 animations:^{
-            
-            self.videoCollectionView.frame = CGRectMake(0, CGRectGetHeight(self.bounds), CGRectGetWidth(self.bounds),115);
-            _isCollecionViewShow = NO;
-            
-        } completion:^(BOOL finished) {
-            
-        }];
+   
+        [self videoRecommendHide];
      
     }
     
 }
+-(void)videoRecommendShow
+{
+    
+    if ([self.videoArray count]==0) {
+        return;
+    }
+    
+    if (self.videoCollectionView.frame.origin.y==CGRectGetHeight(self.bounds)-25) {
+        
+        [UIView animateWithDuration:0.3 animations:^{
+            
+            self.videoCollectionView.frame = CGRectMake(0, CGRectGetHeight(self.bounds)-115, CGRectGetWidth(self.bounds), 115);
+    
+            
+        } completion:^(BOOL finished) {
+            
+        }];
+    }
+    
+ 
+}
+
+-(void)videoRecommendHide
+{
+    if (self.videoCollectionView.frame.origin.y==CGRectGetHeight(self.bounds)-115) {
+        
+        [UIView animateWithDuration:0.3 animations:^{
+            
+            self.videoCollectionView.frame = CGRectMake(0, CGRectGetHeight(self.bounds)-25, CGRectGetWidth(self.bounds),115);
+            
+            
+        } completion:^(BOOL finished) {
+            
+        }];
+    }
+    
+
+}
 
 #pragma mark - Property
+-(UIView*)guideView
+{
+    if (!_guideView) {
+        _guideView = [[UIView alloc]init];
+        _guideView.backgroundColor  = [[UIColor blackColor] colorWithAlphaComponent:0.7];
+        
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(guideOnTap:)];
+        [_guideView addGestureRecognizer:tapGesture];
+        [_guideView addSubview:self.guideImageView1];
+        [_guideView addSubview:self.guideLabel1];
+        [_guideView addSubview:self.guideImageView2];
+        [_guideView addSubview:self.guideLabel2];
+        [_guideView addSubview:self.guideImageView3];
+        [_guideView addSubview:self.guideLabel3];
+        [_guideView addSubview:self.guideImageView4];
+        [_guideView addSubview:self.guideLabel4];
+        
+    }
+    return _guideView;
+}
+
+-(UIImageView*)guideImageView1
+{
+    if (!_guideImageView1) {
+        _guideImageView1 = [[UIImageView alloc]init];
+        _guideImageView1.image = [UIImage imageNamed:@"guide_click_on"];
+  
+    }
+    return _guideImageView1;
+}
+
+-(UIImageView*)guideImageView2
+{
+    if (!_guideImageView2) {
+        _guideImageView2 = [[UIImageView alloc]init];
+        _guideImageView2.image = [UIImage imageNamed:@"guide_upwards"];
+        _guideImageView2.hidden = YES;
+    }
+    return _guideImageView2;
+}
+
+-(UIImageView*)guideImageView3
+{
+    if (!_guideImageView3) {
+        _guideImageView3 = [[UIImageView alloc]init];
+        _guideImageView3.image = [UIImage imageNamed:@"video_shrinkscreen"];
+        _guideImageView3.hidden = YES;
+    }
+    return _guideImageView3;
+}
+
+-(UIImageView*)guideImageView4
+{
+    if (!_guideImageView4) {
+        _guideImageView4 = [[UIImageView alloc]init];
+        _guideImageView4.image = [UIImage imageNamed:@"guide_bubble_normal"];
+        _guideImageView4.hidden = YES;
+    }
+    return _guideImageView4;
+}
+
+
+-(UILabel*)guideLabel1
+{
+    if (!_guideLabel1) {
+        _guideLabel1 = [[UILabel alloc]init];
+        _guideLabel1.text = @"单机屏幕呼出菜单";
+        _guideLabel1.font = [UIFont systemFontOfSize:15];
+        _guideLabel1.textAlignment = NSTextAlignmentCenter;
+        _guideLabel1.textColor = [UIColor whiteColor];
+    
+    }
+    return _guideLabel1;
+}
+
+-(UILabel*)guideLabel2
+{
+    if (!_guideLabel2) {
+        _guideLabel2 = [[UILabel alloc]init];
+        _guideLabel2.text = @"向上拖动显示推荐视频";
+        _guideLabel2.font = [UIFont systemFontOfSize:15];
+        _guideLabel2.textAlignment = NSTextAlignmentCenter;
+        _guideLabel2.textColor = [UIColor whiteColor];
+        _guideLabel2.hidden = YES;
+    }
+    return _guideLabel2;
+}
+
+
+-(UILabel*)guideLabel3
+{
+    if (!_guideLabel3) {
+        _guideLabel3 = [[UILabel alloc]init];
+        _guideLabel3.text = @"退出全屏";
+        _guideLabel3.font = [UIFont systemFontOfSize:15];
+        _guideLabel3.textAlignment = NSTextAlignmentCenter;
+        _guideLabel3.textColor = [UIColor whiteColor];
+        _guideLabel3.hidden = YES;
+    
+    }
+    return _guideLabel3;
+}
+
+-(UILabel*)guideLabel4
+{
+    if (!_guideLabel4) {
+        _guideLabel4 = [[UILabel alloc]init];
+        _guideLabel4.text = @"下面隐藏部分是推荐视频";
+        _guideLabel4.font = [UIFont systemFontOfSize:13];
+        _guideLabel4.textAlignment = NSTextAlignmentCenter;
+        _guideLabel4.textColor = [UIColor blackColor];
+        _guideLabel4.hidden = YES;
+        
+    }
+    return _guideLabel4;
+}
 
 - (UIView *)topBar
 {
@@ -237,8 +439,8 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
 {
     if (!_playButton) {
         _playButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_playButton setImage:[UIImage imageNamed:@"video_player_big_normal"] forState:UIControlStateNormal];
-        _playButton.bounds = CGRectMake(0, 0, 60, 60);
+        [_playButton setImage:[UIImage imageNamed:@"video_player_normal"] forState:UIControlStateNormal];
+        _playButton.bounds = CGRectMake(0, 0, kVideoControlBarHeight, kVideoControlBarHeight);
     }
     return _playButton;
 }
@@ -247,8 +449,9 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
 {
     if (!_pauseButton) {
         _pauseButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_pauseButton setImage:[UIImage imageNamed:@"video_timeout_big_normal"] forState:UIControlStateNormal];
-        _pauseButton.bounds = CGRectMake(0, 0, 60, 60);
+        [_pauseButton setImage:[UIImage imageNamed:@"video_timeout_normal"] forState:UIControlStateNormal];
+        _pauseButton.bounds = CGRectMake(0, 0,kVideoControlBarHeight,kVideoControlBarHeight);
+        
     }
     return _pauseButton;
 }
@@ -259,6 +462,8 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
         _fullScreenButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_fullScreenButton setImage:[UIImage imageNamed:@"video_fullscreen"] forState:UIControlStateNormal];
         _fullScreenButton.bounds = CGRectMake(0, 0, kVideoControlBarHeight, kVideoControlBarHeight);
+        _fullScreenButton.backgroundColor = [UIColor clearColor];
+    
     }
     return _fullScreenButton;
 }
@@ -272,26 +477,27 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
     }
     return _shrinkScreenButton;
 }
-
 - (UISlider *)progressSlider
 {
     if (!_progressSlider) {
         _progressSlider = [[UISlider alloc] init];
-        [_progressSlider setThumbTintColor:[UIColor clearColor]];
+       [_progressSlider setThumbImage:[UIImage imageNamed:@"video_slider_oval"] forState:UIControlStateNormal];
         [_progressSlider setMinimumTrackTintColor:kThemeColor];
         [_progressSlider setMaximumTrackTintColor:HexRGBAlpha(0xffffff, 0.37)];
         _progressSlider.value = 0.f;
         _progressSlider.continuous = YES;
+        _progressSlider.backgroundColor = [UIColor clearColor];
     }
     return _progressSlider;
 }
+
 
 - (UIButton *)closeButton
 {
     if (!_closeButton) {
         _closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
         [_closeButton setImage:[UIImage imageNamed:@"video_back_normal"] forState:UIControlStateNormal];
-        _closeButton.bounds = CGRectMake(0, 0, 40, 40);
+        _closeButton.backgroundColor = [UIColor clearColor];
      
     }
     return _closeButton;
@@ -304,6 +510,7 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
         _videoTitleLabel.frame = CGRectZero;
         _videoTitleLabel.font = [UIFont systemFontOfSize:17];
         _videoTitleLabel.textColor = [UIColor whiteColor];
+        _videoTitleLabel.textAlignment = NSTextAlignmentCenter;
         _videoTitleLabel.hidden = YES;
     }
     return _videoTitleLabel;
@@ -318,6 +525,7 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
         [_vipButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         _vipButton.titleLabel.font = [UIFont systemFontOfSize:13];
         _vipButton.layer.cornerRadius = 11;
+    
         _vipButton.hidden = YES;
     }
     return _vipButton;
@@ -330,24 +538,13 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
         _timeLabel.backgroundColor = [UIColor clearColor];
         _timeLabel.font = [UIFont systemFontOfSize:14];
         _timeLabel.textColor = [UIColor whiteColor];
-        _timeLabel.textAlignment = NSTextAlignmentLeft;
+        _timeLabel.textAlignment = NSTextAlignmentRight;
         _timeLabel.bounds = CGRectMake(0, 0, kVideoControlTimeLabelFontSize, kVideoControlTimeLabelFontSize);
+        _timeLabel.backgroundColor = [UIColor clearColor];
     }
     return _timeLabel;
 }
 
--(UILabel*)totalLabel
-{
-    if (!_totalLabel) {
-        _totalLabel = [UILabel new];
-        _totalLabel.backgroundColor = [UIColor clearColor];
-        _totalLabel.font = [UIFont systemFontOfSize:14];
-        _totalLabel.textColor = [UIColor whiteColor];
-        _totalLabel.textAlignment = NSTextAlignmentRight;
-        _totalLabel.bounds = CGRectMake(0, 0, kVideoControlTimeLabelFontSize, kVideoControlTimeLabelFontSize);
-    }
-    return _totalLabel;
-}
 
 - (UIActivityIndicatorView *)indicatorView
 {
@@ -361,8 +558,6 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
 -(void)setVideoArray:(NSMutableArray *)videoArray
 {
     _videoArray = videoArray;
-
-    
     [self.videoCollectionView reloadData];
 }
 
@@ -404,6 +599,20 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
     return [self.videoArray count];
     
 }
+
+//定义每个UICollectionView 的大小
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+    return CGSizeMake(169,95);
+    
+}
+//定义每个UICollectionView 的 margin
+-(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    return UIEdgeInsetsMake(15,6.7,15,6.7);
+}
+
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath;
 {
     
@@ -416,13 +625,10 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
         
     }
 
-    
-
     UIImageView * cover = [[UIImageView alloc]init];
     cover.frame = CGRectMake(0, 0, 169, 95);
     [cell.contentView addSubview:cover];
     
-
     
     UILabel * vipLabel= [[UILabel alloc]initWithFrame:CGRectMake(169-26, 0, 26, 14)];
     vipLabel.text = @"VIP";
@@ -440,10 +646,13 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
     [cell.contentView addSubview:vipLabel];
     
     
+    UIView * maskView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, 169, 95)];
+    maskView.backgroundColor = HexRGBAlpha(0x000000, .2);
+    maskView.tag = 2000+indexPath.row;
+    [cell.contentView addSubview:maskView];
+    
     NSDictionary * dict = self.videoArray[indexPath.row];
-    
     NSString * imageUrl = [dict valueForKey:@"cover"];
-    
     [cover sd_setImageWithURL:[NSURL URLWithString:imageUrl]];
     
     NSString * vip = [dict valueForKey:@"vip"];
@@ -471,9 +680,11 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
     cell.layer.borderWidth = 1;
     cell.layer.borderColor = kThemeColor.CGColor;
     cell.layer.masksToBounds = YES;
+    
+    UIView * maskView  = (UIView*)[cell viewWithTag:2000+indexPath.row];
+    maskView.hidden = YES;
   
     NSDictionary * dict = self.videoArray[indexPath.row];
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:@"DLChangeVideo" object:dict];
 }
 
@@ -482,7 +693,11 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
     UICollectionViewCell *cell =  [collectionView cellForItemAtIndexPath:indexPath];
     cell.layer.borderWidth = 0;
     
+    UIView * maskView  = (UIView*)[cell viewWithTag:2000+indexPath.row];
+    maskView.hidden = NO;
+    
 }
+
 
 #pragma mark - Private Method
 
@@ -496,12 +711,21 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 5.0;
 }
 
 
--(BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
-    
- 
-    return !_isCollecionViewShow;
-}
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 
+{
+    
+    
+    if (CGRectContainsPoint(self.videoCollectionView.frame, [touch locationInView:self])) {
+        
+        [self endEditing:YES];
+        
+        return NO;
+    }
+    
+    return YES;
+    
+}
 
 
 @end

@@ -36,6 +36,8 @@ static const CGFloat kVideoPlayerControllerAnimationTimeinterval = 0.3f;
         self.controlStyle = MPMovieControlStyleNone;
         [self.view addSubview:self.videoControl];
         self.videoControl.frame = self.view.bounds;
+        
+        
         [self configObserver];
         [self configControlAction];
     }
@@ -62,8 +64,7 @@ static const CGFloat kVideoPlayerControllerAnimationTimeinterval = 0.3f;
     } completion:^(BOOL finished) {
         
     }];
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:UIStatusBarAnimationFade];
-    
+ 
 }
 
 - (void)dismiss
@@ -79,7 +80,7 @@ static const CGFloat kVideoPlayerControllerAnimationTimeinterval = 0.3f;
             self.dimissCompleteBlock();
         }
     }];
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationFade];
+ 
 }
 
 #pragma mark - Private Method
@@ -171,13 +172,29 @@ static const CGFloat kVideoPlayerControllerAnimationTimeinterval = 0.3f;
     if (self.isFullscreenMode) {
         return;
     }
+    
+    self.videoControl.fullScreen = YES;
+    
+    self.videoControl.bottomBar.hidden=YES;
+
     self.originFrame = self.view.frame;
     CGFloat height = [[UIScreen mainScreen] bounds].size.width;
     CGFloat width = [[UIScreen mainScreen] bounds].size.height;
     CGRect frame = CGRectMake((height - width) / 2, (width - height) / 2, width, height);;
+    
     [UIView animateWithDuration:0.3f animations:^{
+    
         self.frame = frame;
         [self.view setTransform:CGAffineTransformMakeRotation(M_PI_2)];
+        
+        BOOL guide = [[NSUserDefaults standardUserDefaults] valueForKey:@"DNPlayerControllerGuide"];
+        if (guide==NO) {
+         
+            [self.videoControl addSubview:self.videoControl.guideView];
+
+        }
+
+        
     } completion:^(BOOL finished) {
         self.isFullscreenMode = YES;
         self.videoControl.fullScreenButton.hidden = YES;
@@ -185,7 +202,13 @@ static const CGFloat kVideoPlayerControllerAnimationTimeinterval = 0.3f;
         self.videoControl.videoTitleLabel.hidden = NO;
         self.videoControl.videoCollectionView.hidden =NO;
         self.videoControl.vipButton.hidden = NO;
+        self.videoControl.closeButton.hidden = YES;
+        self.videoControl.bottomBar.hidden=NO;
+
+        [self.videoControl.playButton setImage:[UIImage imageNamed:@"video_player_big"] forState:UIControlStateNormal];
+        [self.videoControl.pauseButton setImage:[UIImage imageNamed:@"video_timeout_big"] forState:UIControlStateNormal];
         
+    
     }];
 }
 
@@ -195,6 +218,18 @@ static const CGFloat kVideoPlayerControllerAnimationTimeinterval = 0.3f;
     if (!self.isFullscreenMode) {
         return;
     }
+    
+    
+    self.videoControl.fullScreen = NO;
+    
+    self.videoControl.videoTitleLabel.hidden = YES;
+    self.videoControl.videoCollectionView.hidden =YES;
+    self.videoControl.vipButton.hidden = YES;
+    
+    [self.videoControl.playButton setImage:[UIImage imageNamed:@"video_player_normal"] forState:UIControlStateNormal];
+    [self.videoControl.pauseButton setImage:[UIImage imageNamed:@"video_timeout_normal"] forState:UIControlStateNormal];
+
+
     [UIView animateWithDuration:0.3f animations:^{
         [self.view setTransform:CGAffineTransformIdentity];
         self.frame = self.originFrame;
@@ -202,9 +237,8 @@ static const CGFloat kVideoPlayerControllerAnimationTimeinterval = 0.3f;
         self.isFullscreenMode = NO;
         self.videoControl.fullScreenButton.hidden = NO;
         self.videoControl.shrinkScreenButton.hidden = YES;
-        self.videoControl.videoTitleLabel.hidden = YES;
-        self.videoControl.videoCollectionView.hidden =YES;
-        self.videoControl.vipButton.hidden = YES;
+        self.videoControl.closeButton.hidden = NO;
+
 
     }];
 }
@@ -229,30 +263,34 @@ static const CGFloat kVideoPlayerControllerAnimationTimeinterval = 0.3f;
 - (void)progressSliderValueChanged:(UISlider *)slider {
     double currentTime = floor(slider.value);
     double totalTime = floor(self.duration);
-    [self setTimeLabelValues:currentTime totalTime:totalTime];
+    double time = totalTime - currentTime;
+    [self setTimeLabelValues:time];
+
 }
 
 - (void)monitorVideoPlayback
 {
     double currentTime = floor(self.currentPlaybackTime);
     double totalTime = floor(self.duration);
-    [self setTimeLabelValues:currentTime totalTime:totalTime];
+    double time = totalTime - currentTime;
+    
+    [self setTimeLabelValues:time];
+
     self.videoControl.progressSlider.value = ceil(currentTime);
 }
 
-- (void)setTimeLabelValues:(double)currentTime totalTime:(double)totalTime {
-    double minutesElapsed = floor(currentTime / 60.0);
-    double secondsElapsed = fmod(currentTime, 60.0);
-    NSString *timeElapsedString = [NSString stringWithFormat:@"%02.0f:%02.0f", minutesElapsed, secondsElapsed];
+
+-(void)setTimeLabelValues:(double)currentTime
+{
     
-    double minutesRemaining = floor(totalTime / 60.0);;
-    double secondsRemaining = floor(fmod(totalTime, 60.0));;
+    double minutesRemaining = floor(currentTime / 60.0);
+    double secondsRemaining = floor(fmod(currentTime, 60.0));
     NSString *timeRmainingString = [NSString stringWithFormat:@"%02.0f:%02.0f", minutesRemaining, secondsRemaining];
     
-    self.videoControl.timeLabel.text = [NSString stringWithFormat:@"%@",timeElapsedString];
-    
-    self.videoControl.totalLabel.text = [NSString stringWithFormat:@"%@",timeRmainingString];
+    self.videoControl.timeLabel.text = [NSString stringWithFormat:@"%@",timeRmainingString];
 }
+
+
 
 - (void)startDurationTimer
 {

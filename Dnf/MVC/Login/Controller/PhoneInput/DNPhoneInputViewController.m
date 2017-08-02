@@ -152,6 +152,8 @@
         
     };
     
+    vc.isPresent = YES;
+    
     [self presentViewController:vc animated:YES completion:nil];
     
 }

@@ -15,6 +15,7 @@
 #import "RNCachingURLProtocol.h"
 #import "DLApplicationConfig.h"
 #import "DLLocationManager.h"
+#import <AlipaySDK/AlipaySDK.h>
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;

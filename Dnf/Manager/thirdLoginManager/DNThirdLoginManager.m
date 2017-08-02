@@ -117,6 +117,7 @@ static id _threeLoginManager = nil;
 /*** 第三方登陆 ***/
 - (void)requestUrlLoginByOpenIdWithParameter:(NSMutableDictionary *)parameterDic isWechat:(BOOL)iswechat
 {
+    
     DLHttpsBusinesRequest *request = [DLHttpRequestFactory thirdLogInWithParamer:parameterDic];
     
     request.requestSuccess = ^(id response){ // 成功回调
@@ -148,6 +149,7 @@ static id _threeLoginManager = nil;
             [DNSession sharedSession].channel = @"0";
         }
         
+        [self cheakIsVip];
    
         [self changeRootVC];
     
@@ -163,6 +165,33 @@ static id _threeLoginManager = nil;
     
     [request excute];
 }
+
+
+-(void)cheakIsVip
+{
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory checkIsVip];
+    
+    request.requestSuccess = ^(id response)
+    {
+        DLJSONObject *object = response;
+        
+        DLJSONObject * dataObject = [object getJSONObject:@"data"];
+        
+        NSString * isvip = [dataObject getString:@"isvip"];
+        
+        [DNSession sharedSession].vip = ([isvip isEqualToString:@"Y"])?YES:NO;
+        
+    };
+    
+    request.requestFaile   = ^(NSError *error)
+    {
+        
+        
+    };
+    
+    [request excute];
+}
+
 
 
 /**

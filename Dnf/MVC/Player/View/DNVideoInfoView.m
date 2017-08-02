@@ -17,8 +17,8 @@
     if (self) {
  
        CGFloat y = KScreenWidth*(9.0/16.0);
-       self.frame = CGRectMake(0, y, KScreenWidth, 110);
-       
+       self.frame = CGRectMake(0, y, KScreenWidth, 60);
+       self.backgroundColor = [UIColor customColorWithString:@"fafafa"];
         [self addSubview:self.videoTitleLabel];
         [self addSubview:self.watchCountLabel];
         [self addSubview:self.collectionButton];
@@ -107,11 +107,11 @@
         [_collectionButton setTitle:@"收藏" forState:UIControlStateNormal];
         [_collectionButton setTitleColor:[UIColor customColorWithString:@"999999"] forState:UIControlStateNormal];
         _collectionButton.titleLabel.font = [UIFont fontWithName:TextFontName_Light size:10];
-        
-        [_collectionButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -40, -30, 0)];
-        [_collectionButton setImageEdgeInsets:UIEdgeInsetsMake(-10, 0, 0, 0)];
+
         _collectionButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
      
+        [_collectionButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -20, -30, 0)];
+        [_collectionButton setImageEdgeInsets:UIEdgeInsetsMake(-10,14, 0, 0)];
     }
     return _collectionButton;
 }
@@ -126,10 +126,10 @@
         [_shareButton setImage:[UIImage imageNamed:@"video_share_normal"] forState:UIControlStateNormal];
         _shareButton.titleLabel.font = [UIFont fontWithName:TextFontName_Light size:10];
         
-        [_shareButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -40, -30, 0)];
-        [_shareButton setImageEdgeInsets:UIEdgeInsetsMake(-10, 0, 0, 0)];
+        [_shareButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -20, -30, 0)];
+        [_shareButton setImageEdgeInsets:UIEdgeInsetsMake(-10,14, 0, 0)];
         _shareButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-        
+    
     }
     return _shareButton;
 }
