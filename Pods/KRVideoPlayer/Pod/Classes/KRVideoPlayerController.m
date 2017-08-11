@@ -201,12 +201,15 @@ static const CGFloat kVideoPlayerControllerAnimationTimeinterval = 0.3f;
         self.videoControl.shrinkScreenButton.hidden = NO;
         self.videoControl.videoTitleLabel.hidden = NO;
         self.videoControl.videoCollectionView.hidden =NO;
-        self.videoControl.vipButton.hidden = NO;
         self.videoControl.closeButton.hidden = YES;
         self.videoControl.bottomBar.hidden=NO;
 
         [self.videoControl.playButton setImage:[UIImage imageNamed:@"video_player_big"] forState:UIControlStateNormal];
         [self.videoControl.pauseButton setImage:[UIImage imageNamed:@"video_timeout_big"] forState:UIControlStateNormal];
+        
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"kConfigAudit"]==YES) {
+            self.videoControl.vipButton.hidden = NO;
+        }
         
     
     }];

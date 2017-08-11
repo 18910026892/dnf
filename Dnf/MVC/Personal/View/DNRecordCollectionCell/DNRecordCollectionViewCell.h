@@ -7,21 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "DNRecordModel.h"
-
-@protocol DNRecordCollectionViewCellDelegate <NSObject>
-@optional
-
--(void)selectRecordModel:(DNRecordModel*)recordModel
-                  select:(BOOL)select;
-
-@end
-
+#import "DNVideoModel.h"
 @interface DNRecordCollectionViewCell : UICollectionViewCell
 
-@property(nonatomic,weak)id<DNRecordCollectionViewCellDelegate>delegate;
-
-@property(nonatomic,strong)DNRecordModel * recordModel;
+@property(nonatomic,strong)DNVideoModel * videoModel;
 
 @property(nonatomic,strong)UIImageView * coverImageView;
 

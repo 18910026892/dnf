@@ -6,9 +6,9 @@
 //  Copyright © 2017年 点寰科技. All rights reserved.
 //
 
-#import "DNWebViewController.h"
+#import "DNHallBaseViewController.h"
 
-@interface DNHomePageViewController : DNWebViewController
+@interface DNHomePageViewController : DNHallBaseViewController
 
 
 @end

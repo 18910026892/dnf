@@ -178,27 +178,29 @@
 -(void)zhifubaoMethod:(NSString*)payorder;
 {
     NSLog(@"调起支付宝");
-    
-    BOOL hadInstalledAlipay = [[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"alipay://"]];
-    
-    if (hadInstalledAlipay) {
-        NSString *appScheme = @"dnfAliPay";
-        
 
-        [[AlipaySDK defaultService] payOrder:payorder fromScheme:appScheme callback:^(NSDictionary *resultDic) {
-            NSLog(@"resultDic = %@",resultDic);
-  
-            [self alipayResult:resultDic];
-         
-        }];
-    }else if (!hadInstalledAlipay)
-    {
-        NSLog(@"没安装支付宝");
-        UIAlertView * alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"您的手机未安装支付宝客户端，请先安装" delegate:nil cancelButtonTitle:@"知道了" otherButtonTitles:nil, nil];
+   
+    if (![[UIApplication sharedApplication] canOpenURL: [NSURL URLWithString:@"alipay:"]]) {
+        //支付宝网页支付设置，显示UIWindow窗口
         
-        [alert show];
+        NSArray *array = [[UIApplication sharedApplication] windows];
+        
+        UIWindow* win=[array objectAtIndex:0];
+
+        
+        [win setHidden:NO];
         
     }
+    
+    
+    NSString *appScheme = @"dnfAliPay";
+    [[AlipaySDK defaultService] payOrder:payorder fromScheme:appScheme callback:^(NSDictionary *resultDic) {
+        NSLog(@"resultDic = %@",resultDic);
+        
+        [self alipayResult:resultDic];
+        
+    }];
+
  
 }
 

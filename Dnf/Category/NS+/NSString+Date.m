@@ -142,6 +142,18 @@
     
 }
 
+//format audio time
++(NSString *)formatTime:(int)num{
+    
+    int second = (int)num%60;//秒
+    int minute = (int)num/60%60;
+    int house = (int)num/3600;
+    if (num < 3600) {
+        return [NSString stringWithFormat:@"%02d:%02d",minute,second];
+    }
+    
+    return [NSString stringWithFormat:@"%02d:%02d:%02d",house,minute,second];
+}
 
 
 @end

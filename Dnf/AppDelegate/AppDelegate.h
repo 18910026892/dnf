@@ -10,6 +10,7 @@
 #import <IQKeyboardManager/IQKeyboardManager.h>
 #import "DLThirdShareManager.h"
 #import "DNMainTabBarViewController.h"
+#import "DNAuditViewController.h"
 #import "DNPersonalViewController.h"
 #import "XLSlideMenu.h"
 #import "RNCachingURLProtocol.h"

@@ -6,9 +6,9 @@
 //  Copyright © 2017年 点寰科技. All rights reserved.
 //
 
-#import "DNBaseViewController.h"
+#import "DNHallBaseViewController.h"
 
-@interface DNSearchViewController : DNWebViewController<UITextFieldDelegate>
+@interface DNSearchViewController : DNHallBaseViewController<UITextFieldDelegate>
 
 
 @property(nonatomic,strong)UIImageView * searchImageView;

@@ -58,8 +58,8 @@
      
         self.closeButton.alpha = 0.0;
         self.shareButton.alpha = 0.0;
-        self.collectionView.y = KScreenHeight;
-        self.toolbar.y = self.view.frame.size.height - 27;
+        self.collectionView.y = KScreenHeight-15;
+        self.toolbar.y = self.view.frame.size.height - 27-15;
         
     } completion:^(BOOL finished) {
         self.isBarShowing = NO;
@@ -244,7 +244,7 @@
     if (!_toolbar) {
         CGFloat barHeight = 27;
     
-        CGFloat barY = self.view.frame.size.height - barHeight;
+        CGFloat barY = self.view.frame.size.height - barHeight-15;
         _toolbar = [[MJPhotoToolbar alloc] init];
         _toolbar.showSaveBtn = _showSaveBtn;
         _toolbar.frame = CGRectMake(0, barY, self.view.frame.size.width, barHeight);
@@ -265,7 +265,7 @@
         layout.itemSize = CGSizeMake(71,114);
         layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
         
-        _collectionView =[[UICollectionView alloc]initWithFrame:CGRectMake(0,KScreenHeight,KScreenWidth, 114) collectionViewLayout:layout];
+        _collectionView =[[UICollectionView alloc]initWithFrame:CGRectMake(0,KScreenHeight-15,KScreenWidth, 114) collectionViewLayout:layout];
         _collectionView.showsHorizontalScrollIndicator = NO;
         _collectionView.dataSource = self;
         _collectionView.delegate = self;
@@ -405,6 +405,10 @@
     photoViewFrame.origin.x = (bounds.size.width * index) + kPadding;
     photoView.tag = kPhotoViewTagOffset + index;
     
+    if ([_photos count]==0) {
+        return;
+    }
+    
     MJPhoto *photo = _photos[index];
     photoView.frame = photoViewFrame;
     photoView.photo = photo;
@@ -459,6 +463,13 @@
     _toolbar.currentPhotoIndex = _currentPhotoIndex;
 
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:_currentPhotoIndex inSection:0];
+    
+ 
+    if ([_photos count]==0) {
+        return;
+    }
+    
+    
     [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
     
     
@@ -483,7 +494,7 @@
 - (void)showPhotoCollectionView
 {
     
-    if (self.collectionView.y == KScreenHeight) {
+    if (self.collectionView.y == KScreenHeight-15) {
         
         self.collectionView.alpha = 1.0;
         [UIView animateWithDuration:0.3 animations:^{
@@ -505,8 +516,8 @@
     if (self.collectionView.y == KScreenHeight-114) {
         [UIView animateWithDuration:0.3 animations:^{
             
-            self.collectionView.y = KScreenHeight;
-            self.toolbar.y = self.view.frame.size.height - 27;
+            self.collectionView.y = KScreenHeight-15;
+            self.toolbar.y = self.view.frame.size.height - 27-15;
             
         } completion:^(BOOL finished) {
             

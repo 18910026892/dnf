@@ -273,7 +273,7 @@
 -(DNTextField*)emailTextField
 {
     if (!_emailTextField) {
-        _emailTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,122, KScreenWidth-130,27)];
+        _emailTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,115, KScreenWidth-130,40)];
         _emailTextField.placeholder = @"请输入您的电子邮箱地址";
         _emailTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _emailTextField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -301,7 +301,7 @@
 -(DNTextField*)validationTextField
 {
     if (!_validationTextField) {
-        _validationTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,209, KScreenWidth-190,27)];
+        _validationTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,202, KScreenWidth-190,40)];
         _validationTextField.placeholder = @"验证码";
         _validationTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _validationTextField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -348,7 +348,7 @@
 -(DNTextField*)passWordTextField
 {
     if (!_passWordTextField) {
-        _passWordTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,287, KScreenWidth-150,27)];
+        _passWordTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,280, KScreenWidth-150,40)];
         _passWordTextField.placeholder = @"密码";
         _passWordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _passWordTextField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -401,7 +401,7 @@
 -(DNTextField*)nickNameTextField
 {
     if (!_nickNameTextField) {
-        _nickNameTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,367, KScreenWidth-130,27)];
+        _nickNameTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,360, KScreenWidth-130,40)];
         _nickNameTextField.placeholder =@"昵称 (长度为3至8个字)";
         _nickNameTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _nickNameTextField.autocorrectionType = UITextAutocorrectionTypeNo;

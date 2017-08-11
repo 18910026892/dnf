@@ -103,38 +103,7 @@ static DLJSONObject *ShareSDKKeys; //地址列表
                                          
                                      }
                                          break;
-                                     case SSDKPlatformTypeTwitter:
-                                         
-                                         
-                                         [appInfo SSDKSetupTwitterByConsumerKey:[ShareSDKKeys optString:@"k_appKey_twitterAppID"
-                                                                                           defaultValue:nil]
-                                                                 consumerSecret:[ShareSDKKeys
-                                                                                 optString:@"k_appKey_twitterAppSecret" defaultValue:nil]
-                                                                    redirectUri:@"http://weiyingonline.com"];
-                                         
-                                         break;
-                                         
-                                     case SSDKPlatformTypeInstagram:
-                                         
-                                         
-                                         [appInfo SSDKSetupInstagramByClientID:[ShareSDKKeys
-                                                                                optString:@"k_appKey_instagramAppID" defaultValue:nil]
-                                                                  clientSecret:[ShareSDKKeys
-                                                                                optString:@"k_appKey_instagramAppSecret" defaultValue:nil]
-                                                                   redirectUri:@"http://weiyingonline.com"];
-                                         
-                                         break;
-                                     case SSDKPlatformTypeFacebook:
-                                         
-                                         [appInfo SSDKSetupFacebookByApiKey:[ShareSDKKeys optString:@"k_appKey_faceBookAppID"
-                                                                                       defaultValue:nil]
-                                                                  appSecret:[ShareSDKKeys
-                                                                             optString:@"k_appKey_faceBookAppSecret"
-                                                                             defaultValue:nil]
-                                                                   authType:SSDKAuthTypeBoth];
-                                         
-                                         
-                                         break;
+                                 
                                      default:
                                          break;
                                  }

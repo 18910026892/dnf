@@ -89,7 +89,7 @@
     _indexLabel.attributedText = firstPart;
     
     
-    if(IS_ARRAY_CLASS(_photos))
+    if(IS_ARRAY_CLASS(_photos)&&[_photos count]!=0)
     {
         MJPhoto *photo = _photos[_currentPhotoIndex];
         // 按钮

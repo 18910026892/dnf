@@ -371,7 +371,7 @@
 -(DNTextField*)accoutTextField
 {
     if (!_accoutTextField) {
-        _accoutTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,66+64, KScreenWidth-130,20)];
+        _accoutTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,66+54, KScreenWidth-130,40)];
         _accoutTextField.placeholder = @"ID/邮箱/手机号";
         _accoutTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _accoutTextField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -393,7 +393,7 @@
 -(DNTextField*)passwordTextField
 {
     if (!_passwordTextField) {
-        _passwordTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,148+64,KScreenWidth-160,20)];
+        _passwordTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,148+54,KScreenWidth-160,40)];
         _passwordTextField.placeholder = @"请输入密码";
         _passwordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _passwordTextField.autocorrectionType = UITextAutocorrectionTypeNo;

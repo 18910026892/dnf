@@ -124,10 +124,7 @@
     }
     
     NSString *profileStr = [[NSString alloc]initWithData:jsonData encoding:NSUTF8StringEncoding];
-    
-    //   NSLog(@"profileStr == %@",profileStr);
-    
-    
+
     DLHttpsBusinesRequest *request = [DLHttpRequestFactory synchUserInfoWithToken: [DNSession sharedSession].token
                                                                           profile:profileStr];
     
@@ -533,6 +530,7 @@ didFinishPickingMediaWithInfo:(NSDictionary *)info
         
         _tableView.backgroundColor = [UIColor clearColor];
         _tableView.separatorStyle  = UITableViewCellSeparatorStyleSingleLine;
+        _tableView.separatorColor = [UIColor customColorWithString:@"eeeeee"];
         _tableView.delegate     = self;
         _tableView.dataSource   = self;
     }

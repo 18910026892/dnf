@@ -32,8 +32,10 @@
 #import "API.h"
 // ** session ** //
 #import "DNSession.h"
+#import "DNConfig.h"
 // ** UI ** //
 #import "DNBaseViewController.h"
+#import "DNHallBaseViewController.h"
 #import "DNMainTabBarViewController.h"
 
 

@@ -15,6 +15,136 @@
 
 @implementation DLHttpRequestFactory
 
++(nonnull DLHttpsBusinesRequest*)getFreeVideoList:(nonnull NSString*)number offset:(nonnull NSString*)offset
+{
+    DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"msvr://video/free"
+                                                                        method:DLHttpRequestMethodGet];
+    
+    
+    
+    [request addParameter:number key:@"num"];
+    [request addParameter:offset key:@"offset"];
+    request.isShowErrorToast = NO;
+    request.isShowLoading = NO;
+    
+    return request;
+}
+
++(nonnull DLHttpsBusinesRequest*)getPayVideoList:(nonnull NSString*)number offset:(nonnull NSString*)offset
+{
+    DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"msvr://video/pay"
+                                                                        method:DLHttpRequestMethodGet];
+    
+    
+    
+    [request addParameter:number key:@"num"];
+    [request addParameter:offset key:@"offset"];
+    request.isShowErrorToast = NO;
+    request.isShowLoading = NO;
+    
+    return request;
+}
+
+
+
++(nonnull DLHttpsBusinesRequest*)getFreePhotoList:(nonnull NSString*)number offset:(nonnull NSString*)offset
+{
+    DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"msvr://album/free"
+                                                                        method:DLHttpRequestMethodGet];
+    
+    
+    
+    [request addParameter:number key:@"num"];
+    [request addParameter:offset key:@"offset"];
+    
+    request.isShowErrorToast = NO;
+    request.isShowLoading = NO;
+    
+    return request;
+}
+
++(nonnull DLHttpsBusinesRequest*)getPayPhotoList:(nonnull NSString*)number offset:(nonnull NSString*)offset
+{
+    DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"msvr://album/pay"
+                                                                        method:DLHttpRequestMethodGet];
+    
+    
+    
+    [request addParameter:number key:@"num"];
+    [request addParameter:offset key:@"offset"];
+    
+    request.isShowErrorToast = NO;
+    request.isShowLoading = NO;
+    
+    return request;
+}
+
+
+
+
++(nonnull DLHttpsBusinesRequest*)getVrNumber:(nonnull NSString*)number offset:(nonnull NSString*)offset
+{
+    DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"msvr://vr/getvr"
+                                                                        method:DLHttpRequestMethodGet];
+    
+    
+    
+    [request addParameter:number key:@"num"];
+    [request addParameter:offset key:@"offset"];
+    
+    request.isShowErrorToast = NO;
+    request.isShowLoading = NO;
+    
+    return request;
+}
+
++(nonnull DLHttpsBusinesRequest*)getPartyNumber:(nonnull NSString*)number offset:(nonnull NSString*)offset
+{
+    DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"msvr://party/getParty"
+                                                                        method:DLHttpRequestMethodGet];
+    
+    
+    
+    [request addParameter:number key:@"num"];
+    [request addParameter:offset key:@"offset"];
+    
+    request.isShowErrorToast = NO;
+    request.isShowLoading = NO;
+    
+    return request;
+}
+
+
++(nonnull DLHttpsBusinesRequest*)recommendAlbum;
+{
+    DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"msvr://recommend/album"
+                                                                        method:DLHttpRequestMethodGet];
+    
+    
+    
+    [request addParameter:@"5" key:@"num"];
+    
+    request.isShowErrorToast = NO;
+    request.isShowLoading = NO;
+    
+    return request;
+}
+
+
+
+
++(nonnull DLHttpsBusinesRequest*)getConfigs:(nonnull NSString *)names
+{
+    DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"msvr://config/gets"
+                                                                        method:DLHttpRequestMethodGet];
+    
+    [request addParameter:names key:@"names"];
+    
+    return request;
+}
+
+
+
 
 +(nonnull DLHttpsBusinesRequest*)thirdLogInWithParamer:(nonnull  NSDictionary*)Paramer
 {
@@ -387,7 +517,7 @@
                                                                         method:DLHttpRequestMethodGet];
     
     
-    [request addParameter:@"video|vr" key:@"resource"];
+    [request addParameter:@"video|vr|party" key:@"resource"];
     [request addParameter:number key:@"num"];
     [request addParameter:offset key:@"offset"];
     request.isShowErrorToast = NO;
@@ -403,7 +533,7 @@
                                                                         method:DLHttpRequestMethodGet];
     
     
-    [request addParameter:@"video|vr" key:@"resource"];
+    [request addParameter:@"video|vr|party" key:@"resource"];
     [request addParameter:number key:@"num"];
     [request addParameter:offset key:@"offset"];
     request.isShowErrorToast = NO;
@@ -455,6 +585,21 @@
     return request;
 }
 
++(nonnull DLHttpsBusinesRequest*)increaseCount:(nonnull NSString*)type relateid:(nonnull NSString*)relateid
+{
+    DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"msvr://counter/increase"
+                                                                        method:DLHttpRequestMethodGet];
+    
+    
+    [request addParameter:type key:@"type"];
+    [request addParameter:relateid key:@"relateid"];
+    
+    request.isShowLoading = NO;
+    request.isShowErrorToast = NO;
+    
+    return request;
+}
+
 +(nonnull DLHttpsBusinesRequest*)addCollecionResource:(nonnull NSString*)resource
                                            relationid:(nonnull NSString*)relationid
 {
@@ -472,7 +617,7 @@
 }
 
 +(nonnull DLHttpsBusinesRequest*)recommendVideoResource:(nonnull NSString*)resource
-                                             relationid:(nonnull NSString*)relationid;
+                                             relationid:(nonnull NSString*)relationid
 {
     DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"msvr://recommend/next"
                                                                         method:DLHttpRequestMethodGet];
@@ -480,7 +625,7 @@
     [request addParameter:resource key:@"resource"];
     [request addParameter:relationid key:@"relationid"];
     
-    [request addParameter:@"20" key:@"num"];
+    [request addParameter:@"10" key:@"num"];
     request.isShowErrorToast = NO;
 
     return request;
@@ -493,6 +638,7 @@
     [request addParameter:albumid key:@"albumid"];
     [request addParameter:@"100" key:@"num"];
     request.isShowLoading = YES;
+    request.isShowErrorToast = YES;
     
     return request;
 }

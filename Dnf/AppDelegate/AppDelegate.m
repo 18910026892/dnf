@@ -52,9 +52,8 @@
     // Override point for customization after application launch.
     
     
-//    [NSURLProtocol registerClass:[RNCachingURLProtocol class]];
+   [NSURLProtocol registerClass:[RNCachingURLProtocol class]];
 
-    
     // 加载本地配置
     [DLApplicationConfig load];
     
@@ -68,16 +67,19 @@
     //开启定位
     [[DLLocationManager shareManager] startLocation];
     
-
+    //键盘管理器
     [IQKeyboardManager sharedManager].enable = YES;
     [IQKeyboardManager sharedManager].enableAutoToolbar = NO;
     [[IQKeyboardManager sharedManager] setKeyboardDistanceFromTextField:80];
+
+    //获取配置信息，下次启动时候开启
+    [self getConfig];
     
-    //主界面
-    DNMainTabBarViewController * tabbarVc = [DNMainTabBarViewController shareTabBarController];
     //配置NavigationBar
-    UINavigationController *rootNav = [[UINavigationController alloc] initWithRootViewController:tabbarVc];
+    UINavigationController * rootNav   = [[UINavigationController alloc] initWithRootViewController:[DNMainTabBarViewController shareTabBarController]];
     
+
+
     _slideMenu = [[XLSlideMenu alloc] initWithRootViewController:rootNav];
     
     DNPersonalViewController * personalViewController = [DNPersonalViewController viewController];
@@ -91,6 +93,41 @@
     
     
     return YES;
+}
+
+-(void)getConfig
+{
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory getConfigs:@"green_switch"];
+    
+    
+    request.requestSuccess = ^(id response)
+    {
+        DLJSONObject *object = response;
+        
+        DLJSONObject *resultData = [object getJSONObject:@"data"];
+        
+        DLJSONObject * green_switch  = [resultData getJSONObject:@"green_switch"];
+        
+        NSString * value =[NSString stringWithFormat:@"%@", [green_switch getString:@"value"]];
+        
+
+        if ([value isEqualToString:@"0"]) {
+            [DNConfig sharedConfig].audit=YES;
+        }else
+        {
+            [DNConfig sharedConfig].audit=NO;
+        }
+       
+       [DNConfig sharedConfig].audit=YES;
+    };
+    
+    request.requestFaile   = ^(NSError *error)
+    {
+       
+    };
+    
+    [request excute];
+
 }
 
 - (BOOL)application:(UIApplication *)application

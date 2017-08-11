@@ -7,20 +7,10 @@
 //
 
 #import "DNRecordViewController.h"
-#import "DLTopBarView.h"
-#import "DLPageView.h"
-#import "DLTopBarConfig.h"
-#import "DLRecordListView.h"
 #import "DNPlayerViewController.h"
 #import "DNTopUpViewController.h"
-@interface DNRecordViewController ()<DLTopBarViewDelegate,DLPageViewDelegate,DNRecordListViewCellDelegate>
+@interface DNRecordViewController ()
 
-@property (nonatomic,strong) DLTopBarView *topbar; // 标题
-@property (nonatomic,strong) DLPageView *pageView; // 切换用
-@property (nonatomic,strong) UIButton * clearButton;
-@property (nonatomic,strong) UIButton * deleteButton;
-@property (nonatomic,strong) NSMutableArray * viewArray;
-@property (nonatomic,assign) BOOL isEdit;
 
 @end
 
@@ -31,7 +21,7 @@
     // Do any additional setup after loading the view.
     _isEdit = NO;
     [self creatUserInterface];
-    [self.leftButton addTarget:self action:@selector(showLeft) forControlEvents:UIControlEventTouchUpInside];
+
 }
 
 -(void)showLeft
@@ -44,21 +34,17 @@
 {
     [self showBackButton:YES];
     
-    [self setNavTitle:@"选择项目"];
-    self.titleLabel.hidden = YES;
+    [self setNavTitle:@"浏览记录"];
     [self.rightButton setTitle:@"管理" forState:UIControlStateNormal];
     [self.rightButton addTarget:self action:@selector(rightButtonClick:) forControlEvents:UIControlEventTouchUpInside];
-    self.view.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:self.clearButton];
-   
-    [self initTopBar];
     
-    [self initPageView];
-    [self.view addSubview:self.deleteButton];
-    
+    [self.leftButton addTarget:self action:@selector(showLeft) forControlEvents:UIControlEventTouchUpInside];
 
     
-    
+    [self.view addSubview:self.collectionView];
+    [self.view addSubview:self.clearButton];
+    [self.view addSubview:self.deleteButton];
+
 }
 
 
@@ -71,9 +57,8 @@
 
 -(void)deleteButtonClick:(UIButton*)sender
 {
-    DLRecordListView * listView = self.viewArray[self.topbar.selectIndex];
-
-     NSInteger  dataCount = [listView.videoIdArray count];
+  
+     NSInteger  dataCount = [self.videoIdArray count];
     
     if (dataCount==0) {
         UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"请先选择要删除的对象" message:nil preferredStyle:UIAlertControllerStyleAlert];
@@ -104,24 +89,9 @@
         
         UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:deleteString style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             
-            NSString * idString = [listView.videoIdArray componentsJoinedByString:@","];
+            NSString * idString = [self.videoIdArray componentsJoinedByString:@","];
             
-            NSLog(@" 将要删除的对象是 %@",idString);
-            switch (self.topbar.selectIndex) {
-                case 0:
-                {
-                    [self deleteRecordWithIdString:idString];
-                }
-                    break;
-                case 1:
-                {
-                    [self deleteCollectionWithIdString:idString];
-                }
-                    break;
-                default:
-                    break;
-            }
-            
+             [self deleteRecordWithIdString:idString];
             
         }];
         
@@ -143,16 +113,10 @@
     
     request.requestSuccess = ^(id response)
     {
-        
-        DLJSONObject *object = response;
-        
-        DLJSONObject * dataObject = [object getJSONObject:@"data"];
-        
+   
         self.isEdit = NO;
-        
-        DLRecordListView * listView = self.viewArray[0];
       
-        [listView  retryToGetData];
+        [self  retryToGetData];
         
         [[NSNotificationCenter defaultCenter] postNotificationName:@"DNRecordListChange" object:nil];
        
@@ -166,44 +130,12 @@
     
     [request excute];
 }
--(void)deleteCollectionWithIdString:(NSString*)idString
-{
-    DLHttpsBusinesRequest *request = [DLHttpRequestFactory deleteCollectionWithFavoriteid:idString];
-    
-    request.requestSuccess = ^(id response)
-    {
-        
-        DLJSONObject *object = response;
-        
-        DLJSONObject * dataObject = [object getJSONObject:@"data"];
-        
-        self.isEdit = NO;
-        
-        DLRecordListView * listView = self.viewArray[1];
-        
-        [listView  retryToGetData];
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"DNRecordListChange" object:nil];
-         
-        [self.view makeToast:@"删除成功" duration:3.0 position:CSToastPositionCenter];
-         
-    };
-    
-    request.requestFaile = ^(NSError *error)
-    {
-        
-    };
-    
-    [request excute];
-}
+
 
 -(void)clear
 {
-   
-    DLRecordListView * listView = self.viewArray[self.topbar.selectIndex];
-    
-    NSInteger  dataCount = [listView.dataArray count];
-    
+
+    NSInteger  dataCount = [self.dataArray count];
     
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"这些项目将从您的收藏中删除" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     
@@ -219,21 +151,7 @@
     UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:deleteString style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
  
         
-        switch (self.topbar.selectIndex) {
-            case 0:
-            {
-                [self deleteRecordWithIdString:@"all"];
-            }
-                break;
-            case 1:
-            {
-                [self deleteCollectionWithIdString:@"all"];
-            }
-                break;
-            default:
-                break;
-        }
-        
+        [self deleteRecordWithIdString:@"all"];
     
     }];
 
@@ -249,47 +167,230 @@
     
 }
 
-
-
--(void)initTopBar
+-(void)getDataWithType:(int)type
 {
-    DLTopBarConfig *topbarConfig = [[DLTopBarConfig alloc]init];
+
+
     
-    topbarConfig.titleSelectColor = [[UIColor customColorWithString:@"#ffffff"] colorWithAlphaComponent:0.9];
-    topbarConfig.titleNormalColor = [[UIColor customColorWithString:@"#ffffff"] colorWithAlphaComponent:0.5];
-    topbarConfig.underLineColor   = [UIColor customColorWithString:@"#ffffff"];
+    NSString * offsetString = [NSString stringWithFormat:@"%d",self.offset];
     
-    topbarConfig.uderLineHeight   = 2;
-    topbarConfig.lineType         = DLTopBarUderlineType_equTitleWidth;
+    DLHttpsBusinesRequest *request=  [DLHttpRequestFactory getRecordListWithNumber:@"40" offset:offsetString];
+   
+    request.requestSuccess = ^(id response)
+    {
+            [self hideNoDataView];
+        
+        DLJSONObject *object = response;
+        
+        DLJSONObject * dataObject = [object getJSONObject:@"data"];
+        
+        DLJSONArray * jsonArray = [dataObject getJSONArray:@"access"];
+        
+        NSMutableArray * modelArray = [DNVideoModel mj_objectArrayWithKeyValuesArray:jsonArray.array];
+        
+        if (type == 1) {
+            
+            self.dataArray = [NSMutableArray arrayWithArray:modelArray];
+            
+        }else if(type == 2){
+            
+            NSMutableArray * Array = [[NSMutableArray alloc] init];
+            [Array addObjectsFromArray:self.dataArray];
+            [Array addObjectsFromArray:modelArray];
+            self.dataArray = Array;
+            
+        }
+        
+        
+        //停止loading
+        [self stopLoadData];
+        
+        //判断是否有更多数据
+        _offset = [dataObject getInteger:@"offset"];
+        
+        _total  = [dataObject getInteger:@"total"];
+        
+        
+        //没有数据
+        [self noDataMethods];
+        
+        if ([modelArray count]==0) {
+            self.collectionView.mj_footer = nil;
+        }
+        
+    };
     
-    _topbar = [[DLTopBarView alloc]initWithFrame:CGRectMake(KScreenWidth/2-90,20,180,44) config:topbarConfig];
-    _topbar.backgroundColor = [UIColor clearColor];
+    request.requestFaile = ^(NSError *error)
+    {
+        
+    };
     
-    NSArray * arr = @[@"浏览记录",@"我的收藏"];
-    [_topbar addTabBarItemWithTitles:arr];
-    _topbar.delegate = self;
-    _topbar.selectIndex = self.index;
-    [self.view addSubview:_topbar];
+    [request excute];
+    
+}
+
+//停止刷新
+-(void)stopLoadData
+{
+    
+    [_collectionView.mj_header endRefreshing];
+    [_collectionView.mj_footer endRefreshing];
+    [self.collectionView reloadData];
+    
+}
+
+//加载更多数据
+-(void)loadMoreData
+{
+    [self getDataWithType:2];
+}
+
+//没有数据
+-(void)noDataMethods
+{
+    if (self.dataArray.count==0) {
+        
+        self.clearButton.hidden = YES;
+        self.rightButton.hidden = YES;
+        
+        [self showNoDataView:self.collectionView noDataString:@"没有浏览记录"
+                 noDataImage:@"default_nobrowselog"
+              imageViewFrame:CGRectMake((KScreenWidth-104)/2.0,
+                                        122,
+                                        104,
+                                        80)];
+        
+    }else
+    {
+        
+        self.clearButton.hidden = NO;
+        self.rightButton.hidden = NO;
+        __weak __typeof(self) weakSelf = self;
+        _collectionView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+            
+            [weakSelf loadMoreData];
+            
+        }];
+        
+    }
+}
+
+#pragma CollectionView Delegate
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView;
+{
+    return 1;
+}
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section;
+{
+    return [self.dataArray count];
+    
+}
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath;
+{
+    
+    DNRecordCollectionViewCell * cell;
+    
+    if(!cell)
+    {
+        cell= ( DNRecordCollectionViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:@"DNRecordCollectionViewCell" forIndexPath:indexPath];
+    }
+    
+    cell.videoModel = self.dataArray[indexPath.row];
+    cell.selectImageView.hidden = !self.isEdit;
+    cell.tag = 1000+indexPath.row;
+
+    return cell;
+    
 }
 
 
--(void)initPageView
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section;
 {
 
-    [self.view addSubview:self.pageView];
-    
-    [self.pageView addSubviews:self.viewArray];
-
-}
-
--(void)selectRecordModel:(DNRecordModel*)recordModel
-{
+    if ([self.dataArray count]==0) {
+       
+        return CGSizeMake(KScreenWidth, 0);
+        
+    }else
+       
+    return CGSizeMake(KScreenWidth,52);
  
-    if ([recordModel.vip isEqualToString:@"N"]) {
-        DNPlayerViewController * player = [DNPlayerViewController viewController];
-        player.enterType = record;
-        player.recordModel = recordModel;
-        [self.navigationController pushViewController:player animated:YES];
+}
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+{
+    
+    if (kind == UICollectionElementKindSectionFooter) {
+        NSLog(@"footer");
+    }
+    _collectionHeader = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"DNRecordHeaderView" forIndexPath:indexPath];
+    _collectionHeader.backgroundColor = [UIColor customColorWithString:@"fafafa"];
+
+    
+    
+    return _collectionHeader;
+}
+
+
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+   
+    DNVideoModel * videoModel = self.dataArray[indexPath.row];
+
+    if (self.isEdit==NO) {
+        
+        [self playVideo:videoModel];
+    }else
+        
+    {
+        [self editVideoModel:videoModel IndexPath:indexPath];
+    }
+    
+
+}
+
+-(void)editVideoModel:(DNVideoModel *)videoModel
+   IndexPath:(NSIndexPath *)indexPath
+{
+    DNRecordCollectionViewCell * cell = [self.collectionView viewWithTag:1000+indexPath.row];
+    if (cell.selected) {
+        
+        [self.videoIdArray addObject:[NSString stringWithFormat:@"%ld",(long)videoModel.accessid]];
+        
+    }else
+    {
+        
+        [self.videoIdArray removeObject:[NSString stringWithFormat:@"%ld",(long)videoModel.accessid]];
+        
+    }
+    
+    self.collectionHeader.selectCount = [self.videoIdArray count];
+    
+    NSLog(@" %@",self.videoIdArray);
+
+    
+}
+
+
+-(void)playVideo:(DNVideoModel*)videoModel
+{
+    if ([videoModel.vip isEqualToString:@"N"]) {
+        
+        NSString * playUrl = [videoModel.play valueForKey:@"url"];
+        
+        if (IsStrEmpty(playUrl)) {
+            
+            [self.view makeToast:@"视频播放地址错误" duration:3.0 position:CSToastPositionCenter];
+            
+        }else
+        {
+            DNPlayerViewController * player = [DNPlayerViewController viewController];
+            player.videoModel = videoModel;
+            player.enterType = record;
+            [self.navigationController pushViewController:player animated:YES];
+        }
+        
+        
+        
     }else
     {
         if ([DNSession sharedSession].vip==NO) {
@@ -320,87 +421,127 @@
         }else
             
         {
-            DNPlayerViewController * player = [DNPlayerViewController viewController];
-            player.enterType = record;
-            player.recordModel = recordModel;
-            [self.navigationController pushViewController:player animated:YES];
+            NSString * playUrl = [videoModel.play valueForKey:@"url"];
+            
+            if (IsStrEmpty(playUrl)) {
+                
+                [self.view makeToast:@"视频播放地址错误" duration:3.0 position:CSToastPositionCenter];
+                
+            }else
+            {
+                DNPlayerViewController * player = [DNPlayerViewController viewController];
+                
+                player.videoModel = videoModel;
+                player.enterType = record;
+                
+                [self.navigationController pushViewController:player animated:YES];
+            }
+            
         }
     }
- 
 
 }
 
-/**
- *  视图的item被选中时的回调函数
- *
- *  @param index 视图item的索引
- */
--(void)topTabBarDidSelectedWithIndex:(NSInteger)index
+
+#pragma mark --UICollectionViewDelegate
+
+//重新加载请求
+-(void)retryToGetData
 {
-    
-    [self.pageView moveToPageWithIndex:index];
-
-}
-
-#pragma mark -- pageViewDelegate
-
-/**
- *  滑动时的回调函数
- *
- *  @param index 子视图的索引
- */
-- (void)pageViewDidMoveToIndex:(NSInteger)index
-{
-    _topbar.selectIndex = index;
-
-    DLRecordListView * listView = self.viewArray[index];
-    NSInteger  dataCount = [listView.dataArray count];
-    self.rightButton.hidden = (dataCount==0)?YES:NO;
-}
-
-/**
- *  滑动时的回调函数
- *
- *  @param percentage 滑动层的偏移量
- */
-- (void)pageViewDidScroll:(CGFloat)percentage
-{
-    NSLog(@"%f",percentage);
-    [_topbar moveUnderlineWithPercent:percentage];
-    
+    self.offset = 0;
+    [self getDataWithType:1];
     
 }
 
 
--(void)setIndex:(NSInteger)index
+//返回这个UICollectionView是否可以被选择
+-(BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    _index = index;
-    
-    [self.pageView moveToPageWithIndex:index];
-
-    DLRecordListView * listView = self.viewArray[index];
-    NSInteger  dataCount = [listView.dataArray count];
-    self.rightButton.hidden = (dataCount==0)?YES:NO;
-
+    return YES;
 }
 
+//定义每个UICollectionView 的 margin
+-(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
+{
+    return UIEdgeInsetsMake(0,15,0,15);
+}
+
+
+
+#pragma mark setter
 -(void)setIsEdit:(BOOL)isEdit
 {
     _isEdit = isEdit;
     
-    self.pageView.isNeedScroll =!_isEdit;
-    self.topbar.hidden = _isEdit;
-    self.titleLabel.hidden = !_isEdit;
+    
     self.leftButton.hidden = _isEdit;
     self.clearButton.hidden = _isEdit;
     self.deleteButton.hidden = !_isEdit;
-    
+    self.collectionHeader.selectLabel.hidden= !_isEdit;
+    self.titleLabel.text = (_isEdit==NO)?@"浏览记录":@"选择项目";
     [self.rightButton setTitle:(_isEdit==NO)?@"管理":@"取消" forState:UIControlStateNormal];
-
-    DLRecordListView * listView = self.viewArray[self.topbar.selectIndex];
-    listView.isEdit = _isEdit;
     
+    CGFloat collectionY = (isEdit==NO)?107:64;
+    self.collectionView.y = collectionY;
+    [self.collectionView reloadData];
+    
+    
+    if (isEdit==NO) {
+        __weak __typeof(self) weakSelf = self;
+        _collectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+            [weakSelf retryToGetData];
+        }];
+        
+        _collectionView.mj_footer = [MJRefreshAutoNormalFooter footerWithRefreshingBlock:^{
+            
+            [weakSelf loadMoreData];
+            
+        }];
+    }else
+    {
+        _collectionView.mj_header = nil;
+        
+        _collectionView.mj_footer = nil;
+    }
+    
+}
 
+#pragma mark getter
+
+-(UICollectionView*)collectionView
+{
+    if (!_collectionView) {
+        
+        
+        CGFloat cellWidth = KScreenWidth/2-15-3.5;
+        
+        //普通集合视图布局
+        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc]init];
+        layout.minimumLineSpacing = 7;
+        layout.minimumInteritemSpacing = 7;
+        layout.itemSize = CGSizeMake(cellWidth, cellWidth*9/16);
+        
+        _collectionView =[[UICollectionView alloc]initWithFrame:CGRectMake(0,64+43,KScreenWidth,KScreenHeight-64-43) collectionViewLayout:layout];
+        
+        _collectionView.dataSource = self;
+        _collectionView.delegate = self;
+        _collectionView.showsHorizontalScrollIndicator = NO;
+        _collectionView.showsVerticalScrollIndicator = YES;
+        _collectionView.backgroundColor = [UIColor clearColor];
+        _collectionView.allowsMultipleSelection = YES;
+        [_collectionView registerClass:[DNRecordCollectionViewCell class] forCellWithReuseIdentifier:@"DNRecordCollectionViewCell"];
+        [_collectionView registerClass:[DNRecordHeaderView class] forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"DNRecordHeaderView"];
+        
+        
+        __weak __typeof(self) weakSelf = self;
+        _collectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+            [weakSelf retryToGetData];
+        }];
+        
+        [_collectionView.mj_header beginRefreshing];
+        
+    }
+    return _collectionView;
 }
 
 
@@ -419,46 +560,33 @@
     return _deleteButton;
 }
 
--(NSMutableArray*)viewArray
+
+-(UIButton*)clearButton
 {
-    if (!_viewArray) {
-        _viewArray = [NSMutableArray arrayWithCapacity:2];
+    if (!_clearButton) {
+        _clearButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _clearButton.frame = CGRectMake(0,64, KScreenWidth, 43);
+
+        _clearButton.backgroundColor = [UIColor whiteColor];
+        [_clearButton setTitle:@"一键清空" forState:UIControlStateNormal];
+        [_clearButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        _clearButton.titleLabel.font = [UIFont fontWithName:TextFontName_Light size:15];
+        _clearButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentRight;
+        _clearButton.titleEdgeInsets = UIEdgeInsetsMake(0, 0, 0, 13);
         
-        CGFloat listHeight = KScreenHeight-64;
-        
-        for (int i=0; i<2; i++) {
-            DLRecordListView * listView = [[DLRecordListView alloc]initWithFrame:CGRectMake(0,64, KScreenWidth,listHeight)];
-            listView.tag = 1000+i;
-            listView.delegate = self;
-            
-            if (i==0) {
-                
-                listView.type  = @"record";
-                
-            }else
-            {
-                
-                listView.type = @"collection";
-            }
-            
-            [_viewArray addObject:listView];
-        }
-        
+        [_clearButton addTarget:self action:@selector(clear) forControlEvents:UIControlEventTouchUpInside];
     }
-    return _viewArray;
+    return _clearButton;
 }
 
--(DLPageView*)pageView
+
+
+-(NSMutableArray*)videoIdArray
 {
-    if(!_pageView)
-    {
-        CGRect pageRect = CGRectMake(0, 64,KScreenWidth,KScreenHeight-64);
-        
-        _pageView = [[DLPageView alloc]initWithFrame:pageRect];
-        _pageView.delegate = self;
-    
+    if (!_videoIdArray) {
+        _videoIdArray = [NSMutableArray array];
     }
-    return _pageView;
+    return _videoIdArray;
 }
 
 

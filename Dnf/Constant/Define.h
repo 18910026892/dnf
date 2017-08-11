@@ -61,7 +61,7 @@
 #define ShareVideoUrl(videoid,uid,userid,language,token) [NSString stringWithFormat:@"http://html5.dreamlive.tv/video_share.php?videoid=%@&uid=%@&userid=%@&language=%@&token=%@",videoid,uid,userid,language,token]
 
 
-#define MainUrl(methods)[NSString stringWithFormat:@"http://192.168.1.161:3000/%@",methods]
+#define MainUrl(methods)[NSString stringWithFormat:@"http://html5.dnfe.tv/%@",methods]
 
 
 

@@ -23,12 +23,10 @@
         [self addSubview:self.openButton];
         [self addSubview:self.line];
         
-   
     }
     
     return self;
 }
-
 
 -(UIView*)line
 {

@@ -74,15 +74,21 @@
         return;
     }
     
+
     NSString *urlstr  = self.url; //[self.parameter valueForKey:DL_VC_PARAM_KEY_URL];
     [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookieAcceptPolicy:NSHTTPCookieAcceptPolicyAlways];
     
     NSMutableDictionary *cookieProperties = [NSMutableDictionary dictionary];
     [cookieProperties setObject:@"token" forKey:NSHTTPCookieName];
     [cookieProperties setObject:[DNSession sharedSession].token forKey:NSHTTPCookieValue];
-    if ([urlstr containsString:@"192.168.1.161"]) {
-        [cookieProperties setObject:@"192.168.1.161" forKey:NSHTTPCookieDomain];
+    if ([urlstr containsString:@"html5.dnfe.tv"]) {
+        [cookieProperties setObject:@"html5.dnfe.tv" forKey:NSHTTPCookieDomain];
     }
+    
+//    if ([urlstr containsString:@"192.168.1.161"]) {
+//        [cookieProperties setObject:@"192.168.1.161" forKey:NSHTTPCookieDomain];
+//    }
+    
     [cookieProperties setObject:@"/" forKey:NSHTTPCookiePath];
     [cookieProperties setObject:@"0" forKey:NSHTTPCookieVersion];
     [cookieProperties setObject:[[NSDate date] dateByAddingTimeInterval:2629743] forKey:NSHTTPCookieExpires];
@@ -126,8 +132,7 @@
         
         //[NSURL URLWithString:@"http://html5.dnfe.tv/test1.php"]
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-        
-        
+    
         [_webView loadRequest:request];
     }
     
@@ -164,6 +169,7 @@
         }else if([type isEqualToString:@"toVideo"])
         {
             [weakSelf toVideo:obj];
+             
         }else if([type isEqualToString:@"toPhoto"])
         {
             [weakSelf toPhoto:obj];
@@ -340,6 +346,14 @@
     //3.设置默认显示的图片索引
     brower.currentPhotoIndex = 0;
     
+    
+    if ([photos count]==0) {
+        
+        [self.view makeToast:@"图片为空，请重试" duration:3.0 position:CSToastPositionCenter];
+        
+        return;
+    }
+    
     //4.显示浏览器
     [brower show];
     
@@ -348,26 +362,48 @@
 -(void)toVideo:(DLJSONObject*)obj
 {
     NSDictionary * videoDict = obj.dictionary;
-    DNRecordModel * model = [DNRecordModel mj_objectWithKeyValues:videoDict];
+    DNVideoModel * model = [DNVideoModel mj_objectWithKeyValues:videoDict];
     [self playVideo:model];
 }
 
--(void)playVideo:(DNRecordModel*)recordModel
+-(void)playVideo:(DNVideoModel*)videoModel
 {
    
-    if ([recordModel.vip isEqualToString:@"N"]) {
-        DNPlayerViewController * player = [DNPlayerViewController viewController];
-        player.enterType = web;
-        player.recordModel = recordModel;
-        [self.navigationController pushViewController:player animated:YES];
+    if ([videoModel.vip isEqualToString:@"N"]) {
+        
+        NSString * playUrl = [videoModel.play valueForKey:@"url"];
+        
+        if (IsStrEmpty(playUrl)) {
+        
+             [self.view makeToast:@"视频播放地址错误" duration:3.0 position:CSToastPositionCenter];
+            
+        }else
+        {
+            DNPlayerViewController * player = [DNPlayerViewController viewController];
+            player.enterType = web;
+            player.videoModel = videoModel;
+            [self.navigationController pushViewController:player animated:YES];
+        }
+        
+      
     }else
     {
         
         if ([DNSession sharedSession].vip==YES) {
-            DNPlayerViewController * player = [DNPlayerViewController viewController];
-            player.enterType = web;
-            player.recordModel = recordModel;
-            [self.navigationController pushViewController:player animated:YES];
+            NSString * playUrl = [videoModel.play valueForKey:@"url"];
+            
+            if (IsStrEmpty(playUrl)) {
+                
+                  [self.view makeToast:@"视频播放地址错误" duration:3.0 position:CSToastPositionCenter];
+                
+            }else
+            {
+                DNPlayerViewController * player = [DNPlayerViewController viewController];
+                player.enterType = web;
+                player.videoModel = videoModel;
+                [self.navigationController pushViewController:player animated:YES];
+            }
+            
         }else
         {
             UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"VIP购买" message:@"非VIP用户，无法查看以下内容\n请购买VIP后再来观看" preferredStyle:UIAlertControllerStyleAlert];
@@ -485,6 +521,9 @@
 -(void)setUrl:(NSString *)url
 {
     _url = url;
+
+    NSLog(@" url %@",url);
+    
     [self loadWeb];
 }
 

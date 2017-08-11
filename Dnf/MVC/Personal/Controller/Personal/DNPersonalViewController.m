@@ -14,7 +14,7 @@
 #import "DNHelpViewController.h"
 #import "DNEditViewController.h"
 #import "DNLoginViewController.h"
-#import "DNRecordModel.h"
+#import "DNCollectionViewController.h"
 @interface DNPersonalViewController ()<UITableViewDelegate,UITableViewDataSource>
 
 @property(nonatomic,copy)NSString * messageId;
@@ -25,20 +25,11 @@
 @property(nonatomic,strong)UIView * headerView;
 
 
-//关闭按钮
-@property(nonatomic,strong)UIButton * closeButton;
-
 //头像视图
 @property(nonatomic,strong)UIButton * avatarButton;
 
 //昵称
 @property(nonatomic,strong)UILabel * nickNameLabel;
-
-//底部视图
-@property(nonatomic,strong)UIView * footerView;
-
-//清除记录
-@property(nonatomic,strong)UIButton * clearButton;
 
 //消息提示红点
 @property(nonatomic,strong)UIView * redView;
@@ -205,13 +196,12 @@
    }
     
     [self checkHasMessage];
+
 }
 
 -(void)checkHasMessage
 {
-    
-    
- 
+
     DLHttpsBusinesRequest *request = [DLHttpRequestFactory checkHasNewMessage];
     
     request.requestSuccess = ^(id response)
@@ -261,13 +251,10 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+
     return 6;
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 74;
-}
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -282,11 +269,6 @@
    
 }
 
-- (nullable UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    return self.footerView;
-}
-
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 
@@ -299,18 +281,23 @@
         cell = [[DNPersonalTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellID];
     }
     
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
     cell.tag = 1000+indexPath.row;
     
     switch (indexPath.row) {
         case 0:
         {
             cell.titleLabel.text = @"加入VIP";
+            
+            cell.titleLabel.hidden = ![DNConfig sharedConfig].audit;
+            
+            
         }
             break;
             case 1:
         {
             cell.titleLabel.text = @"消息";
-            
             [cell addSubview:self.redView];
         }
             break;
@@ -365,11 +352,12 @@
     switch (indexPath.row) {
             case 0:
         {
-            DNTopUpViewController * topupViewController = [DNTopUpViewController viewController];
-            topupViewController.formMenu = YES;
-            [self pushController:topupViewController];
-  
-       
+            if ([DNConfig sharedConfig].audit==YES) {
+                DNTopUpViewController * topupViewController = [DNTopUpViewController viewController];
+                topupViewController.formMenu = YES;
+                [self pushController:topupViewController];
+            }
+ 
         }
             break;
             case 1:
@@ -382,17 +370,14 @@
             case 2:
         {
             DNRecordViewController * recordVc = [DNRecordViewController viewController];
-    
-            recordVc.index = 0;
             [self pushController:recordVc];
         }
             break;
             case 3:
         {
-            DNRecordViewController * recordVc = [DNRecordViewController viewController];
-
-            recordVc.index = 1;
-            [self pushController:recordVc];
+            DNCollectionViewController * collectionVc = [DNCollectionViewController viewController];
+            
+            [self pushController:collectionVc];
         }
             break;
             case 4:
@@ -423,70 +408,6 @@
     
 }
 
--(void)close
-{
-    //显示主视图
-    [self.xl_sldeMenu showRootViewControllerAnimated:true];
-}
-
--(void)clear
-{
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"删除浏览记录？" message:nil preferredStyle:UIAlertControllerStyleAlert];
-    
-    // Create the actions.
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-        NSLog(@"The \"Okay/Cancel\" alert's cancel action occured.");
-        
-        
-    }];
-    
-    NSString * deleteString = [NSString stringWithFormat:@"删除"];
-    
-    UIAlertAction *deleteAction = [UIAlertAction actionWithTitle:deleteString style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        
-        DLHttpsBusinesRequest *request = [DLHttpRequestFactory deleteRecordWithAccessidid:@"all"];
-        
-        request.requestSuccess = ^(id response)
-        {
-            
-            DLJSONObject *object = response;
-            
-            DLJSONObject * dataObject = [object getJSONObject:@"data"];
-  
-            DNPersonalTableViewCell * cell =(DNPersonalTableViewCell * )[self.tableView viewWithTag:1002];
-            for (UIView * v in cell.contentView.subviews) {
-                
-                if ([v isKindOfClass:[UIImageView class]]) {
-                    [v removeFromSuperview];
-                }
-            }
-            
-            [self.recordImageArray removeAllObjects];
-            [self.tableView reloadData];
-            
-            [self.view makeToast:@"删除成功" duration:3.0 position:CSToastPositionCenter];
-        };
-        
-        request.requestFaile = ^(NSError *error)
-        {
-            
-        };
-        
-        [request excute];
- 
-        
-    }];
-    
-    [cancelAction setValue:[UIColor blackColor] forKey:@"_titleTextColor"];
-    [deleteAction setValue:[UIColor customColorWithString:@"fe3824"] forKey:@"_titleTextColor"];
-    
-    // Add the actions.
-    [alertController addAction:cancelAction];
-    [alertController addAction:deleteAction];
-    
-    [self presentViewController:alertController animated:YES completion:nil];
-    
-}
 
 -(void)pushController:(DNBaseViewController*)controller
 {
@@ -503,23 +424,25 @@
     if (buttonIndex == 1)
     {
 
-        [[DNSession sharedSession] removeUserInfo];
+        [DNSession sharedSession].vip = NO;
         
-
+        [[DNSession sharedSession] removeUserInfo];
+    
         //显示主视图
         [self.xl_sldeMenu showRootViewControllerAnimated:true];
  
+        
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"DNReloadWebView" object:nil];
+        
     }
 
 }
 -(void)guideOnTap:(UITapGestureRecognizer *)gesture
 {
-    
 
     [self.guideView removeFromSuperview];
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"DNPersonalGuide"];
 
-    
 }
 
 
@@ -621,28 +544,6 @@
     return _tableView;
 }
 
--(UIView*)footerView
-{
-    if (!_footerView) {
-        _footerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, KScreenWidth*0.8, 74)];
-        [_footerView addSubview:self.clearButton];
-    }
-    return _footerView;
-}
-
--(UIButton*)clearButton
-{
-    if (!_clearButton) {
-        _clearButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _clearButton.frame= CGRectMake(50, 0, 200, 76);
-        [_clearButton setTitle:@"清空浏览记录" forState:UIControlStateNormal];
-        [_clearButton setTitleColor:[UIColor customColorWithString:@"999999"] forState:UIControlStateNormal];
-        _clearButton.titleLabel.font = [UIFont fontWithName:TextFontName_Light size:13];
-        _clearButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-        [_clearButton addTarget:self action:@selector(clear) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _clearButton;
-}
 
 -(UIView*)headerView
 {
@@ -651,23 +552,13 @@
         CGFloat width = KScreenWidth*0.8;
         _headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, width, 240)];
         _headerView.backgroundColor = [UIColor whiteColor];
-        [_headerView addSubview:self.closeButton];
+
         [_headerView addSubview:self.avatarButton];
         [_headerView addSubview:self.nickNameLabel];
     }
     return _headerView;
 }
 
--(UIButton*)closeButton
-{
-    if (!_closeButton) {
-        _closeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _closeButton.frame = CGRectMake(2, 20, 44, 44);
-        [_closeButton setImage:[UIImage imageNamed:@"nav_close_normal"] forState:UIControlStateNormal];
-        [_closeButton addTarget:self action:@selector(close) forControlEvents:UIControlEventTouchUpInside];
-    }
-    return _closeButton;
-}
 
 
 -(UIButton*)avatarButton

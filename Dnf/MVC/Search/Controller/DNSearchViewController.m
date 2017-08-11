@@ -33,7 +33,7 @@
     swipeGestureTop.direction = UISwipeGestureRecognizerDirectionUp;
     [self.view addGestureRecognizer:swipeGestureTop];
     
-    
+
 }
 
 
@@ -63,8 +63,7 @@
 {
     NSString * searchUrl = MainUrl(@"search");
 
-    self.url = [NSString stringWithFormat:@"%@?search=%@",searchUrl,keyword];
-
+   
 }
 -(UIImageView*)searchImageView
 {

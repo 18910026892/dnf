@@ -7,7 +7,7 @@
 //
 
 #import "DNRecordCollectionViewCell.h"
-
+#import "NSString+Date.h"
 @implementation DNRecordCollectionViewCell
 
 -(id)initWithFrame:(CGRect)frame
@@ -28,28 +28,26 @@
     
 }
 
--(void)setRecordModel:(DNRecordModel *)recordModel
+-(void)setVideoModel:(DNVideoModel *)videoModel
 {
-    _recordModel = recordModel;
+    _videoModel = videoModel;
     
-
-    
-    [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:recordModel.cover]];
+    [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:videoModel.cover] placeholderImage:[UIImage imageNamed:@"share_icon"]];
     
     
-    if (recordModel.duration==0||!recordModel.duration) {
+    if (videoModel.duration==0||!videoModel.duration) {
         self.timeLabel.hidden = YES;
         
     }else
     {
         self.timeLabel.hidden = NO;
-        self.timeLabel.text = [self formatTime:recordModel.duration];
+        self.timeLabel.text = [NSString formatTime:videoModel.duration];
     }
     
     
-    self.vipLabel.hidden = ([recordModel.vip isEqualToString:@"Y"])?NO:YES;
+    self.vipLabel.hidden = ([videoModel.vip isEqualToString:@"Y"])?NO:YES;
     
-    self.vrLabel.hidden = ([recordModel.resource isEqualToString:@"vr"])?NO:YES;
+    self.vrLabel.hidden = ([videoModel.resource isEqualToString:@"vr"])?NO:YES;
 }
 
 - (void)setSelected:(BOOL)selected{
@@ -63,23 +61,9 @@
       self.selectImageView.image = [UIImage imageNamed:@"checkbox_normal"];
     }
     
-    if (self.delegate) {
-        [self.delegate selectRecordModel:self.recordModel select:selected];
-    }
+
     
     // Configure the view for the selected state
-}
-//format audio time
-- (NSString *)formatTime:(int)num{
-    
-    int second = (int)num%60;//秒
-    int minute = (int)num/60%60;
-    int house = (int)num/3600;
-    if (num < 3600) {
-        return [NSString stringWithFormat:@"%02d:%02d",minute,second];
-    }
-    
-    return [NSString stringWithFormat:@"%02d:%02d:%02d",house,minute,second];
 }
 
 

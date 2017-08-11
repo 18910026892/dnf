@@ -7,9 +7,28 @@
 //
 
 #import "DNBaseViewController.h"
+#import "DNRecordCollectionViewCell.h"
+#import "DNRecordHeaderView.h"
+#import "DNVideoModel.h"
+@interface DNRecordViewController : DNBaseViewController<UICollectionViewDelegate,UICollectionViewDataSource>
 
-@interface DNRecordViewController : DNBaseViewController
+@property(nonatomic,strong)UICollectionView * collectionView;
+@property(nonatomic,strong)DNRecordHeaderView * collectionHeader;
+@property (nonatomic,strong) UIButton * clearButton;
 
-@property(nonatomic,assign)NSInteger index;
+@property (nonatomic,strong) UIButton * deleteButton;
+
+@property(nonatomic,strong)NSMutableArray * dataArray;
+
+@property(nonatomic,strong)NSMutableArray * videoIdArray;
+
+@property(nonatomic,assign)int offset;
+
+@property(nonatomic,assign)int total;
+
+@property(nonatomic,assign)BOOL isEdit;
+
+//刷新视图
+-(void)retryToGetData;
 
 @end

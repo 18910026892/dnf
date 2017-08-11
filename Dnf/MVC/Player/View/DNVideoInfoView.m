@@ -23,6 +23,8 @@
         [self addSubview:self.watchCountLabel];
         [self addSubview:self.collectionButton];
         [self addSubview:self.shareButton];
+        [self addSubview:self.reportButton];
+        
         [self addSubview:self.line];
 
     
@@ -79,10 +81,10 @@
 {
     if (!_videoTitleLabel) {
         _videoTitleLabel = [[UILabel alloc]init];
-        _videoTitleLabel.frame = CGRectMake(14, 10, KScreenWidth-114, 21);
+        _videoTitleLabel.frame = CGRectMake(14, 10, KScreenWidth-164, 21);
         _videoTitleLabel.font = [UIFont fontWithName:TextFontName_Light size:15];
         _videoTitleLabel.textColor = [UIColor customColorWithString:@"000000"];
-        _videoTitleLabel.text = @"标题最多显示八个字";
+  
     }
     return _videoTitleLabel;
 }
@@ -134,6 +136,22 @@
     return _shareButton;
 }
 
+-(UIButton*)reportButton
+{
+    if (!_reportButton) {
+        _reportButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _reportButton.frame = CGRectMake(KScreenWidth-150, 0, 50, 60);
+        [_reportButton setTitle:@"举报" forState:UIControlStateNormal];
+        [_reportButton setTitleColor:[UIColor customColorWithString:@"999999"] forState:UIControlStateNormal];
+        [_reportButton setImage:[UIImage imageNamed:@"video_report_normal"] forState:UIControlStateNormal];
+        _reportButton.titleLabel.font = [UIFont fontWithName:TextFontName_Light size:10];
+        
+        [_reportButton setTitleEdgeInsets:UIEdgeInsetsMake(0, -20, -30, 0)];
+        [_reportButton setImageEdgeInsets:UIEdgeInsetsMake(-10,14, 0, 0)];
+        _reportButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+    }
+    return _reportButton;
+}
 
 
 @end

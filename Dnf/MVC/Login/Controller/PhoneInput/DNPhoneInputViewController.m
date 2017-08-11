@@ -162,7 +162,7 @@
 -(DNTextField*)phoneTextField
 {
     if (!_phoneTextField) {
-        _phoneTextField = [[DNTextField alloc]initWithFrame:CGRectMake(178.5,158, KScreenWidth-178.5-50,27)];
+        _phoneTextField = [[DNTextField alloc]initWithFrame:CGRectMake(178.5,151, KScreenWidth-178.5-50,40)];
         _phoneTextField.placeholder = @"手机号";
         _phoneTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _phoneTextField.autocorrectionType = UITextAutocorrectionTypeNo;

@@ -8,6 +8,7 @@
 
 #import "DNPlayerViewController.h"
 #import "DNLoginViewController.h"
+#import <StoreKit/StoreKit.h>
 @interface DNPlayerViewController ()
 
 @property(nonatomic,copy)NSString * videoUrl;
@@ -15,9 +16,6 @@
 @end
 
 @implementation DNPlayerViewController
-
-
-
 
 
 -(void)viewWillAppear:(BOOL)animated
@@ -38,6 +36,8 @@
     }
     
     self.xl_sldeMenu.slideEnabled = NO;
+    
+    
 }
 
 
@@ -58,6 +58,28 @@
     [self.videoController dismiss];
     
 }
+
+-(void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    
+   // [self storeReview];
+}
+
+-(void)storeReview
+{
+
+    if ([DNConfig sharedConfig].store==NO) {
+        float version = [[UIDevice currentDevice].systemVersion floatValue];
+        
+        if (version>10.3||version==10.3) {
+            
+            [SKStoreReviewController requestReview];
+            [DNConfig sharedConfig].store= YES;
+        }
+    }
+}
+    
 
 -(void)dealloc
 {
@@ -80,7 +102,7 @@
 {
     
     NSDictionary * noticeDic= (NSDictionary*)notice.object;
-    self.recordModel = [DNRecordModel mj_objectWithKeyValues:noticeDic];
+    self.videoModel = [DNVideoModel mj_objectWithKeyValues:noticeDic];
 
 }
 
@@ -88,43 +110,47 @@
 {
     [self setTabBarHide:YES];
     [self.view addSubview:self.videoInfoView];
+    [self.view addSubview:self.tableView];
     [self checkVip];
     [self getvideoList];
-
-    self.url = MainUrl(@"videoList");
 
 }
 
 -(void)checkVip
 {
-    if ([DNSession sharedSession].vip==NO) {
+    CGFloat y;
+    if ([DNSession sharedSession].vip==NO&&[DNConfig sharedConfig].audit==YES) {
         [self.view addSubview:self.vipView];
-        
-        CGFloat y = KScreenWidth*(9.0/16.0)+110;
-        self.webView.frame = CGRectMake(0, y, KScreenWidth, KScreenHeight-y);
+    
+         y = KScreenWidth*(9.0/16.0)+110;
+    
+    
     }else
     {
         [self.vipView removeFromSuperview];
-        CGFloat y = KScreenWidth*(9.0/16.0)+60;
-        self.webView.frame = CGRectMake(0, y, KScreenWidth, KScreenHeight-y);
+        y = KScreenWidth*(9.0/16.0)+60;
+
     }
     
+    self.tableView.y = y;
+    self.tableView.height = KScreenHeight-y;
+
 }
 
 -(void)getvideoList
 {
     //浏览记录
-    NSString * resource = [NSString stringWithFormat:@"%@",self.recordModel.resource];
+    NSString * resource = [NSString stringWithFormat:@"%@",self.videoModel.resource];
     
     NSString * relationid;
     if ([resource isEqualToString:@"video"]) {
-        relationid = [NSString stringWithFormat:@"%ld",(long)self.recordModel.videoid];
+        relationid = [NSString stringWithFormat:@"%ld",(long)self.videoModel.videoid];
     }else if([resource isEqualToString:@"vr"])
     {
-        relationid = [NSString stringWithFormat:@"%ld",(long)self.recordModel.vrid];
+        relationid = [NSString stringWithFormat:@"%ld",(long)self.videoModel.vrid];
     }else if([resource isEqualToString:@"party"])
     {
-        relationid = [NSString stringWithFormat:@"%ld",(long)self.recordModel.partyid];
+        relationid = [NSString stringWithFormat:@"%ld",(long)self.videoModel.partyid];
     }
     
     
@@ -134,6 +160,11 @@
 
 
 -(void)playVideo{
+    
+    if(IsStrEmpty(self.videoUrl))
+    {
+        return;
+    }
 
     NSURL * videoURL = [NSURL URLWithString:self.videoUrl];
 
@@ -150,7 +181,7 @@
  
     [self.videoController.videoControl.closeButton addTarget:self action:@selector(backButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     
-    self.videoController.videoControl.videoTitleLabel.text = [NSString stringWithFormat:@"%@",self.recordModel.title];
+    self.videoController.videoControl.videoTitleLabel.text = [NSString stringWithFormat:@"%@",self.videoModel.title];
     
     [self.videoController.videoControl.vipButton addTarget:self action:@selector(openButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     
@@ -212,17 +243,17 @@
         
     }else
     {
-        NSString * resource = [NSString stringWithFormat:@"%@",self.recordModel.resource];
+        NSString * resource = [NSString stringWithFormat:@"%@",self.videoModel.resource];
         
         NSString * relationid;
         if ([resource isEqualToString:@"video"]) {
-            relationid = [NSString stringWithFormat:@"%ld",(long)self.recordModel.videoid];
+            relationid = [NSString stringWithFormat:@"%ld",(long)self.videoModel.videoid];
         }else if([resource isEqualToString:@"vr"])
         {
-            relationid = [NSString stringWithFormat:@"%ld",(long)self.recordModel.vrid];
+            relationid = [NSString stringWithFormat:@"%ld",(long)self.videoModel.vrid];
         }else if([resource isEqualToString:@"party"])
         {
-            relationid = [NSString stringWithFormat:@"%ld",(long)self.recordModel.partyid];
+            relationid = [NSString stringWithFormat:@"%ld",(long)self.videoModel.partyid];
         }
         
         DLHttpsBusinesRequest *request = [DLHttpRequestFactory addCollecionResource:resource relationid:relationid];
@@ -247,22 +278,38 @@
 
 }
 
+-(void)reportButtonClick:(UIButton*)sender
+{
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"举报" message:@"确认要举报当前视频么？" preferredStyle:UIAlertControllerStyleAlert];
+    
+    // Create the actions.
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        NSLog(@"The \"Okay/Cancel\" alert's cancel action occured.");
+    }];
+    
+    [cancelAction setValue:[UIColor blackColor] forKey:@"_titleTextColor"];
+    
+    UIAlertAction *otherAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+       
+            [self.view makeToast:@"举报成功" duration:3 position:CSToastPositionCenter];
+        
+    }];
+    
+    [otherAction setValue:kThemeColor forKey:@"_titleTextColor"];
+    
+    
+    // Add the actions.
+    [alertController addAction:cancelAction];
+    [alertController addAction:otherAction];
+    
+    [self presentViewController:alertController animated:YES completion:nil];
+}
+
+
 -(void)shareButtonClick:(UIButton*)sender
 {
-    //浏览记录
-    NSString * resource = [NSString stringWithFormat:@"%@",self.recordModel.resource];
-    
-    NSString * relationid;
-    if ([resource isEqualToString:@"video"]) {
-        relationid = [NSString stringWithFormat:@"%ld",(long)self.recordModel.videoid];
-    }else if([resource isEqualToString:@"vr"])
-    {
-        relationid = [NSString stringWithFormat:@"%ld",(long)self.recordModel.vrid];
-    }else if([resource isEqualToString:@"party"])
-    {
-        relationid = [NSString stringWithFormat:@"%ld",(long)self.recordModel.partyid];
-    }
-    
+  
+    NSString * relationid = @"";
     
     NSDictionary * shareDict = [NSDictionary dictionaryWithObjectsAndKeys:relationid,@"relationid",nil];
     
@@ -270,11 +317,164 @@
                                   isShowLaHei:NO
                                        userId:nil
                                       andType:10
-                                resourcesType:resource
+                                resourcesType:@""
                                     andRoomID:@"1"
                                  andShareDict:shareDict
                                     backColor:nil];
 }
+
+
+#pragma mark - TabelView delegate 代理
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath;
+{
+    return 96;
+}
+
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [self.recomendArray count];
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 0.01;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 41;
+}
+- (nullable UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    return self.tableHeader;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+
+{
+    static NSString * cellid = @"DLVideoRecommendTableViewCell";
+    
+    DLVideoRecommendTableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:cellid];
+    
+    if (!cell) {
+        cell = [[DLVideoRecommendTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellid];
+    }
+    
+    cell.videoModel = self.recomendArray[indexPath.row];
+    
+    return cell;
+    
+}
+
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    self.videoModel = self.recomendArray[indexPath.row];
+
+    
+}
+
+
+#pragma mark request
+-(void)getRecommendResource:(NSString*)resource
+                 relationid:(NSString*)relationid
+{
+    
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory recommendVideoResource:resource relationid:relationid];
+    
+    request.requestSuccess = ^(id response)
+    {
+        
+        DLJSONObject *object = response;
+        
+        DLJSONObject * dataObject = [object getJSONObject:@"data"];
+        
+        DLJSONArray * jsonArray = [dataObject getJSONArray:@"recommend"];
+        
+        self.videoController.videoControl.videoArray = jsonArray.array;
+        
+        
+        self.recomendArray = [DNVideoModel mj_objectArrayWithKeyValuesArray:jsonArray.array];
+        
+        
+        if ([self.recomendArray count]==0) {
+            
+            CGFloat y;
+            if ([DNSession sharedSession].vip==NO&&[DNConfig sharedConfig].audit==YES) {
+             
+                
+                y = KScreenWidth*(9.0/16.0)+110;
+                
+                
+            }else
+            {
+                y = KScreenWidth*(9.0/16.0)+60;
+                
+            }
+
+            
+            CGRect rect  = CGRectMake(KScreenWidth/2-52,(KScreenHeight-y)/2-52+y, 104, 80);
+            [self showNoDataView:self.view noDataString:@"暂无数据" noDataImage:@"default_nodata" imageViewFrame:rect];
+        }
+        
+        
+        [self.tableView reloadData];
+    };
+    
+    request.requestFaile = ^(NSError *error)
+    {
+        
+    };
+    
+    [request excute];
+    
+}
+
+
+-(void)increaseResource:(NSString*)resource
+           relationid:(NSString*)relationid
+{
+    NSString * type = [NSString stringWithFormat:@"watch_%@",resource];
+    
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory increaseCount:type relateid:relationid];
+
+    [request excute];
+}
+
+-(void)recordResource:(NSString*)resource
+           relationid:(NSString*)relationid;
+{
+    
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory addRecordResource:resource relationid:relationid];
+    
+    [request excute];
+}
+
+
+#pragma mark getter
+
+-(UITableView*)tableView
+{
+    if (!_tableView) {
+        CGFloat y = KScreenWidth*(9.0/16.0)+110;
+        
+        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0,y,KScreenWidth,KScreenHeight-y) style:UITableViewStyleGrouped];
+        _tableView.separatorStyle=UITableViewCellSeparatorStyleSingleLine;
+        _tableView.delegate=self;
+        _tableView.dataSource=self;
+        _tableView.backgroundColor=[UIColor clearColor];
+        _tableView.separatorColor = [UIColor customColorWithString:@"eeeeee"];
+    
+    }
+    return _tableView;
+}
+
+
 
 -(DNVideoInfoView*)videoInfoView
 {
@@ -284,6 +484,7 @@
 
         [_videoInfoView.collectionButton addTarget:self action:@selector(collectButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         [_videoInfoView.shareButton addTarget:self action:@selector(shareButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [_videoInfoView.reportButton addTarget:self action:@selector(reportButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     }
     return _videoInfoView;
 }
@@ -298,19 +499,52 @@
 }
 
 
-
-
-
-//记录跳转
--(void)setRecordModel:(DNRecordModel *)recordModel
+-(UIView*)tableHeader
 {
-    _recordModel = recordModel;
-    
-    NSString * vip = recordModel.vip;
+    if (!_tableHeader) {
+        _tableHeader = [[UIView alloc]initWithFrame:CGRectMake(0, 0, KScreenWidth, 41)];
+        [_tableHeader addSubview:self.circleView];
+        [_tableHeader addSubview:self.headerTitle];
+    }
+    return _tableHeader;
+}
 
+
+-(UIView*)circleView
+{
+    if (!_circleView) {
+        _circleView = [[UIView alloc]initWithFrame:CGRectMake(15, 18, 10, 10)];
+        _circleView.layer.cornerRadius = 5;
+        _circleView.layer.borderWidth = 1;
+        _circleView.layer.borderColor = kThemeColor.CGColor;
+        
+    }
+    return _circleView;
+}
+
+-(UILabel*)headerTitle
+{
+    if (!_headerTitle) {
+        _headerTitle = [[UILabel alloc]initWithFrame:CGRectMake(34, 12, 200, 24)];
+        _headerTitle.text = @"更多推荐视频";
+        _headerTitle.textAlignment = NSTextAlignmentLeft;
+        _headerTitle.textColor = [UIColor blackColor];
+        _headerTitle.font = [UIFont fontWithName:TextFontName_Light size:17];
+        
+    }
+    return _headerTitle;
+}
+
+#pragma mark setter
+-(void)setVideoModel:(DNVideoModel *)videoModel
+{
+    _videoModel = videoModel;
+    
+    NSString * vip = videoModel.vip;
+    
     if ([vip isEqualToString:@"N"]) {
         
-        [self updateInfo:recordModel];
+        [self updateInfo:videoModel];
         
     }else
     {
@@ -342,90 +576,57 @@
         }else
             
         {
-            [self updateInfo:recordModel];
+            [self updateInfo:videoModel];
         }
     }
-    
-    
  
-    
 }
 
--(void)updateInfo:(DNRecordModel*)recordModel
+-(void)updateInfo:(DNVideoModel*)videoModel
 {
-    self.videoUrl = [self.recordModel.play valueForKey:@"url"];
+    self.videoUrl = [self.videoModel.play valueForKey:@"url"];
+    
+    if (IsStrEmpty(_videoUrl)) {
+        return;
+    }
+    
     //视频地址
     self.videoController.contentURL =  [NSURL URLWithString:self.videoUrl];
     
     //视频信息
-    self.videoInfoView.collection = (recordModel.favoriteid==0)?NO:YES;
+    self.videoInfoView.collection = (videoModel.favoriteid==0)?NO:YES;
     
     if (self.videoInfoView.collection==YES) {
         self.videoInfoView.collectionButton.userInteractionEnabled = NO;
     }
     
     
-    self.videoInfoView.videoTitleLabel.text =  [NSString stringWithFormat:@"%@",recordModel.title];
-    self.videoInfoView.watchCountLabel.text = [NSString stringWithFormat:@"%ld次播放",recordModel.watches];
+    self.videoInfoView.videoTitleLabel.text =  [NSString stringWithFormat:@"%@",videoModel.title];
+    self.videoInfoView.watchCountLabel.text = [NSString stringWithFormat:@"%ld次播放",videoModel.watches];
+    self.videoController.videoControl.videoTitleLabel.text = [NSString stringWithFormat:@"%@",videoModel.title];
     
     
     //浏览记录
-    NSString * resource = [NSString stringWithFormat:@"%@",recordModel.resource];
+    NSString * resource = [NSString stringWithFormat:@"%@",videoModel.resource];
     
     NSString * relationid;
     if ([resource isEqualToString:@"video"]) {
-        relationid = [NSString stringWithFormat:@"%ld",(long)recordModel.videoid];
+        relationid = [NSString stringWithFormat:@"%ld",(long)videoModel.videoid];
     }else if([resource isEqualToString:@"vr"])
     {
-        relationid = [NSString stringWithFormat:@"%ld",(long)recordModel.vrid];
+        relationid = [NSString stringWithFormat:@"%ld",(long)videoModel.vrid];
     }else if([resource isEqualToString:@"party"])
     {
-         relationid = [NSString stringWithFormat:@"%ld",(long)recordModel.partyid];
+         relationid = [NSString stringWithFormat:@"%ld",(long)videoModel.partyid];
     }
     
     [self recordResource:resource relationid:relationid];
     
+    
+    [self increaseResource:resource relationid:relationid];
 
     
 }
-
--(void)getRecommendResource:(NSString*)resource
-           relationid:(NSString*)relationid
-{
-    
-    DLHttpsBusinesRequest *request = [DLHttpRequestFactory recommendVideoResource:resource relationid:relationid];
-    
-    request.requestSuccess = ^(id response)
-    {
-        
-        DLJSONObject *object = response;
-        
-        DLJSONObject * dataObject = [object getJSONObject:@"data"];
-        
-        self.videoController.videoControl.videoArray = [dataObject getJSONArray:@"recommend"].array;
-        
-        
-    };
-    
-    request.requestFaile = ^(NSError *error)
-    {
-        
-    };
-    
-    [request excute];
-    
-}
-
--(void)recordResource:(NSString*)resource
-           relationid:(NSString*)relationid;
-{
- 
-    DLHttpsBusinesRequest *request = [DLHttpRequestFactory addRecordResource:resource relationid:relationid];
-
-    [request excute];
-}
-
-
 
 
 - (void)didReceiveMemoryWarning {

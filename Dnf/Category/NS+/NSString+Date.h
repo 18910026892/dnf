@@ -18,5 +18,5 @@
 //时间戳转化时间
 +(NSString *)timestampSwitchTime:(NSInteger)timestamp andFormatter:(NSString *)format;
 
-
++(NSString *)formatTime:(int)num;
 @end

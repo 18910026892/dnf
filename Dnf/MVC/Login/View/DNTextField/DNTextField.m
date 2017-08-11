@@ -26,7 +26,7 @@
     CGRect inset;
     UIFont * font;
     
-    inset = CGRectMake(0, self.bounds.origin.y+2, self.bounds.size.width , self.bounds.size.height);
+    inset = CGRectMake(0, self.bounds.origin.y+10, self.bounds.size.width , self.bounds.size.height);
     font = [UIFont fontWithName:TextFontName_Light size:15];
     
     [self.placeholder drawInRect:inset withFont:font];

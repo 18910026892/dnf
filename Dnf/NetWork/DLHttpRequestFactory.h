@@ -11,6 +11,36 @@
 
 @interface DLHttpRequestFactory : NSObject
 
+//云控
++(nonnull DLHttpsBusinesRequest*)getConfigs:(nonnull NSString *)names;
+
+//vr列表
++(nonnull DLHttpsBusinesRequest*)getVrNumber:(nonnull NSString*)number offset:(nonnull NSString*)offset;
+
+//party列表
++(nonnull DLHttpsBusinesRequest*)getPartyNumber:(nonnull NSString*)number offset:(nonnull NSString*)offset;
+
+//免费相册
++(nonnull DLHttpsBusinesRequest*)getFreePhotoList:(nonnull NSString*)number offset:(nonnull NSString*)offset;
+
+//付费相册
++(nonnull DLHttpsBusinesRequest*)getPayPhotoList:(nonnull NSString*)number offset:(nonnull NSString*)offset;
+
+//推荐相册
++(nonnull DLHttpsBusinesRequest*)recommendAlbum;
+
+//免费视频
++(nonnull DLHttpsBusinesRequest*)getFreeVideoList:(nonnull NSString*)number offset:(nonnull NSString*)offset;
+
+//付费视频
++(nonnull DLHttpsBusinesRequest*)getPayVideoList:(nonnull NSString*)number offset:(nonnull NSString*)offset;
+
+
+//增加观看数
++(nonnull DLHttpsBusinesRequest*)increaseCount:(nonnull NSString*)type relateid:(nonnull NSString*)relateid;
+
+
+//三方登录
 +(nonnull DLHttpsBusinesRequest*)thirdLogInWithParamer:(nonnull  NSDictionary*)Paramer;
 +(nonnull DLHttpsBusinesRequest*)getQQUnionidAccessTocken:(nonnull NSString *)accessTocken;
 

@@ -90,8 +90,6 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 10.0;
     return self;
 }
 
-
-
 - (void)layoutSubviews
 {
     [super layoutSubviews];

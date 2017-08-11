@@ -150,7 +150,6 @@ static id _threeLoginManager = nil;
         }
         
         [self cheakIsVip];
-   
         [self changeRootVC];
     
         

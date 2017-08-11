@@ -18,7 +18,6 @@
 
 @property(nonatomic,assign)NSInteger selectCount;
 
-@property (nonatomic,strong) UIButton * clearButton;
 
 
 @end

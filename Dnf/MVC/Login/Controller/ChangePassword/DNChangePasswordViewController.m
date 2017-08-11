@@ -141,7 +141,7 @@
 -(DNTextField*)passWordTextField
 {
     if (!_passWordTextField) {
-        _passWordTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,157, KScreenWidth-160,27)];
+        _passWordTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,150, KScreenWidth-160,40)];
         _passWordTextField.placeholder = @"密码";
         _passWordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _passWordTextField.autocorrectionType = UITextAutocorrectionTypeNo;

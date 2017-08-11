@@ -228,7 +228,7 @@
 -(DNTextField*)validationTextField
 {
     if (!_validationTextField) {
-        _validationTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,170, KScreenWidth-190,27)];
+        _validationTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,163, KScreenWidth-190,40)];
         _validationTextField.placeholder = @"验证码";
         _validationTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _validationTextField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -258,7 +258,7 @@
 -(DNTextField*)passWordTextField
 {
     if (!_passWordTextField) {
-        _passWordTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,250, KScreenWidth-160,27)];
+        _passWordTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,243, KScreenWidth-160,40)];
         _passWordTextField.placeholder = @"密码";
         _passWordTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _passWordTextField.autocorrectionType = UITextAutocorrectionTypeNo;

@@ -31,6 +31,9 @@
 //分享按钮
 @property(nonatomic,strong)UIButton * shareButton;
 
+//举报按钮
+@property(nonatomic,strong)UIButton * reportButton;
+
 
 //线条
 @property(nonatomic,strong)UIView* line;

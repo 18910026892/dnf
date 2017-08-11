@@ -9,7 +9,6 @@
 @import MediaPlayer;
 #import "KRVideoPlayerControlView.h"
 
-
 @interface KRVideoPlayerController : MPMoviePlayerController
 
 @property (nonatomic, strong) KRVideoPlayerControlView *videoControl;

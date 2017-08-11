@@ -22,6 +22,8 @@
     [self.leftButton addTarget:self action:@selector(showLeft) forControlEvents:UIControlEventTouchUpInside];
     
     self.url = MainUrl(@"help");
+    
+    self.webView.frame = CGRectMake(0, 64, KScreenWidth, KScreenHeight-64);
 }
 
 -(void)showLeft

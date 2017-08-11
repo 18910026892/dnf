@@ -149,7 +149,7 @@
 -(DNTextField*)validationTextField
 {
     if (!_validationTextField) {
-        _validationTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,158, KScreenWidth-190,27)];
+        _validationTextField = [[DNTextField alloc]initWithFrame:CGRectMake(80,151 , KScreenWidth-190,40)];
         _validationTextField.placeholder = @"验证码";
         _validationTextField.clearButtonMode = UITextFieldViewModeWhileEditing;
         _validationTextField.autocorrectionType = UITextAutocorrectionTypeNo;
