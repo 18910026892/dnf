@@ -21,9 +21,17 @@
     // Do any additional setup after loading the view.
     _isEdit = NO;
     [self creatUserInterface];
-
+    [self addNotifi];
+}
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+-(void)addNotifi
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(retryToGetData) name:@"DNRefreshVipState" object:nil];
+}
 -(void)showLeft
 {
     [self.xl_sldeMenu showLeftViewControllerAnimated:YES];

@@ -15,6 +15,22 @@
 
 @implementation DLHttpRequestFactory
 
++(nonnull DLHttpsBusinesRequest*)getBannerList;
+{
+    DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"msvr://recommend/slideshow"
+                                                                        method:DLHttpRequestMethodGet];
+    
+    
+    
+    [request addParameter:@"10" key:@"num"];
+
+    request.isShowErrorToast = NO;
+    request.isShowLoading = NO;
+    
+    return request;
+}
+
+
 +(nonnull DLHttpsBusinesRequest*)getFreeVideoList:(nonnull NSString*)number offset:(nonnull NSString*)offset
 {
     DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"msvr://video/free"
@@ -115,14 +131,13 @@
 }
 
 
-+(nonnull DLHttpsBusinesRequest*)recommendAlbum;
++(nonnull DLHttpsBusinesRequest*)recommendAlbum:(nonnull NSString*)number offset:(nonnull NSString*)offset
 {
     DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"msvr://recommend/album"
                                                                         method:DLHttpRequestMethodGet];
     
-    
-    
-    [request addParameter:@"5" key:@"num"];
+    [request addParameter:number key:@"num"];
+    [request addParameter:offset key:@"offset"];
     
     request.isShowErrorToast = NO;
     request.isShowLoading = NO;
@@ -130,7 +145,45 @@
     return request;
 }
 
++(nonnull DLHttpsBusinesRequest*)recommendVideo
+{
+    DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"msvr://recommend/video"
+                                                                        method:DLHttpRequestMethodGet];
+    
+    [request addParameter:@"10" key:@"num"];
+  
+    request.isShowErrorToast = NO;
+    request.isShowLoading = NO;
+    
+    return request;
+}
 
++(nonnull DLHttpsBusinesRequest*)searchList:(nonnull NSString*)resource text:(nonnull NSString*)text
+{
+    DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"msvr://search/getList"
+                                                                        method:DLHttpRequestMethodGet];
+    
+    [request addParameter:@"100" key:@"num"];
+    [request addParameter:resource key:@"resource"];
+    [request addParameter:text key:@"text"];
+    request.isShowErrorToast = NO;
+    request.isShowLoading = NO;
+    
+    return request;
+}
+
++(nonnull DLHttpsBusinesRequest*)searchVideoText:(nonnull NSString*)text
+{
+    DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"msvr://search/getall"
+                                                                        method:DLHttpRequestMethodGet];
+    
+    [request addParameter:@"20" key:@"num"];
+    [request addParameter:text key:@"text"];
+    request.isShowErrorToast = NO;
+    request.isShowLoading = NO;
+    
+    return request;
+}
 
 
 +(nonnull DLHttpsBusinesRequest*)getConfigs:(nonnull NSString *)names

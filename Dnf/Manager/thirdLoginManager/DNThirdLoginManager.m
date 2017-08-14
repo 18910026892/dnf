@@ -180,6 +180,10 @@ static id _threeLoginManager = nil;
         
         [DNSession sharedSession].vip = ([isvip isEqualToString:@"Y"])?YES:NO;
         
+        NSString * state = ([isvip isEqualToString:@"Y"])?@"1":@"0";
+        
+        NSDictionary * dict =[NSDictionary dictionaryWithObjectsAndKeys:state,@"state", nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"DNRefreshVipState" object:dict];
     };
     
     request.requestFaile   = ^(NSError *error)

@@ -635,7 +635,7 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 10.0;
     vipLabel.textColor = [UIColor whiteColor];
     vipLabel.font = [UIFont systemFontOfSize:11];
     
-    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:vipLabel.bounds byRoundingCorners:UIRectCornerBottomLeft cornerRadii:CGSizeMake(5, 5)];
+    UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:vipLabel.bounds byRoundingCorners:UIRectCornerBottomLeft cornerRadii:CGSizeMake(3, 3)];
     CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
     maskLayer.frame = vipLabel.bounds;
     maskLayer.path = maskPath.CGPath;
@@ -683,6 +683,8 @@ static const CGFloat kVideoControlBarAutoFadeOutTimeinterval = 10.0;
     maskView.hidden = YES;
   
     NSDictionary * dict = self.videoArray[indexPath.row];
+    
+    
     [[NSNotificationCenter defaultCenter] postNotificationName:@"DLChangeVideo" object:dict];
 }
 

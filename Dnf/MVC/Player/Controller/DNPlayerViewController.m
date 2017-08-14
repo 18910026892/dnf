@@ -9,7 +9,7 @@
 #import "DNPlayerViewController.h"
 #import "DNLoginViewController.h"
 #import <StoreKit/StoreKit.h>
-@interface DNPlayerViewController ()
+@interface DNPlayerViewController ()<DLVideoRecommendTableViewCellDelegate>
 
 @property(nonatomic,copy)NSString * videoUrl;
 
@@ -81,19 +81,15 @@
 }
     
 
--(void)dealloc
-{
-    
-}
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self setNavigationBarHide:YES];
     [self setupUI];
-    self.view.backgroundColor = [UIColor whiteColor];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeVideo:) name:@"DLChangeVideo" object:nil];
+    [self addNotifi];
+
 
 }
 
@@ -102,6 +98,8 @@
 {
     
     NSDictionary * noticeDic= (NSDictionary*)notice.object;
+    
+    
     self.videoModel = [DNVideoModel mj_objectWithKeyValues:noticeDic];
 
 }
@@ -115,6 +113,20 @@
     [self getvideoList];
 
 }
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+
+-(void)addNotifi
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeVideo:) name:@"DLChangeVideo" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getvideoList) name:@"DNRefreshVipState" object:nil];
+}
+
+
 
 -(void)checkVip
 {
@@ -134,7 +146,8 @@
     
     self.tableView.y = y;
     self.tableView.height = KScreenHeight-y;
-
+    
+    
 }
 
 -(void)getvideoList
@@ -185,6 +198,10 @@
     
     [self.videoController.videoControl.vipButton addTarget:self action:@selector(openButtonClick:) forControlEvents:UIControlEventTouchUpInside];
     
+    if([self.videoModel.resource isEqualToString:@"vr"]||[self.videoModel.resource isEqualToString:@"party"])
+    {
+        [self.videoController fullScreenButtonClick];
+    }
 }
 
 
@@ -364,21 +381,97 @@
     if (!cell) {
         cell = [[DLVideoRecommendTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellid];
     }
-    
+    cell.cellDelegate = self;
     cell.videoModel = self.recomendArray[indexPath.row];
     
     return cell;
     
 }
 
+-(void)colleciton:(DNVideoModel*)videoModel;
+
+{
+    if ([[DNSession sharedSession] isLogin]==NO) {
+        
+        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"您还没有登录，请先完成登录" preferredStyle:UIAlertControllerStyleAlert];
+        
+        // Create the actions.
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            NSLog(@"The \"Okay/Cancel\" alert's cancel action occured.");
+        }];
+        
+        [cancelAction setValue:[UIColor blackColor] forKey:@"_titleTextColor"];
+        
+        UIAlertAction *otherAction = [UIAlertAction actionWithTitle:@"登录" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+            NSLog(@"The \"Okay/Cancel\" alert's other action occured.");
+            DNLoginViewController * login = [DNLoginViewController viewController];
+            [self.navigationController pushViewController:login animated:YES];
+            
+        }];
+        
+        [otherAction setValue:kThemeColor forKey:@"_titleTextColor"];
+        
+        
+        // Add the actions.
+        [alertController addAction:cancelAction];
+        [alertController addAction:otherAction];
+        
+        [self presentViewController:alertController animated:YES completion:nil];
+        
+    }else
+    {
+        NSString * resource = [NSString stringWithFormat:@"%@",videoModel.resource];
+        
+        NSString * relationid;
+        if ([resource isEqualToString:@"video"]) {
+            relationid = [NSString stringWithFormat:@"%ld",(long)videoModel.videoid];
+        }else if([resource isEqualToString:@"vr"])
+        {
+            relationid = [NSString stringWithFormat:@"%ld",(long)videoModel.vrid];
+        }else if([resource isEqualToString:@"party"])
+        {
+            relationid = [NSString stringWithFormat:@"%ld",(long)videoModel.partyid];
+        }
+        
+        DLHttpsBusinesRequest *request = [DLHttpRequestFactory addCollecionResource:resource relationid:relationid];
+        
+        request.requestSuccess = ^(id response)
+        {
+              [self getvideoList];
+        };
+        
+        request.requestFaile   = ^(NSError *error)
+        {
+            
+            
+        };
+        
+        [request excute];
+    }
+    
+
+}
+-(void)share:(DNVideoModel*)videoModel;
+{
+    NSString * relationid = @"";
+    
+    NSDictionary * shareDict = [NSDictionary dictionaryWithObjectsAndKeys:relationid,@"relationid",nil];
+    
+    [DLShareView showMyShareViewWothSuperView:self.view
+                                  isShowLaHei:NO
+                                       userId:nil
+                                      andType:10
+                                resourcesType:@""
+                                    andRoomID:@"1"
+                                 andShareDict:shareDict
+                                    backColor:nil];
+}
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     self.videoModel = self.recomendArray[indexPath.row];
-
-    
+  
 }
-
 
 #pragma mark request
 -(void)getRecommendResource:(NSString*)resource
@@ -398,31 +491,11 @@
         
         self.videoController.videoControl.videoArray = jsonArray.array;
         
-        
         self.recomendArray = [DNVideoModel mj_objectArrayWithKeyValuesArray:jsonArray.array];
         
         
-        if ([self.recomendArray count]==0) {
-            
-            CGFloat y;
-            if ([DNSession sharedSession].vip==NO&&[DNConfig sharedConfig].audit==YES) {
-             
-                
-                y = KScreenWidth*(9.0/16.0)+110;
-                
-                
-            }else
-            {
-                y = KScreenWidth*(9.0/16.0)+60;
-                
-            }
-
-            
-            CGRect rect  = CGRectMake(KScreenWidth/2-52,(KScreenHeight-y)/2-52+y, 104, 80);
-            [self showNoDataView:self.view noDataString:@"暂无数据" noDataImage:@"default_nodata" imageViewFrame:rect];
-        }
-        
-        
+        [self showNoDataView];
+  
         [self.tableView reloadData];
     };
     
@@ -433,6 +506,31 @@
     
     [request excute];
     
+}
+
+-(void)showNoDataView
+{
+    if ([self.recomendArray count]==0) {
+        
+        CGFloat y;
+        if ([DNSession sharedSession].vip==NO&&[DNConfig sharedConfig].audit==YES) {
+            
+            
+            y = KScreenWidth*(9.0/16.0)+110;
+            
+            
+        }else
+        {
+            y = KScreenWidth*(9.0/16.0)+60;
+            
+        }
+        
+        
+        CGRect rect  = CGRectMake(KScreenWidth/2-52,100, 104, 80);
+        [self showNoDataView:self.tableView noDataString:@"暂无数据" noDataImage:@"default_nodata" imageViewFrame:rect];
+        
+        
+    }
 }
 
 

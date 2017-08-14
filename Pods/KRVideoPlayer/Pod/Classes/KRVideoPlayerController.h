@@ -18,5 +18,5 @@
 - (instancetype)initWithFrame:(CGRect)frame;
 - (void)showInView:(UIView*)view;
 - (void)dismiss;
-
+- (void)fullScreenButtonClick;
 @end

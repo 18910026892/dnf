@@ -28,6 +28,8 @@
 //头像视图
 @property(nonatomic,strong)UIButton * avatarButton;
 
+@property(nonatomic,strong)UIImageView * vipView;
+
 //昵称
 @property(nonatomic,strong)UILabel * nickNameLabel;
 
@@ -62,12 +64,39 @@
     [self setNavigationBarHide:YES];
     [self creatUserInterface];
     [self operationData];
+    [self addNotifi];
+}
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+
+-(void)addNotifi
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(showVip:) name:@"DNRefreshVipState" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(userInfoChange) name:@"DNUserInfoChange" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(leftControllerShow) name:@"DNShowLeftViewController" object:nil];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(operationData) name:@"DNRecordListChange" object:nil];
+}
+
+-(void)showVip:(NSNotification*)notice
+{
+    NSDictionary * noticeDic= (NSDictionary*)notice.object;
+    
+    int state = [[noticeDic valueForKey:@"state"]intValue];
+ 
+    if(state==1)
+    {
+        self.vipView.hidden = NO;
+    }else
+    {
+        self.vipView.hidden = YES;
+    }
 }
 
 -(void)operationData
@@ -181,6 +210,14 @@
     [self.avatarButton sd_setImageWithURL:[NSURL URLWithString:[DNSession sharedSession].avatar] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"personalcenter_avatar_normal"]];
     
     self.nickNameLabel.text = [DNSession sharedSession].nickname;
+    
+     CGFloat width = KScreenWidth*0.8;
+    [self.nickNameLabel sizeToFit];
+    self.nickNameLabel.x =  width/2-_nickNameLabel.width/2;
+    
+    
+    self.vipView.hidden = ![DNSession sharedSession].vip;
+    self.vipView.x = CGRectGetMaxX(self.nickNameLabel.frame)+2;
 }
 
 -(void)leftControllerShow
@@ -431,8 +468,9 @@
         //显示主视图
         [self.xl_sldeMenu showRootViewControllerAnimated:true];
  
-        
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"DNReloadWebView" object:nil];
+  
+        NSDictionary * dict =[NSDictionary dictionaryWithObjectsAndKeys:@"0",@"state", nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"DNRefreshVipState" object:dict];
         
     }
 
@@ -552,13 +590,23 @@
         CGFloat width = KScreenWidth*0.8;
         _headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, width, 240)];
         _headerView.backgroundColor = [UIColor whiteColor];
-
         [_headerView addSubview:self.avatarButton];
         [_headerView addSubview:self.nickNameLabel];
+        [_headerView addSubview:self.vipView];
     }
     return _headerView;
 }
 
+-(UIImageView*)vipView
+{
+    if (!_vipView) {
+    
+        _vipView = [[UIImageView alloc]initWithFrame:CGRectMake(CGRectGetMaxX(self.nickNameLabel.frame)+2, CGRectGetMaxY(self.avatarButton.frame)+16,27,20)];
+        _vipView.image = [UIImage imageNamed:@"personalcenter_vip"];
+        _vipView.hidden = ![DNSession sharedSession].vip;
+    }
+    return _vipView;
+}
 
 
 -(UIButton*)avatarButton
@@ -574,6 +622,8 @@
         [_avatarButton setImage:[UIImage imageNamed:@"personalcenter_avatar_normal"] forState:UIControlStateNormal];
         [_avatarButton addTarget:self action:@selector(avatarButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         [_avatarButton sd_setImageWithURL:[NSURL URLWithString:[DNSession sharedSession].avatar] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"personalcenter_avatar_normal"]];
+        
+    
     }
     return _avatarButton;
 }
@@ -587,7 +637,8 @@
         _nickNameLabel.font = [UIFont fontWithName:TextFontName_Light size:15];
         _nickNameLabel.textAlignment= NSTextAlignmentCenter;
         _nickNameLabel.text = [DNSession sharedSession].nickname;
-    
+        [_nickNameLabel sizeToFit];
+        _nickNameLabel.x =  width/2-_nickNameLabel.width/2;
     }
     return _nickNameLabel;
 }

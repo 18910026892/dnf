@@ -8,8 +8,17 @@
 
 #import <UIKit/UIKit.h>
 #import "DNVideoModel.h"
+
+@protocol DLVideoRecommendTableViewCellDelegate <NSObject>
+
+-(void)colleciton:(DNVideoModel*)videoModel;
+
+-(void)share:(DNVideoModel*)videoModel;
+
+@end
 @interface DLVideoRecommendTableViewCell : UITableViewCell
 
+@property(nonatomic, weak)id<DLVideoRecommendTableViewCellDelegate> cellDelegate;
 
 @property(nonatomic,strong)DNVideoModel * videoModel;
 
@@ -25,5 +34,8 @@
 
 @property(nonatomic,strong)UILabel * titleLabel;
 
+@property(nonatomic,strong)UIButton * collectionButton;
+
+@property(nonatomic,strong)UIButton * shareButton;
 
 @end

@@ -27,7 +27,7 @@
 +(nonnull DLHttpsBusinesRequest*)getPayPhotoList:(nonnull NSString*)number offset:(nonnull NSString*)offset;
 
 //推荐相册
-+(nonnull DLHttpsBusinesRequest*)recommendAlbum;
++(nonnull DLHttpsBusinesRequest*)recommendAlbum:(nonnull NSString*)number offset:(nonnull NSString*)offset;
 
 //免费视频
 +(nonnull DLHttpsBusinesRequest*)getFreeVideoList:(nonnull NSString*)number offset:(nonnull NSString*)offset;
@@ -35,9 +35,19 @@
 //付费视频
 +(nonnull DLHttpsBusinesRequest*)getPayVideoList:(nonnull NSString*)number offset:(nonnull NSString*)offset;
 
+//推荐视频
++(nonnull DLHttpsBusinesRequest*)recommendVideo;
+
+//搜索
++(nonnull DLHttpsBusinesRequest*)searchList:(nonnull NSString*)resource text:(nonnull NSString*)text;
+//搜索视频；
++(nonnull DLHttpsBusinesRequest*)searchVideoText:(nonnull NSString*)text;
 
 //增加观看数
 +(nonnull DLHttpsBusinesRequest*)increaseCount:(nonnull NSString*)type relateid:(nonnull NSString*)relateid;
+
+//获取轮播图
++(nonnull DLHttpsBusinesRequest*)getBannerList;
 
 
 //三方登录

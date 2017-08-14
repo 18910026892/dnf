@@ -22,6 +22,9 @@
         [self.contentView addSubview:self.titleLabel];
         [self.contentView addSubview:self.watchLabel];
         
+        [self.contentView addSubview:self.collectionButton];
+        [self.contentView addSubview:self.shareButton];
+        
     }
     return self;
 }
@@ -42,6 +45,36 @@
     
     self.titleLabel.text = videoModel.title;
     
+
+    
+    if (videoModel.favoriteid==0) {
+        [self.collectionButton setImage:[UIImage imageNamed:@"video_collection_small_normal"] forState:UIControlStateNormal];
+        [self.collectionButton setTitle:@"收藏" forState:UIControlStateNormal];
+        [self.collectionButton setTitleColor:[UIColor customColorWithString:@"999999"] forState:UIControlStateNormal];
+     
+    }else
+        
+    {
+        [self.collectionButton setImage:[UIImage imageNamed:@"video_collectioned_hover"] forState:UIControlStateNormal];
+        
+        [self.collectionButton setTitle:@"已收" forState:UIControlStateNormal];
+        [self.collectionButton setTitleColor:kThemeColor forState:UIControlStateNormal];
+    }
+
+    
+}
+
+-(void)collectionButtonClick:(UIButton*)sender
+{
+    if (self.cellDelegate) {
+        [self.cellDelegate colleciton:self.videoModel];
+    }
+}
+-(void)shareButtonClick:(UIButton*)sender
+{
+    if (self.cellDelegate) {
+        [self.cellDelegate share:self.videoModel];
+    }
 }
 
 -(UIImageView*)coverImageView
@@ -86,7 +119,7 @@
         _vrLabel.textAlignment = NSTextAlignmentCenter;
         _vrLabel.textColor = [UIColor whiteColor];
         _vrLabel.font = [UIFont fontWithName:TextFontName_Light size:11];
-        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_vrLabel.bounds byRoundingCorners:UIRectCornerBottomRight cornerRadii:CGSizeMake(5, 5)];
+        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_vrLabel.bounds byRoundingCorners:UIRectCornerBottomRight cornerRadii:CGSizeMake(3, 3)];
         CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
         maskLayer.frame = _vrLabel.bounds;
         maskLayer.path = maskPath.CGPath;
@@ -103,12 +136,12 @@
     if (!_vipLabel) {
         _vipLabel = [[UILabel alloc]init];
         _vipLabel.frame = CGRectMake(CGRectGetWidth(self.coverImageView.bounds)-26, 0, 26, 14);
-        _vipLabel.text = @"vip";
+        _vipLabel.text = @"VIP";
         _vipLabel.hidden = YES;
         _vipLabel.textColor = [UIColor whiteColor];
         _vipLabel.textAlignment = NSTextAlignmentCenter;
         _vipLabel.font = [UIFont fontWithName:TextFontName_Light size:11];
-        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_vipLabel.bounds byRoundingCorners:UIRectCornerBottomLeft cornerRadii:CGSizeMake(5, 5)];
+        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_vipLabel.bounds byRoundingCorners:UIRectCornerBottomLeft cornerRadii:CGSizeMake(3, 3)];
         CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
         maskLayer.frame = _vipLabel.bounds;
         maskLayer.path = maskPath.CGPath;
@@ -140,7 +173,7 @@
         _timeLabel.textColor = [UIColor whiteColor];
         _timeLabel.textAlignment = NSTextAlignmentCenter;
         _timeLabel.font = [UIFont fontWithName:TextFontName_Light size:11];
-        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_timeLabel.bounds byRoundingCorners:UIRectCornerTopLeft cornerRadii:CGSizeMake(5, 5)];
+        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_timeLabel.bounds byRoundingCorners:UIRectCornerTopLeft cornerRadii:CGSizeMake(3, 3)];
         CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
         maskLayer.frame = _timeLabel.bounds;
         maskLayer.path = maskPath.CGPath;
@@ -161,6 +194,56 @@
     }
     return _titleLabel;
 }
+
+-(UIButton*)collectionButton
+{
+    if (!_collectionButton) {
+        _collectionButton =  [UIButton buttonWithType:UIButtonTypeCustom];
+        _collectionButton.frame = CGRectMake(164,57,72, 26);
+        [_collectionButton setTitle:@"收藏" forState:UIControlStateNormal];
+        [_collectionButton setTitleColor:[UIColor customColorWithString:@"999999"] forState:UIControlStateNormal];
+        _collectionButton.titleLabel.font = [UIFont fontWithName:TextFontName_Light size:10];
+        _collectionButton.layer.cornerRadius = 13;
+        _collectionButton.layer.borderWidth = 0.5;
+        _collectionButton.layer.borderColor = [UIColor customColorWithString:@"eeeeee"].CGColor;
+        
+        _collectionButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+        
+        [_collectionButton setImage:[UIImage imageNamed:@"video_collection_small_normal"] forState:UIControlStateNormal];
+        [_collectionButton setTitleEdgeInsets:UIEdgeInsetsMake(0,10, 0, 0)];
+        [_collectionButton setImageEdgeInsets:UIEdgeInsetsMake(0,0, 0, 2)];
+   
+        
+        [_collectionButton addTarget:self action:@selector(collectionButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+    }
+    return _collectionButton;
+}
+
+-(UIButton*)shareButton
+{
+    if (!_shareButton) {
+        _shareButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _shareButton.frame = CGRectMake(254,57,72, 26);
+        [_shareButton setTitle:@"分享" forState:UIControlStateNormal];
+        [_shareButton setTitleColor:[UIColor customColorWithString:@"999999"] forState:UIControlStateNormal];
+        [_shareButton setImage:[UIImage imageNamed:@"video_share_small_normal"] forState:UIControlStateNormal];
+        _shareButton.titleLabel.font = [UIFont fontWithName:TextFontName_Light size:10];
+        _shareButton.layer.cornerRadius = 13;
+        _shareButton.layer.borderWidth = 0.5;
+        _shareButton.layer.borderColor = [UIColor customColorWithString:@"eeeeee"].CGColor;
+        
+        [_shareButton setTitleEdgeInsets:UIEdgeInsetsMake(0,10, 0, 0)];
+        [_shareButton setImageEdgeInsets:UIEdgeInsetsMake(0,0, 0, 2)];
+        _shareButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+        
+        [_shareButton addTarget:self action:@selector(shareButtonClick:) forControlEvents:UIControlEventTouchUpInside];
+        
+    }
+    return _shareButton;
+}
+
 
 
 @end

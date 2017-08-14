@@ -61,6 +61,11 @@
 		D2438C761F19F46D00B897D8 /* DNSegmentView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2438C751F19F46D00B897D8 /* DNSegmentView.m */; };
 		D2438C7E1F1A054900B897D8 /* DNRecordCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D2438C7D1F1A054900B897D8 /* DNRecordCollectionViewCell.m */; };
 		D2438C811F1A056E00B897D8 /* DNRecordHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2438C801F1A056E00B897D8 /* DNRecordHeaderView.m */; };
+		D24468421F3E970E00932B34 /* SBPageFlowView.m in Sources */ = {isa = PBXBuildFile; fileRef = D24468411F3E970E00932B34 /* SBPageFlowView.m */; };
+		D24468451F3EA35600932B34 /* DNHomePageCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = D24468441F3EA35600932B34 /* DNHomePageCollectionReusableView.m */; };
+		D24468481F3EACE400932B34 /* DNVideoCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D24468471F3EACE400932B34 /* DNVideoCollectionViewCell.m */; };
+		D244684B1F3EE0F300932B34 /* DNSearchVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = D244684A1F3EE0F300932B34 /* DNSearchVideoView.m */; };
+		D244684E1F3EE10900932B34 /* DNSearchPhotoView.m in Sources */ = {isa = PBXBuildFile; fileRef = D244684D1F3EE10900932B34 /* DNSearchPhotoView.m */; };
 		D245AB701F3D450500D0B9E3 /* DNVideoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = D245AB6F1F3D450500D0B9E3 /* DNVideoModel.m */; };
 		D245AB731F3D45B000D0B9E3 /* DNVideoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = D245AB721F3D45B000D0B9E3 /* DNVideoTableViewCell.m */; };
 		D245AB761F3D495900D0B9E3 /* DNHallBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D245AB751F3D495900D0B9E3 /* DNHallBaseViewController.m */; };
@@ -256,6 +261,16 @@
 		D2438C7D1F1A054900B897D8 /* DNRecordCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNRecordCollectionViewCell.m; sourceTree = "<group>"; };
 		D2438C7F1F1A056E00B897D8 /* DNRecordHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNRecordHeaderView.h; sourceTree = "<group>"; };
 		D2438C801F1A056E00B897D8 /* DNRecordHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNRecordHeaderView.m; sourceTree = "<group>"; };
+		D24468401F3E970E00932B34 /* SBPageFlowView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBPageFlowView.h; sourceTree = "<group>"; };
+		D24468411F3E970E00932B34 /* SBPageFlowView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBPageFlowView.m; sourceTree = "<group>"; };
+		D24468431F3EA35600932B34 /* DNHomePageCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNHomePageCollectionReusableView.h; sourceTree = "<group>"; };
+		D24468441F3EA35600932B34 /* DNHomePageCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNHomePageCollectionReusableView.m; sourceTree = "<group>"; };
+		D24468461F3EACE400932B34 /* DNVideoCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNVideoCollectionViewCell.h; sourceTree = "<group>"; };
+		D24468471F3EACE400932B34 /* DNVideoCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNVideoCollectionViewCell.m; sourceTree = "<group>"; };
+		D24468491F3EE0F300932B34 /* DNSearchVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNSearchVideoView.h; sourceTree = "<group>"; };
+		D244684A1F3EE0F300932B34 /* DNSearchVideoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNSearchVideoView.m; sourceTree = "<group>"; };
+		D244684C1F3EE10900932B34 /* DNSearchPhotoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNSearchPhotoView.h; sourceTree = "<group>"; };
+		D244684D1F3EE10900932B34 /* DNSearchPhotoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNSearchPhotoView.m; sourceTree = "<group>"; };
 		D245AB6E1F3D450500D0B9E3 /* DNVideoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNVideoModel.h; sourceTree = "<group>"; };
 		D245AB6F1F3D450500D0B9E3 /* DNVideoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DNVideoModel.m; sourceTree = "<group>"; };
 		D245AB711F3D45B000D0B9E3 /* DNVideoTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNVideoTableViewCell.h; sourceTree = "<group>"; };
@@ -816,6 +831,10 @@
 		D225E5781F15D6900075F243 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D24468491F3EE0F300932B34 /* DNSearchVideoView.h */,
+				D244684A1F3EE0F300932B34 /* DNSearchVideoView.m */,
+				D244684C1F3EE10900932B34 /* DNSearchPhotoView.h */,
+				D244684D1F3EE10900932B34 /* DNSearchPhotoView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -937,6 +956,15 @@
 			path = DNRecordCollectionCell;
 			sourceTree = "<group>";
 		};
+		D244683F1F3E970E00932B34 /* DLPageflow */ = {
+			isa = PBXGroup;
+			children = (
+				D24468401F3E970E00932B34 /* SBPageFlowView.h */,
+				D24468411F3E970E00932B34 /* SBPageFlowView.m */,
+			);
+			path = DLPageflow;
+			sourceTree = "<group>";
+		};
 		D245AB7A1F3D55E400D0B9E3 /* GradientView */ = {
 			isa = PBXGroup;
 			children = (
@@ -1055,6 +1083,7 @@
 		D2A330C81F146BF900B78079 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				D244683F1F3E970E00932B34 /* DLPageflow */,
 				D245AB7A1F3D55E400D0B9E3 /* GradientView */,
 				D2261C471F28714C0057EA68 /* DLNodataView */,
 				D2261C4A1F28714C0057EA68 /* DLNoNetView */,
@@ -1298,6 +1327,10 @@
 		D2A331071F14A0A900B78079 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				D24468431F3EA35600932B34 /* DNHomePageCollectionReusableView.h */,
+				D24468441F3EA35600932B34 /* DNHomePageCollectionReusableView.m */,
+				D24468461F3EACE400932B34 /* DNVideoCollectionViewCell.h */,
+				D24468471F3EACE400932B34 /* DNVideoCollectionViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1912,6 +1945,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D24468421F3E970E00932B34 /* SBPageFlowView.m in Sources */,
 				D218B92B1F1F368F0062BBF9 /* DLProgressView.m in Sources */,
 				D2B53BFB1F1C6C5D0016A69F /* DNLoginViewController.m in Sources */,
 				D218B9351F1F3CE70062BBF9 /* DLPath.m in Sources */,
@@ -1929,6 +1963,7 @@
 				D2A330F21F14760E00B78079 /* DNTabBarItem.m in Sources */,
 				D2A330DC1F14728D00B78079 /* DNBaseViewController.m in Sources */,
 				D218B9001F1F2D790062BBF9 /* DLDeviceInfo.m in Sources */,
+				D244684E1F3EE10900932B34 /* DNSearchPhotoView.m in Sources */,
 				D2B53C121F1C9AEE0016A69F /* DNPhoneRegisterViewController.m in Sources */,
 				D2438C711F19E89600B897D8 /* DNPartyViewController.m in Sources */,
 				D2E19D291F17212400E26126 /* DNTopUpModel.m in Sources */,
@@ -1937,6 +1972,7 @@
 				D2438C7E1F1A054900B897D8 /* DNRecordCollectionViewCell.m in Sources */,
 				D21225041F20465E0084771B /* DLShareContentManager.m in Sources */,
 				D245AB761F3D495900D0B9E3 /* DNHallBaseViewController.m in Sources */,
+				D24468481F3EACE400932B34 /* DNVideoCollectionViewCell.m in Sources */,
 				D21225111F2069190084771B /* DLTopBarConfig.m in Sources */,
 				D2EC73E51F2EE77600EC04FC /* MD5DataSigner.m in Sources */,
 				D2A331191F14A12400B78079 /* DNVideoViewController.m in Sources */,
@@ -1976,6 +2012,7 @@
 				D2EC73E81F2EE77600EC04FC /* RSADataSigner.m in Sources */,
 				D245AB831F3D705600D0B9E3 /* DNPhotoModel.m in Sources */,
 				D2DE2ACF1F188C8100401113 /* DNEditTableViewCell.m in Sources */,
+				D244684B1F3EE0F300932B34 /* DNSearchVideoView.m in Sources */,
 				D2A330CC1F146BF900B78079 /* AppDelegate.m in Sources */,
 				D218B8EA1F1F289B0062BBF9 /* Toast+UIView.m in Sources */,
 				D2F8DEB31F21F8AF005BF6F5 /* UIImage+Compress.m in Sources */,
@@ -2018,6 +2055,7 @@
 				D245AB701F3D450500D0B9E3 /* DNVideoModel.m in Sources */,
 				D2438C761F19F46D00B897D8 /* DNSegmentView.m in Sources */,
 				D2B53C0C1F1C9AC30016A69F /* DNEmailRegisterViewController.m in Sources */,
+				D24468451F3EA35600932B34 /* DNHomePageCollectionReusableView.m in Sources */,
 				D218B8E71F1F27ED0062BBF9 /* NSString+MD5.m in Sources */,
 				D2F8DEC21F220DC7005BF6F5 /* DLMineUserInfoModel.m in Sources */,
 				D2EC73E91F2EE77600EC04FC /* RSADataVerifier.m in Sources */,
@@ -2187,8 +2225,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.dreamer.dnf;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "58cf6f29-a10f-4678-9dce-7432ae05c698";
-				PROVISIONING_PROFILE_SPECIFIER = "大妞范0810";
+				PROVISIONING_PROFILE = "6cfbcd5f-8b3a-420d-800a-d58bfe4479ec";
+				PROVISIONING_PROFILE_SPECIFIER = dnf08121814;
 			};
 			name = Debug;
 		};

@@ -19,9 +19,19 @@
     [super viewDidLoad];
     
     [self setupUI];
-    
+    [self addNotifi];
     [self.view addSubview:self.tableView];
 }
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+-(void)addNotifi
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(retryToGetData) name:@"DNRefreshVipState" object:nil];
+}
+
 -(void)requestDataWithType:(int)type
 {
     DLHttpsBusinesRequest *request = [DLHttpRequestFactory getPartyNumber:@"10" offset:[NSString stringWithFormat:@"%d",_offset]];

@@ -67,11 +67,9 @@
         
         dataLabel.height = labelHeight+20;
     }
-    
-    
-    
-    
+ 
 }
+
 
 
 

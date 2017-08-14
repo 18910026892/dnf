@@ -1,14 +1,16 @@
 //
-//  DNTopPhotoCollectionViewCell.m
+//  DNVideoCollectionViewCell.m
 //  Dnf
 //
-//  Created by 巩鑫 on 2017/8/11.
+//  Created by 巩鑫 on 2017/8/12.
 //  Copyright © 2017年 点寰科技. All rights reserved.
 //
 
-#import "DNTopPhotoCollectionViewCell.h"
+#import "DNVideoCollectionViewCell.h"
+#import "NSString+Date.h"
+@implementation DNVideoCollectionViewCell
 
-@implementation DNTopPhotoCollectionViewCell
+
 - (instancetype)initWithFrame:(CGRect)frame
 {
     if (self = [super initWithFrame:frame]) {
@@ -16,36 +18,49 @@
         self.layer.borderColor = [[UIColor customColorWithString:@"000000"] colorWithAlphaComponent:0.12].CGColor;
         self.layer.cornerRadius = 3;
         self.layer.masksToBounds = YES;
-        
-        
+  
         [self.contentView addSubview:self.coverImageView];
-        [self.contentView addSubview:self.vipLabel];
-        
+ 
     }
     return self;
 }
 
--(void)setPhotoModel:(DNPhotoModel *)photoModel
+-(void)setVideoModel:(DNVideoModel *)videoModel
 {
-    _photoModel = photoModel;
+    _videoModel = videoModel;
     
-    NSString * imageUrl = [photoModel.play valueForKey:@"url"];
-    [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:imageUrl]];
+    [self.coverImageView sd_setImageWithURL:[NSURL URLWithString:videoModel.cover]];
 
     
-    self.vipLabel.hidden = ([photoModel.vip isEqualToString:@"Y"])?NO:YES;
-    
+    self.vipLabel.hidden = ([videoModel.vip isEqualToString:@"Y"])?NO:YES;
+
 }
 
 -(UIImageView*)coverImageView
 {
     if(!_coverImageView)
     {
-
-        _coverImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0,200,320)];
+        _coverImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 169,95)];
         
+        _coverImageView.layer.borderWidth = 0.5;
+        _coverImageView.layer.borderColor = [[UIColor customColorWithString:@"000000"] colorWithAlphaComponent:0.12].CGColor;
+        _coverImageView.layer.cornerRadius = 3;
+        _coverImageView.layer.masksToBounds = YES;
+        
+        CAGradientLayer *gradiedtLayer = [[CAGradientLayer alloc] init];
+        gradiedtLayer.frame = CGRectMake(0, 130,KScreenWidth-30,50);
+        gradiedtLayer.colors = [NSArray arrayWithObjects:(id)[[[UIColor customColorWithString:@"000000"] colorWithAlphaComponent:0] CGColor],
+                                (id)[[[UIColor customColorWithString:@"000000"]colorWithAlphaComponent:0.5] CGColor],
+                                nil];
+        gradiedtLayer.locations =
+        [NSArray arrayWithObjects:[NSNumber numberWithFloat:0.0],
+         [NSNumber numberWithFloat:1.0],
+         nil];
+        gradiedtLayer.startPoint = CGPointMake(0,0);
+        gradiedtLayer.endPoint = CGPointMake(0,1);
+        [_coverImageView.layer addSublayer:gradiedtLayer];
         [_coverImageView addSubview:self.vipLabel];
-     
+  
     }
     return _coverImageView;
     
@@ -72,7 +87,6 @@
     }
     return _vipLabel;
 }
-
 
 
 @end

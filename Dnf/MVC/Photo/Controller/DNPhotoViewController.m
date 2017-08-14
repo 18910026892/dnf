@@ -26,6 +26,7 @@
     [super viewDidLoad];
     
     [self setupUI];
+    [self addNotifi];
     
     self.vip = NO;
     
@@ -33,6 +34,18 @@
     
     
 }
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+-(void)addNotifi
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(retryToGetData) name:@"DNRefreshVipState" object:nil];
+}
+
+
 -(void)requestDataWithType:(int)type
                      isVip:(BOOL)isVip
 {
@@ -84,7 +97,7 @@
         
         [self nomoredata:modelArray];
         
-        _collectionView.mj_footer.hidden = NO;
+
         
         
     };
@@ -99,7 +112,7 @@
 
 -(void)recommendAlbum
 {
-    DLHttpsBusinesRequest *request = [DLHttpRequestFactory recommendAlbum];
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory recommendAlbum:@"10" offset:@"0"];
     
     request.requestSuccess = ^(id response){ // 成功回调
     
@@ -145,6 +158,8 @@
 -(void)retryToGetData
 {
     _offset = 0;
+    
+    [self recommendAlbum];
     [self requestDataWithType:1 isVip:self.vip];
 
     __weak __typeof(self) weakSelf = self;
@@ -321,8 +336,9 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section;
 {
+    CGFloat height = ([DNConfig sharedConfig].audit==NO)?340:380;
  
-    return CGSizeMake(KScreenWidth,384);
+    return CGSizeMake(KScreenWidth,height);
  
 }
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
@@ -391,7 +407,7 @@
         
         _collectionView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
             [weakSelf retryToGetData];
-            [weakSelf recommendAlbum];
+
             
         }];
         
@@ -400,8 +416,7 @@
             [weakSelf loadMoreData];
             
         }];
-        
-        _collectionView.mj_footer.hidden = YES;
+
         
         [_collectionView.mj_header beginRefreshing];
         

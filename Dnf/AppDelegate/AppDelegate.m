@@ -117,8 +117,7 @@
         {
             [DNConfig sharedConfig].audit=NO;
         }
-       
-       [DNConfig sharedConfig].audit=YES;
+  
     };
     
     request.requestFaile   = ^(NSError *error)
@@ -189,7 +188,9 @@
             
             if ([[resultDic objectForKey:@"resultStatus"] integerValue] ==9000) {
                 [DNSession sharedSession].vip = YES;
-                [[NSNotificationCenter defaultCenter]postNotificationName:@"DNReloadWebView" object:nil];
+                NSDictionary * dict =[NSDictionary dictionaryWithObjectsAndKeys:@"1",@"state", nil];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"DNRefreshVipState" object:dict];
+                
             }
             
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];

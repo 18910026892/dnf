@@ -46,26 +46,10 @@
     [self.bridge setWebViewDelegate:self];
     [self registerMethodToJs];
     
-    
-    //3 注册通知
-    [self addNotifi];
+
     
 }
--(void)dealloc
-{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
 
--(void)addNotifi
-{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadWebView) name:@"DNReloadWebView" object:nil];
-}
-
-
--(void)reloadWebView
-{
-    [self.webView reload];
-}
 
 
 -(void)setCookie

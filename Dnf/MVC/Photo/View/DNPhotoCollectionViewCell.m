@@ -65,12 +65,12 @@
     if (!_vipLabel) {
         _vipLabel = [[UILabel alloc]init];
         _vipLabel.frame = CGRectMake(CGRectGetWidth(self.coverImageView.bounds)-26, 0, 26, 14);
-        _vipLabel.text = @"vip";
+        _vipLabel.text = @"VIP";
         _vipLabel.hidden = YES;
         _vipLabel.textColor = [UIColor whiteColor];
         _vipLabel.textAlignment = NSTextAlignmentCenter;
         _vipLabel.font = [UIFont fontWithName:TextFontName_Light size:11];
-        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_vipLabel.bounds byRoundingCorners:UIRectCornerBottomLeft cornerRadii:CGSizeMake(5, 5)];
+        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_vipLabel.bounds byRoundingCorners:UIRectCornerBottomLeft cornerRadii:CGSizeMake(3, 3)];
         CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
         maskLayer.frame = _vipLabel.bounds;
         maskLayer.path = maskPath.CGPath;
@@ -89,7 +89,7 @@
         _countLabel.textColor = [UIColor whiteColor];
         _countLabel.textAlignment = NSTextAlignmentCenter;
         _countLabel.font = [UIFont fontWithName:TextFontName_Light size:11];
-        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_countLabel.bounds byRoundingCorners:UIRectCornerTopLeft cornerRadii:CGSizeMake(5, 5)];
+        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_countLabel.bounds byRoundingCorners:UIRectCornerTopLeft cornerRadii:CGSizeMake(3, 3)];
         CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
         maskLayer.frame = _countLabel.bounds;
         maskLayer.path = maskPath.CGPath;

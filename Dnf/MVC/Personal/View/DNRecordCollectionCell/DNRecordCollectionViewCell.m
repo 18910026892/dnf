@@ -86,7 +86,7 @@
         _vrLabel.textAlignment = NSTextAlignmentCenter;
         _vrLabel.textColor = [UIColor whiteColor];
         _vrLabel.font = [UIFont fontWithName:TextFontName_Light size:11];
-        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_vrLabel.bounds byRoundingCorners:UIRectCornerBottomRight cornerRadii:CGSizeMake(5, 5)];
+        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_vrLabel.bounds byRoundingCorners:UIRectCornerBottomRight cornerRadii:CGSizeMake(3, 3)];
         CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
         maskLayer.frame = _vrLabel.bounds;
         maskLayer.path = maskPath.CGPath;
@@ -103,12 +103,12 @@
     if (!_vipLabel) {
         _vipLabel = [[UILabel alloc]init];
         _vipLabel.frame = CGRectMake(self.width-26, 0, 26, 14);
-        _vipLabel.text = @"vip";
+        _vipLabel.text = @"VIP";
         _vipLabel.hidden = YES;
         _vipLabel.textColor = [UIColor whiteColor];
         _vipLabel.textAlignment = NSTextAlignmentCenter;
         _vipLabel.font = [UIFont fontWithName:TextFontName_Light size:11];
-        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_vipLabel.bounds byRoundingCorners:UIRectCornerBottomLeft cornerRadii:CGSizeMake(5, 5)];
+        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_vipLabel.bounds byRoundingCorners:UIRectCornerBottomLeft cornerRadii:CGSizeMake(3, 3)];
         CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
         maskLayer.frame = _vipLabel.bounds;
         maskLayer.path = maskPath.CGPath;
@@ -127,7 +127,7 @@
         _timeLabel.textColor = [UIColor whiteColor];
         _timeLabel.textAlignment = NSTextAlignmentCenter;
         _timeLabel.font = [UIFont fontWithName:TextFontName_Light size:11];
-        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_timeLabel.bounds byRoundingCorners:UIRectCornerTopLeft cornerRadii:CGSizeMake(5, 5)];
+        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_timeLabel.bounds byRoundingCorners:UIRectCornerTopLeft cornerRadii:CGSizeMake(3, 3)];
         CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
         maskLayer.frame = _timeLabel.bounds;
         maskLayer.path = maskPath.CGPath;

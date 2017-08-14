@@ -20,10 +20,35 @@
     [super viewDidLoad];
     
     [self setupUI];
+    [self addNotifi];
+    self.vip = NO;
     
     [self.view addSubview:self.segmentView];
     [self.view addSubview:self.tableView];
+    
+    [self checkAudit];
 }
+
+-(void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+-(void)addNotifi
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(retryToGetData) name:@"DNRefreshVipState" object:nil];
+}
+
+-(void)checkAudit
+{
+    if([DNConfig sharedConfig].audit==NO)
+    {
+        [self.segmentView removeFromSuperview];
+        
+        self.tableView.frame = CGRectMake(0,64,KScreenWidth,KScreenHeight-118);
+    }
+}
+
 
 -(void)freeButtonClick:(UIButton*)sender
 {
@@ -108,8 +133,10 @@
 {
     if ([self.dataArray count]==0) {
         
-        CGRect rect  = CGRectMake(KScreenWidth/2-52, 165, 104, 80);
+        CGRect rect  = CGRectMake(KScreenWidth/2-52, 121, 104, 80);
         [self showNoDataView:self.view noDataString:@"暂无数据" noDataImage:@"default_nodata" imageViewFrame:rect];
+    
+        [_noDataView setContentViewFrame:CGRectMake(0, 108, KScreenWidth, KScreenHeight-108-54)];
     }
     
 }
@@ -284,7 +311,7 @@
 {
     if (!_tableView) {
         
-        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0,108,KScreenWidth,KScreenHeight-162) style:UITableViewStyleGrouped];
+        _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0,128,KScreenWidth,KScreenHeight-182) style:UITableViewStyleGrouped];
         _tableView.separatorStyle=UITableViewCellSeparatorStyleNone;
         _tableView.delegate=self;
         _tableView.dataSource=self;
@@ -312,7 +339,7 @@
 -(DNVipSegmentView*)segmentView
 {
     if (!_segmentView) {
-        _segmentView = [[DNVipSegmentView alloc]initWithFrame:CGRectMake(0,64, KScreenWidth, 44)];
+        _segmentView = [[DNVipSegmentView alloc]initWithFrame:CGRectMake(0,64, KScreenWidth,64)];
         
         [_segmentView.vipButton addTarget:self action:@selector(vipButtonClick:) forControlEvents:UIControlEventTouchUpInside];
         

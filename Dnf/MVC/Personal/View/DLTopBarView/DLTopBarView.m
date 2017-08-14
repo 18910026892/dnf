@@ -121,7 +121,7 @@
     for (NSInteger i = 0; i < count; i ++)
     {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.titleLabel.font = [UIFont fontWithName:TextFontName size:17];
+        button.titleLabel.font = [UIFont fontWithName:TextFontName_Light size:14];
         [button setFrame:CGRectMake(x, y, self.itemWidth, height)];
         [button setTitle:titles[i] forState:UIControlStateNormal];
         [button setTitleColor:_titleNormalCorlor forState:UIControlStateNormal];

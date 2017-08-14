@@ -39,7 +39,7 @@
         _indexLabel.textAlignment = NSTextAlignmentCenter;
         _indexLabel.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
         
-        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_indexLabel.bounds byRoundingCorners:UIRectCornerTopLeft cornerRadii:CGSizeMake(5, 5)];
+        UIBezierPath *maskPath = [UIBezierPath bezierPathWithRoundedRect:_indexLabel.bounds byRoundingCorners:UIRectCornerTopLeft cornerRadii:CGSizeMake(3, 3)];
         CAShapeLayer *maskLayer = [[CAShapeLayer alloc] init];
         maskLayer.frame = _indexLabel.bounds;
         maskLayer.path = maskPath.CGPath;

@@ -22,9 +22,40 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self creatUserInterface];
-    [self operationData];
+ 
+    
+    [self getProductList];
 
 }
+
+
+-(void)getProductList
+{
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory getProduct];
+    
+    request.requestSuccess = ^(id response)
+    {
+        
+        DLJSONObject *object = response;
+        
+        DLJSONObject * dataObject = [object getJSONObject:@"data"];
+        
+        DLJSONArray *  productArray = [dataObject getJSONArray:@"product"];
+        
+        self.dataArray = [DNTopUpModel mj_objectArrayWithKeyValuesArray:productArray.array];
+        
+        [self.tableView reloadData];
+    };
+    
+    request.requestFaile = ^(NSError *error)
+    {
+        
+        
+    };
+    
+    [request excute];
+}
+
 
 
 -(void)setFormMenu:(BOOL)formMenu
@@ -52,16 +83,7 @@
     [self.view addSubview:self.tableView];
 }
 
--(void)operationData
-{
 
-    NSMutableArray * array = [[NSUserDefaults standardUserDefaults] valueForKey:@"kSessionProductArray"];
-    
-    self.dataArray = [DNTopUpModel mj_objectArrayWithKeyValuesArray:array];
-    
-    [self.tableView reloadData];
-
-}
 
 #pragma mark - Delegate 代理
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -222,7 +244,8 @@
     
     if ([[resultDic objectForKey:@"resultStatus"] integerValue] ==9000) {
         [DNSession sharedSession].vip = YES;
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"DNReloadWebView" object:nil];
+        NSDictionary * dict =[NSDictionary dictionaryWithObjectsAndKeys:@"0",@"state", nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"DNRefreshVipState" object:dict];
         
     }
     
