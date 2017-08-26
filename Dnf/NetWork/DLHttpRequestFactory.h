@@ -152,5 +152,12 @@
 
 +(nonnull DLHttpsBusinesRequest*)alipayPayWithOrderId:(nonnull NSString *)orderId
                                             andStatus:(nonnull NSString *)status;
+
++(nonnull DLHttpsBusinesRequest*)applePayWithOrderId:(nonnull NSString *)orderId
+                                           andStatus:(nonnull NSString *)status;
+
++(nonnull DLHttpsBusinesRequest*)applePayWithUrl:(nonnull NSString*)url
+                                   ReceiptString:(nonnull NSString*)receipt
+                                         OrderId:(nonnull NSString*)orderId;
 @end
 

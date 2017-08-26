@@ -30,5 +30,7 @@
 
 @property(nonatomic,copy)NSString * type;
 
+@property(nonatomic,copy)NSString * productid;
+
 
 @end

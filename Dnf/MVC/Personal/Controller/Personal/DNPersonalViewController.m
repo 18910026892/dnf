@@ -327,9 +327,6 @@
         {
             cell.titleLabel.text = @"加入VIP";
             
-            cell.titleLabel.hidden = ![DNConfig sharedConfig].audit;
-            
-            
         }
             break;
             case 1:
@@ -389,11 +386,10 @@
     switch (indexPath.row) {
             case 0:
         {
-            if ([DNConfig sharedConfig].audit==YES) {
-                DNTopUpViewController * topupViewController = [DNTopUpViewController viewController];
-                topupViewController.formMenu = YES;
-                [self pushController:topupViewController];
-            }
+      
+            DNTopUpViewController * topupViewController = [DNTopUpViewController viewController];
+            topupViewController.formMenu = YES;
+            [self pushController:topupViewController];
  
         }
             break;

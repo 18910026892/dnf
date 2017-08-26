@@ -336,7 +336,7 @@
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section;
 {
-    CGFloat height = ([DNConfig sharedConfig].audit==NO)?340:380;
+    CGFloat height = 380;
  
     return CGSizeMake(KScreenWidth,height);
  

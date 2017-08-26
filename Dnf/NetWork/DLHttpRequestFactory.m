@@ -716,8 +716,8 @@
     [request addParameter:userToken key:@"userid"];
     [request addParameter:currency key:@"currency"];
     [request addParameter:productid key:@"productid"];
-    request.isShowErrorToast = YES;
-    request.isShowLoading = YES;
+    request.isShowErrorToast = NO;
+    request.isShowLoading = NO;
     
     return request;
 }
@@ -726,7 +726,7 @@
 +(nonnull DLHttpsBusinesRequest*)alipayPayWithOrderId:(nonnull NSString *)orderId
                                             andStatus:(nonnull NSString *)status
 {
-    DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"http://api.dreamlive.tv/deposit/notify_alipay"
+    DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"msvr://deposit/notify_alipay"
                                       
                                                                         method:DLHttpRequestMethodGet];
     [request addParameter:orderId key:@"orderid"];
@@ -736,6 +736,34 @@
 }
 
 
++(nonnull DLHttpsBusinesRequest*)applePayWithOrderId:(nonnull NSString *)orderId
+                                           andStatus:(nonnull NSString *)status
+{
+    DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"msvr://deposit/notify_apple?source=apple"
+                                      
+                                                                        method:DLHttpRequestMethodGet];
+    [request addParameter:orderId key:@"orderid"];
+    [request addParameter:status key:@"status"];
+    
+    
+    return request;
+}
+
+
++(nonnull DLHttpsBusinesRequest*)applePayWithUrl:(nonnull NSString*)url
+                                   ReceiptString:(nonnull NSString*)receipt
+                                         OrderId:(nonnull NSString*)orderId
+{
+    DLHttpsBusinesRequest *request = [[DLHttpsBusinesRequest alloc]initWithUrl:@"msvr://deposit/notify_apple?source=apple"
+                                      
+                                                                        method:DLHttpRequestMethodGet];
+    
+    [request addParameter:receipt key:@"receipt-data"];
+    [request addParameter:orderId key:@"orderid"];
+    
+    
+    return request;
+}
 
 
 @end

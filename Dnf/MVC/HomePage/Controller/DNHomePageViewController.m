@@ -87,7 +87,13 @@
         
         for (NSDictionary * dict in jsonArray.array) {
             
-            [imageArray addObject:[dict valueForKey:@"cover"]];
+            NSString * imageUrl  = [NSString stringWithFormat:@"%@",[dict valueForKey:@"cover"]];
+            
+            if (IsStrEmpty(imageUrl)) {
+                return ;
+            }
+            
+            [imageArray addObject:imageUrl];
         }
         
         self.collecitonHeader.bannerImageArray = imageArray;
@@ -457,13 +463,13 @@
 //定义每个UICollectionView 的 margin
 -(UIEdgeInsets)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout insetForSectionAtIndex:(NSInteger)section
 {
-    return UIEdgeInsetsMake(12,15,0,15);
+    return UIEdgeInsetsMake(12,15,12,15);
 }
 
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section;
 {
-    CGFloat height = KScreenWidth/345*194 +270;
+    CGFloat height = KScreenWidth/345*194 +290;
     return CGSizeMake(KScreenWidth,height);
     
 }

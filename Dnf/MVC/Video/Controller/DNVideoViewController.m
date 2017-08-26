@@ -25,8 +25,7 @@
     
     [self.view addSubview:self.segmentView];
     [self.view addSubview:self.tableView];
-    
-    [self checkAudit];
+
 }
 
 -(void)dealloc
@@ -37,16 +36,6 @@
 -(void)addNotifi
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(retryToGetData) name:@"DNRefreshVipState" object:nil];
-}
-
--(void)checkAudit
-{
-    if([DNConfig sharedConfig].audit==NO)
-    {
-        [self.segmentView removeFromSuperview];
-        
-        self.tableView.frame = CGRectMake(0,64,KScreenWidth,KScreenHeight-118);
-    }
 }
 
 
@@ -209,6 +198,10 @@
 
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
+    if (section==0) {
+        return 5;
+    }
+    
     return 20;
 }
 

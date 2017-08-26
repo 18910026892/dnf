@@ -263,10 +263,9 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    if ([DNConfig sharedConfig].audit==YES) {
-        DNTopUpViewController * topupVc = [DNTopUpViewController viewController];
-        [self.navigationController pushViewController:topupVc animated:YES];
-    }
+
+    DNTopUpViewController * topupVc = [DNTopUpViewController viewController];
+    [self.navigationController pushViewController:topupVc animated:YES];
 
 }
 

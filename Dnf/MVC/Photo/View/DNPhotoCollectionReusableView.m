@@ -19,8 +19,7 @@
         
         [self addSubview:self.collectionView];
         [self addSubview:self.segMentView];
-        
-        self.segMentView.hidden = ![DNConfig sharedConfig].audit;
+    
     }
     return self;
     

@@ -63,7 +63,7 @@
 {
     [super viewDidDisappear:animated];
     
-   // [self storeReview];
+    [self storeReview];
 }
 
 -(void)storeReview
@@ -131,7 +131,7 @@
 -(void)checkVip
 {
     CGFloat y;
-    if ([DNSession sharedSession].vip==NO&&[DNConfig sharedConfig].audit==YES) {
+    if ([DNSession sharedSession].vip==NO) {
         [self.view addSubview:self.vipView];
     
          y = KScreenWidth*(9.0/16.0)+110;
@@ -513,7 +513,7 @@
     if ([self.recomendArray count]==0) {
         
         CGFloat y;
-        if ([DNSession sharedSession].vip==NO&&[DNConfig sharedConfig].audit==YES) {
+        if ([DNSession sharedSession].vip==NO) {
             
             
             y = KScreenWidth*(9.0/16.0)+110;

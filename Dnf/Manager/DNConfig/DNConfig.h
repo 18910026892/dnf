@@ -13,7 +13,7 @@
 
 + (DNConfig *)sharedConfig;
 
-//是否审核中
+//是否审核中 NO审核 YES过审核
 @property(nonatomic,assign)BOOL audit;
 
 //商店评价

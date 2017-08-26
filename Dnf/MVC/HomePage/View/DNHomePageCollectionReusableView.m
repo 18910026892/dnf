@@ -170,7 +170,7 @@
 -(UIView*)downCircleView
 {
     if (!_downCircleView) {
-        _downCircleView = [[UIView alloc]initWithFrame:CGRectMake(15,CGRectGetMaxY(self.collectionView.frame)+18, 10, 10)];
+        _downCircleView = [[UIView alloc]initWithFrame:CGRectMake(15,CGRectGetMaxY(self.collectionView.frame)+26, 10, 10)];
         _downCircleView.layer.cornerRadius = 5;
         _downCircleView.layer.borderWidth = 1;
         _downCircleView.layer.borderColor = kThemeColor.CGColor;
@@ -182,7 +182,7 @@
 -(UILabel*)photoTitle
 {
     if (!_photoTitle) {
-        _photoTitle = [[UILabel alloc]initWithFrame:CGRectMake(34,CGRectGetMaxY(self.collectionView.frame)+12, 200, 24)];
+        _photoTitle = [[UILabel alloc]initWithFrame:CGRectMake(34,CGRectGetMaxY(self.collectionView.frame)+20, 200, 24)];
         _photoTitle.text = @"推荐图片";
         _photoTitle.textAlignment = NSTextAlignmentLeft;
         _photoTitle.textColor = [UIColor blackColor];
@@ -230,7 +230,7 @@
 {
     if (!_flowView) {
         
-        _flowView = [[SBPageFlowView alloc] initWithFrame:CGRectMake(0,0, KScreenWidth,KScreenWidth/345*194)];
+        _flowView = [[SBPageFlowView alloc] initWithFrame:CGRectMake(0,10, KScreenWidth,KScreenWidth/345*194)];
         _flowView.delegate = self;
         _flowView.dataSource = self;
         _flowView.minimumPageAlpha = 0.6;
@@ -279,7 +279,7 @@
     if (!_downMoreButton) {
         
         _downMoreButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        _downMoreButton.frame= CGRectMake(KScreenWidth-75,CGRectGetMaxY(self.collectionView.frame),75, 43);
+        _downMoreButton.frame= CGRectMake(KScreenWidth-75,CGRectGetMaxY(self.collectionView.frame)+10,75, 43);
         [_downMoreButton setTitle:@"更多" forState:UIControlStateNormal];
         [_downMoreButton setTitleColor:[UIColor customColorWithString:@"BBBBBB"] forState:UIControlStateNormal];
         _downMoreButton.titleLabel.font = [UIFont fontWithName:TextFontName_Light size:13];

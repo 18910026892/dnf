@@ -72,7 +72,7 @@
           
         }else
         {
-            _vipInfoLabel.text = @"现在购买超值VIP只需要998元";
+            _vipInfoLabel.text = @"现在购买超值VIP只需要1298元";
 
         }
         
