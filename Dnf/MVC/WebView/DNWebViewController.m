@@ -88,6 +88,8 @@
     NSHTTPCookie *cookie;
     NSHTTPCookieStorage *cookieJar = [NSHTTPCookieStorage sharedHTTPCookieStorage];
     NSString *urlstr  = self.url;//[self.parameter valueForKey:DL_VC_PARAM_KEY_URL];
+    
+    
     if (urlstr.length) {
         NSArray *cookieAry = [cookieJar cookiesForURL: [NSURL URLWithString:[urlstr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
         

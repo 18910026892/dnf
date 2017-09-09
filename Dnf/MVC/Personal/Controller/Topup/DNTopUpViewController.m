@@ -49,7 +49,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-     self.appleArray = @[@"com.dnfe.01",@"com.dnfe.02",@"com.dnfe.03",@"com.dnfe.04"];
+     self.appleArray = @[@"com.dnfe.0001",@"com.dnfe.0002",@"com.dnfe.0003",@"com.dnfe.0004"];
     [self creatUserInterface];
     [self getProductList];
 }
