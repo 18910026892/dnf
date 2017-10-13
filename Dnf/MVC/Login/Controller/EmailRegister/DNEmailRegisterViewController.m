@@ -9,7 +9,10 @@
 #import "DNEmailRegisterViewController.h"
 #import "DNTextField.h"
 #import "DNPerfectInfoViewController.h"
+#import "XLSlideMenu.h"
 @interface DNEmailRegisterViewController ()<UITextFieldDelegate>
+
+@property(strong,nonatomic)XLSlideMenu * slideMenu;
 
 @property(nonatomic,strong)UIImageView * emailImageView;
 

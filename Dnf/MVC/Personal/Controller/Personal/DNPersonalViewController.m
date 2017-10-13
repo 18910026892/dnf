@@ -458,15 +458,16 @@
     {
 
         [DNSession sharedSession].vip = NO;
-        
+ 
         [[DNSession sharedSession] removeUserInfo];
     
-        //显示主视图
-        [self.xl_sldeMenu showRootViewControllerAnimated:true];
  
   
         NSDictionary * dict =[NSDictionary dictionaryWithObjectsAndKeys:@"0",@"state", nil];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"DNRefreshVipState" object:dict];
+        
+        
+        self.view.window.rootViewController = [[UINavigationController alloc]initWithRootViewController:[DNLoginViewController viewController]];
         
     }
 

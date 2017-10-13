@@ -47,19 +47,11 @@
 
 -(void)leftButtonClick:(UIButton*)sender
 {
-    
-    if ([[DNSession sharedSession] isLogin]==YES) {
-        
-        [self.xl_sldeMenu showLeftViewControllerAnimated:true];
-        
-    }else
-    {
-        DNLoginViewController * loginVc = [DNLoginViewController viewController];
-        [self.navigationController pushViewController:loginVc animated:YES];
-    }
-    
-    
+    [self.xl_sldeMenu showLeftViewControllerAnimated:true];
+
 }
+
+
 
 -(UIImageView*)navlogoView
 {

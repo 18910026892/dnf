@@ -54,6 +54,7 @@ static DNMainTabBarViewController* _myTabBarVC = nil;
     [self initSubView];
 
     [self.view addSubview:self.tabBariew];
+    
 
 }
 

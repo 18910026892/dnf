@@ -14,6 +14,7 @@
 		D212250D1F205F1F0084771B /* DLPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = D21225091F205F1F0084771B /* DLPageView.m */; };
 		D212250E1F205F1F0084771B /* DLTopBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = D212250C1F205F1F0084771B /* DLTopBarView.m */; };
 		D21225111F2069190084771B /* DLTopBarConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = D21225101F2069190084771B /* DLTopBarConfig.m */; };
+		D2129B141F846AE3004BE4F9 /* DLProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = D2129B131F846AE3004BE4F9 /* DLProgressView.m */; };
 		D218B8E01F1EFF1A0062BBF9 /* NSString+Validation.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B8DF1F1EFF1A0062BBF9 /* NSString+Validation.m */; };
 		D218B8E41F1F098A0062BBF9 /* DNEmailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B8E31F1F098A0062BBF9 /* DNEmailViewController.m */; };
 		D218B8E71F1F27ED0062BBF9 /* NSString+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B8E61F1F27ED0062BBF9 /* NSString+MD5.m */; };
@@ -34,7 +35,6 @@
 		D218B91F1F1F32A70062BBF9 /* DLDeviceOrientationMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B91D1F1F32A70062BBF9 /* DLDeviceOrientationMonitor.m */; };
 		D218B9231F1F32D50062BBF9 /* DLLocationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B9221F1F32D50062BBF9 /* DLLocationManager.m */; };
 		D218B9271F1F343B0062BBF9 /* DLApplicationConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B9261F1F343B0062BBF9 /* DLApplicationConfig.m */; };
-		D218B92B1F1F368F0062BBF9 /* DLProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B92A1F1F368F0062BBF9 /* DLProgressView.m */; };
 		D218B92E1F1F38480062BBF9 /* MSReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B92D1F1F38480062BBF9 /* MSReachability.m */; };
 		D218B9341F1F3CE70062BBF9 /* DLFile.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B9311F1F3CE70062BBF9 /* DLFile.m */; };
 		D218B9351F1F3CE70062BBF9 /* DLPath.m in Sources */ = {isa = PBXBuildFile; fileRef = D218B9331F1F3CE70062BBF9 /* DLPath.m */; };
@@ -163,6 +163,8 @@
 		D212250C1F205F1F0084771B /* DLTopBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLTopBarView.m; sourceTree = "<group>"; };
 		D212250F1F2069190084771B /* DLTopBarConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLTopBarConfig.h; sourceTree = "<group>"; };
 		D21225101F2069190084771B /* DLTopBarConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLTopBarConfig.m; sourceTree = "<group>"; };
+		D2129B121F846AE3004BE4F9 /* DLProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLProgressView.h; sourceTree = "<group>"; };
+		D2129B131F846AE3004BE4F9 /* DLProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLProgressView.m; sourceTree = "<group>"; };
 		D218B8DE1F1EFF1A0062BBF9 /* NSString+Validation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Validation.h"; sourceTree = "<group>"; };
 		D218B8DF1F1EFF1A0062BBF9 /* NSString+Validation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Validation.m"; sourceTree = "<group>"; };
 		D218B8E21F1F098A0062BBF9 /* DNEmailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DNEmailViewController.h; sourceTree = "<group>"; };
@@ -204,8 +206,6 @@
 		D218B9221F1F32D50062BBF9 /* DLLocationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLLocationManager.m; sourceTree = "<group>"; };
 		D218B9251F1F343B0062BBF9 /* DLApplicationConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLApplicationConfig.h; sourceTree = "<group>"; };
 		D218B9261F1F343B0062BBF9 /* DLApplicationConfig.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLApplicationConfig.m; sourceTree = "<group>"; };
-		D218B9291F1F368F0062BBF9 /* DLProgressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLProgressView.h; sourceTree = "<group>"; };
-		D218B92A1F1F368F0062BBF9 /* DLProgressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLProgressView.m; sourceTree = "<group>"; };
 		D218B92C1F1F38480062BBF9 /* MSReachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MSReachability.h; sourceTree = "<group>"; };
 		D218B92D1F1F38480062BBF9 /* MSReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MSReachability.m; sourceTree = "<group>"; };
 		D218B9301F1F3CE70062BBF9 /* DLFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLFile.h; sourceTree = "<group>"; };
@@ -564,6 +564,15 @@
 			path = DLTopBarView;
 			sourceTree = "<group>";
 		};
+		D2129B111F846AE3004BE4F9 /* DLProgressView */ = {
+			isa = PBXGroup;
+			children = (
+				D2129B121F846AE3004BE4F9 /* DLProgressView.h */,
+				D2129B131F846AE3004BE4F9 /* DLProgressView.m */,
+			);
+			path = DLProgressView;
+			sourceTree = "<group>";
+		};
 		D218B8E11F1F09790062BBF9 /* EmailChange */ = {
 			isa = PBXGroup;
 			children = (
@@ -661,15 +670,6 @@
 				D218B9261F1F343B0062BBF9 /* DLApplicationConfig.m */,
 			);
 			path = DLAppConfig;
-			sourceTree = "<group>";
-		};
-		D218B9281F1F36680062BBF9 /* DLProgressView */ = {
-			isa = PBXGroup;
-			children = (
-				D218B9291F1F368F0062BBF9 /* DLProgressView.h */,
-				D218B92A1F1F368F0062BBF9 /* DLProgressView.m */,
-			);
-			path = DLProgressView;
 			sourceTree = "<group>";
 		};
 		D218B92F1F1F3CE70062BBF9 /* File */ = {
@@ -1058,11 +1058,11 @@
 		D2A330C81F146BF900B78079 /* Lib */ = {
 			isa = PBXGroup;
 			children = (
+				D2129B111F846AE3004BE4F9 /* DLProgressView */,
 				D244683F1F3E970E00932B34 /* DLPageflow */,
 				D245AB7A1F3D55E400D0B9E3 /* GradientView */,
 				D2261C471F28714C0057EA68 /* DLNodataView */,
 				D2261C4A1F28714C0057EA68 /* DLNoNetView */,
-				D218B9281F1F36680062BBF9 /* DLProgressView */,
 				D2E19CFC1F1718FF00E26126 /* MJPhotoBrowser */,
 				D2A3311D1F14AF4700B78079 /* XLSlideMenu */,
 			);
@@ -1925,7 +1925,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				D24468421F3E970E00932B34 /* SBPageFlowView.m in Sources */,
-				D218B92B1F1F368F0062BBF9 /* DLProgressView.m in Sources */,
 				D2B53BFB1F1C6C5D0016A69F /* DNLoginViewController.m in Sources */,
 				D218B9351F1F3CE70062BBF9 /* DLPath.m in Sources */,
 				D2559E4D1F2AFDB70087DC6A /* NSString+DLPictureChoice.m in Sources */,
@@ -2029,6 +2028,7 @@
 				D2EC73E61F2EE77600EC04FC /* NSDataEx.m in Sources */,
 				D245AB8D1F3D8F5C00D0B9E3 /* DNCollectionViewController.m in Sources */,
 				D245AB701F3D450500D0B9E3 /* DNVideoModel.m in Sources */,
+				D2129B141F846AE3004BE4F9 /* DLProgressView.m in Sources */,
 				D2438C761F19F46D00B897D8 /* DNSegmentView.m in Sources */,
 				D2B53C0C1F1C9AC30016A69F /* DNEmailRegisterViewController.m in Sources */,
 				D24468451F3EA35600932B34 /* DNHomePageCollectionReusableView.m in Sources */,
@@ -2202,7 +2202,7 @@
 					"\"${PODS_ROOT}/Headers/Public/iOS-AlipaySDK\"",
 				);
 				INFOPLIST_FILE = Dnf/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2260,7 +2260,7 @@
 					"\"${PODS_ROOT}/Headers/Public/iOS-AlipaySDK\"",
 				);
 				INFOPLIST_FILE = Dnf/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

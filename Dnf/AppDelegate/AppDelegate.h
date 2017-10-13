@@ -16,6 +16,7 @@
 #import "DLApplicationConfig.h"
 #import "DLLocationManager.h"
 #import <AlipaySDK/AlipaySDK.h>
+#import "DNLoginViewController.h"
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;

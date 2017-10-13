@@ -57,9 +57,7 @@
     {
          request =  [DLHttpRequestFactory getPayPhotoList:@"9" offset:[NSString stringWithFormat:@"%d",_offset]];
     }
-    
 
-    
     request.requestSuccess = ^(id response){ // 成功回调
         
         //停止loading

@@ -229,69 +229,34 @@
 
 -(void)collectButtonClick:(UIButton*)sender
 {
-    NSLog(@"collection");
+    NSString * resource = [NSString stringWithFormat:@"%@",self.videoModel.resource];
     
-    if ([[DNSession sharedSession] isLogin]==NO) {
-        
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"您还没有登录，请先完成登录" preferredStyle:UIAlertControllerStyleAlert];
-        
-        // Create the actions.
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            NSLog(@"The \"Okay/Cancel\" alert's cancel action occured.");
-        }];
-        
-        [cancelAction setValue:[UIColor blackColor] forKey:@"_titleTextColor"];
-        
-        UIAlertAction *otherAction = [UIAlertAction actionWithTitle:@"登录" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            NSLog(@"The \"Okay/Cancel\" alert's other action occured.");
-            DNLoginViewController * login = [DNLoginViewController viewController];
-            [self.navigationController pushViewController:login animated:YES];
-            
-        }];
-        
-        [otherAction setValue:kThemeColor forKey:@"_titleTextColor"];
-        
-        
-        // Add the actions.
-        [alertController addAction:cancelAction];
-        [alertController addAction:otherAction];
-        
-        [self presentViewController:alertController animated:YES completion:nil];
-        
-    }else
+    NSString * relationid;
+    if ([resource isEqualToString:@"video"]) {
+        relationid = [NSString stringWithFormat:@"%ld",(long)self.videoModel.videoid];
+    }else if([resource isEqualToString:@"vr"])
     {
-        NSString * resource = [NSString stringWithFormat:@"%@",self.videoModel.resource];
-        
-        NSString * relationid;
-        if ([resource isEqualToString:@"video"]) {
-            relationid = [NSString stringWithFormat:@"%ld",(long)self.videoModel.videoid];
-        }else if([resource isEqualToString:@"vr"])
-        {
-            relationid = [NSString stringWithFormat:@"%ld",(long)self.videoModel.vrid];
-        }else if([resource isEqualToString:@"party"])
-        {
-            relationid = [NSString stringWithFormat:@"%ld",(long)self.videoModel.partyid];
-        }
-        
-        DLHttpsBusinesRequest *request = [DLHttpRequestFactory addCollecionResource:resource relationid:relationid];
-        
-        request.requestSuccess = ^(id response)
-        {
-            
-            self.videoInfoView.collection = YES;
-        };
-        
-        request.requestFaile   = ^(NSError *error)
-        {
-            
-            
-        };
-        
-        [request excute];
+        relationid = [NSString stringWithFormat:@"%ld",(long)self.videoModel.vrid];
+    }else if([resource isEqualToString:@"party"])
+    {
+        relationid = [NSString stringWithFormat:@"%ld",(long)self.videoModel.partyid];
     }
     
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory addCollecionResource:resource relationid:relationid];
     
-
+    request.requestSuccess = ^(id response)
+    {
+        
+        self.videoInfoView.collection = YES;
+    };
+    
+    request.requestFaile   = ^(NSError *error)
+    {
+        
+        
+    };
+    
+    [request excute];
 
 }
 
@@ -391,64 +356,33 @@
 -(void)colleciton:(DNVideoModel*)videoModel;
 
 {
-    if ([[DNSession sharedSession] isLogin]==NO) {
-        
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"您还没有登录，请先完成登录" preferredStyle:UIAlertControllerStyleAlert];
-        
-        // Create the actions.
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            NSLog(@"The \"Okay/Cancel\" alert's cancel action occured.");
-        }];
-        
-        [cancelAction setValue:[UIColor blackColor] forKey:@"_titleTextColor"];
-        
-        UIAlertAction *otherAction = [UIAlertAction actionWithTitle:@"登录" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            NSLog(@"The \"Okay/Cancel\" alert's other action occured.");
-            DNLoginViewController * login = [DNLoginViewController viewController];
-            [self.navigationController pushViewController:login animated:YES];
-            
-        }];
-        
-        [otherAction setValue:kThemeColor forKey:@"_titleTextColor"];
-        
-        
-        // Add the actions.
-        [alertController addAction:cancelAction];
-        [alertController addAction:otherAction];
-        
-        [self presentViewController:alertController animated:YES completion:nil];
-        
-    }else
+    NSString * resource = [NSString stringWithFormat:@"%@",videoModel.resource];
+    
+    NSString * relationid;
+    if ([resource isEqualToString:@"video"]) {
+        relationid = [NSString stringWithFormat:@"%ld",(long)videoModel.videoid];
+    }else if([resource isEqualToString:@"vr"])
     {
-        NSString * resource = [NSString stringWithFormat:@"%@",videoModel.resource];
-        
-        NSString * relationid;
-        if ([resource isEqualToString:@"video"]) {
-            relationid = [NSString stringWithFormat:@"%ld",(long)videoModel.videoid];
-        }else if([resource isEqualToString:@"vr"])
-        {
-            relationid = [NSString stringWithFormat:@"%ld",(long)videoModel.vrid];
-        }else if([resource isEqualToString:@"party"])
-        {
-            relationid = [NSString stringWithFormat:@"%ld",(long)videoModel.partyid];
-        }
-        
-        DLHttpsBusinesRequest *request = [DLHttpRequestFactory addCollecionResource:resource relationid:relationid];
-        
-        request.requestSuccess = ^(id response)
-        {
-              [self getvideoList];
-        };
-        
-        request.requestFaile   = ^(NSError *error)
-        {
-            
-            
-        };
-        
-        [request excute];
+        relationid = [NSString stringWithFormat:@"%ld",(long)videoModel.vrid];
+    }else if([resource isEqualToString:@"party"])
+    {
+        relationid = [NSString stringWithFormat:@"%ld",(long)videoModel.partyid];
     }
     
+    DLHttpsBusinesRequest *request = [DLHttpRequestFactory addCollecionResource:resource relationid:relationid];
+    
+    request.requestSuccess = ^(id response)
+    {
+        [self getvideoList];
+    };
+    
+    request.requestFaile   = ^(NSError *error)
+    {
+        
+        
+    };
+    
+    [request excute];
 
 }
 -(void)share:(DNVideoModel*)videoModel;

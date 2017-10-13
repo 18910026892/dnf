@@ -9,7 +9,11 @@
 #import "DNPhoneRegisterViewController.h"
 #import "DNPerfectInfoViewController.h"
 #import "DNTextField.h"
+#import "XLSlideMenu.h"
+
 @interface DNPhoneRegisterViewController ()<UITextFieldDelegate>
+
+@property(strong,nonatomic)XLSlideMenu * slideMenu;
 
 @property(nonatomic,strong)UILabel * infoLabel;
 
@@ -181,8 +185,14 @@
             }
             
             
-            DNPerfectInfoViewController * perfectinfoVc = [DNPerfectInfoViewController viewController];
-            [self.navigationController pushViewController:perfectinfoVc animated:YES];
+            UINavigationController * rootNav = [[UINavigationController alloc] initWithRootViewController:[DNMainTabBarViewController shareTabBarController]];
+            
+            rootNav.navigationBar.hidden = YES;
+            _slideMenu = [[XLSlideMenu alloc] initWithRootViewController:rootNav];
+            DNPersonalViewController * personalViewController = [DNPersonalViewController viewController];
+            //设置左侧菜单
+            _slideMenu.leftViewController = personalViewController;
+            self.view.window.rootViewController = _slideMenu;
             
    
         }else

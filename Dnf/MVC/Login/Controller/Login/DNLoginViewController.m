@@ -13,7 +13,10 @@
 #import "UIUnderlinedButton.h"
 #import "DNTextField.h"
 #import "DNThirdLoginManager.h"
+#import "XLSlideMenu.h"
 @interface DNLoginViewController ()<UITextFieldDelegate>
+
+@property(strong,nonatomic)XLSlideMenu *slideMenu;
 
 @property(nonatomic,strong)UILabel * accountLabel;
 
@@ -58,7 +61,7 @@
 
 -(void)creatUserInterface
 {
-    [self showBackButton:YES];
+
     [self setNavTitle:@"大妞范登录"];
     [self.view addSubview:self.accountLabel];
     [self.view addSubview:self.passwordLabel];
@@ -176,7 +179,14 @@
             }
         
 
-                [self.navigationController popToRootViewControllerAnimated:NO];
+            UINavigationController * rootNav = [[UINavigationController alloc] initWithRootViewController:[DNMainTabBarViewController shareTabBarController]];
+            
+            rootNav.navigationBar.hidden = YES;
+            _slideMenu = [[XLSlideMenu alloc] initWithRootViewController:rootNav];
+            DNPersonalViewController * personalViewController = [DNPersonalViewController viewController];
+            //设置左侧菜单
+            _slideMenu.leftViewController = personalViewController;
+            self.view.window.rootViewController = _slideMenu;
             
         }
     };

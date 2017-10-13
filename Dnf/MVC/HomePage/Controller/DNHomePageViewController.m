@@ -122,8 +122,7 @@
         DLJSONArray * jsonArray = [[object getJSONObject:@"data"] getJSONArray:@"recommend"];
         
         self.collecitonHeader.dataArray = [DNVideoModel mj_objectArrayWithKeyValuesArray:jsonArray.array];
-        
-        
+
     };
     
     request.requestFaile   = ^(NSError *error)

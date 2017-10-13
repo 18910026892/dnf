@@ -49,7 +49,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-     self.appleArray = @[@"com.dnfe.0001",@"com.dnfe.0002",@"com.dnfe.0003",@"com.dnfe.0004"];
+     self.appleArray = @[@"com.dnfe.a",@"com.dnfe.b",@"com.dnfe.c",@"com.dnfe.d"];
     [self creatUserInterface];
     [self getProductList];
 }
@@ -154,47 +154,8 @@
 }
 -(void)didSelectPriceButton:(DNTopUpModel*)topUpModel;
 {
-    if ([[DNSession sharedSession] isLogin]==NO) {
     
-        UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"您还没有登录，请先完成登录" preferredStyle:UIAlertControllerStyleAlert];
-        
-        // Create the actions.
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            NSLog(@"The \"Okay/Cancel\" alert's cancel action occured.");
-        }];
-        
-        [cancelAction setValue:[UIColor blackColor] forKey:@"_titleTextColor"];
-        
-        UIAlertAction *otherAction = [UIAlertAction actionWithTitle:@"登录" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-            NSLog(@"The \"Okay/Cancel\" alert's other action occured.");
-            DNLoginViewController * login = [DNLoginViewController viewController];
-            [self.navigationController pushViewController:login animated:YES];
-            
-        }];
-        
-        [otherAction setValue:kThemeColor forKey:@"_titleTextColor"];
-        
-        
-        // Add the actions.
-        [alertController addAction:cancelAction];
-        [alertController addAction:otherAction];
-        
-        [self presentViewController:alertController animated:YES completion:nil];
-        
-    }else
-    {
-        
-           [self creatOrder:topUpModel];
-
-    }
-}
-
-
-
--(void)creatOrder:(DNTopUpModel*)topUpModel
-{
-    
-    if ([DNConfig sharedConfig].audit==NO) {
+    if ([DNConfig sharedConfig].audit==NO) { 
         
         [self applePay:topUpModel];
     }else
@@ -202,9 +163,7 @@
         [self alipay:topUpModel];
     }
     
-    
 }
-
 -(void)alipay:(DNTopUpModel*)topUpModel
 {
     _money = [NSString stringWithFormat:@"%@",topUpModel.price];
@@ -251,7 +210,7 @@
     }
     
     _money = [NSString stringWithFormat:@"%@",topUpModel.price];
-   _productid = [NSString stringWithFormat:@"%ld",(long)topUpModel.id];
+    _productid = [NSString stringWithFormat:@"%ld",(long)topUpModel.id];
 
     if ([SKPaymentQueue canMakePayments]) {
         NSLog(@"允许程序内付费购买");
@@ -259,7 +218,6 @@
         [self loadingViewShow];
   
          NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-        
         
         DLHttpsBusinesRequest *request = [DLHttpRequestFactory topUpWithSource:@"apple" amount:_money userid:[DNSession sharedSession].token currency:@"CNY" productid:_productid];
        

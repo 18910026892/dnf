@@ -72,21 +72,30 @@
 
     //获取配置信息，下次启动时候开启
     [self getConfig];
-    
-    //配置NavigationBar
-    UINavigationController * rootNav   = [[UINavigationController alloc] initWithRootViewController:[DNMainTabBarViewController shareTabBarController]];
-    
 
+    //配置root vc
 
-    _slideMenu = [[XLSlideMenu alloc] initWithRootViewController:rootNav];
-    
-    DNPersonalViewController * personalViewController = [DNPersonalViewController viewController];
-    //设置左侧菜单
-    _slideMenu.leftViewController = personalViewController;
-    
     _window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
     _window.backgroundColor = [UIColor whiteColor];
-    _window.rootViewController = _slideMenu;
+    
+    if ([[DNSession sharedSession] isLogin]==YES) {
+        
+        UINavigationController * rootNav = [[UINavigationController alloc] initWithRootViewController:[DNMainTabBarViewController shareTabBarController]];
+        
+        _slideMenu = [[XLSlideMenu alloc] initWithRootViewController:rootNav];
+        
+        DNPersonalViewController * personalViewController = [DNPersonalViewController viewController];
+        //设置左侧菜单
+        _slideMenu.leftViewController = personalViewController;
+        _window.rootViewController = _slideMenu;
+    
+    }else
+        
+    {
+        _window.rootViewController = [[UINavigationController alloc]initWithRootViewController:[DNLoginViewController viewController]];
+    }
+
+    
     [_window makeKeyAndVisible];
     
     
@@ -115,9 +124,7 @@
         {
             [DNConfig sharedConfig].audit=NO;
         }
-        
 
-  
     };
     
     request.requestFaile   = ^(NSError *error)
