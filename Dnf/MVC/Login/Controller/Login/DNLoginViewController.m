@@ -13,10 +13,7 @@
 #import "UIUnderlinedButton.h"
 #import "DNTextField.h"
 #import "DNThirdLoginManager.h"
-#import "XLSlideMenu.h"
 @interface DNLoginViewController ()<UITextFieldDelegate>
-
-@property(strong,nonatomic)XLSlideMenu *slideMenu;
 
 @property(nonatomic,strong)UILabel * accountLabel;
 
@@ -50,7 +47,7 @@
     [self creatUserInterface];
     
     [self textFieldDidChange:nil];
-  
+    
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -61,7 +58,7 @@
 
 -(void)creatUserInterface
 {
-
+    [self showBackButton:YES];
     [self setNavTitle:@"大妞范登录"];
     [self.view addSubview:self.accountLabel];
     [self.view addSubview:self.passwordLabel];
@@ -94,7 +91,7 @@
         btn.frame = CGRectMake((KScreenWidth-xw)/2+(36+spacing)*i, KScreenHeight-86, btnWidth, btnWidth);
         [btn setImage:[UIImage imageNamed:normalImage[i]] forState:UIControlStateNormal];
         [btn setImage:[UIImage imageNamed:pressImage[i]] forState:UIControlStateSelected];
- 
+        
         [self.view addSubview:btn];
     }
 }
@@ -113,7 +110,7 @@
         self.loginButton.backgroundColor = [kThemeColor colorWithAlphaComponent:0.3];
     }
     
-
+    
 }
 
 
@@ -122,7 +119,7 @@
     self.passwordTextField.secureTextEntry = !self.passwordTextField.secureTextEntry;
     
     if (self.passwordTextField.secureTextEntry) {
-    
+        
         [self.showPasswordButton setImage:[UIImage imageNamed:@"login_password_close"] forState:UIControlStateNormal];
     }else
     {
@@ -133,15 +130,15 @@
 
 -(void)loginButtonClick:(UIButton*)sender
 {
-
+    
     
     DLHttpsBusinesRequest *request = [DLHttpRequestFactory userLoginUserName:self.accoutTextField.text
                                                                     passwoed:self.passwordTextField.text
                                                                      captcha:nil];
-
+    
     request.requestSuccess = ^(id response)
     {
-
+        
         [DNSession sharedSession].userAccount = self.accoutTextField.text;
         
         
@@ -170,23 +167,16 @@
         
         
         if (0 == resultCode) {
- 
-
+            
+            
             if ([[resultData getString:@"channel"] length]) {
                 [DNSession sharedSession].channel = [resultData getString:@"channel"];
             }else{
                 [DNSession sharedSession].channel = @"0";
             }
-        
-
-            UINavigationController * rootNav = [[UINavigationController alloc] initWithRootViewController:[DNMainTabBarViewController shareTabBarController]];
             
-            rootNav.navigationBar.hidden = YES;
-            _slideMenu = [[XLSlideMenu alloc] initWithRootViewController:rootNav];
-            DNPersonalViewController * personalViewController = [DNPersonalViewController viewController];
-            //设置左侧菜单
-            _slideMenu.leftViewController = personalViewController;
-            self.view.window.rootViewController = _slideMenu;
+            
+            [self.navigationController popToRootViewControllerAnimated:NO];
             
         }
     };
@@ -224,7 +214,7 @@
         }
         
         // 登录失败
-     
+        
         
     };
     
@@ -287,7 +277,7 @@
     // Create the actions.
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
         NSLog(@"The \"Okay/Cancel\" alert's cancel action occured.");
-
+        
         
     }];
     
@@ -315,7 +305,7 @@
     [alertController addAction:cancelAction];
     [alertController addAction:phoneAction];
     [alertController addAction:emailAction];
-
+    
     
     [self presentViewController:alertController animated:YES completion:nil];
 }
@@ -332,17 +322,17 @@
             
         }
             break;
-            case 1001:
+        case 1001:
         {
             [[DNThirdLoginManager shareInstance]threeLoginWithPlatform:SSDKPlatformTypeSinaWeibo];
         }
             break;
-            case 1002:
+        case 1002:
         {
             [[DNThirdLoginManager shareInstance]threeLoginWithPlatform:SSDKPlatformTypeQQ];
         }
             break;
- 
+            
         default:
             break;
     }
@@ -420,8 +410,8 @@
         _passwordTextField.tintColor = kThemeColor;
         _passwordTextField.secureTextEntry = YES;
         [_passwordTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-    
-  
+        
+        
     }
     return _passwordTextField;
     
@@ -518,13 +508,14 @@
 
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end
+

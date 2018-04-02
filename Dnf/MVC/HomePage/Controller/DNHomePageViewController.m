@@ -136,7 +136,7 @@
 
 -(void)fastlogin
 {
-    
+
     DLHttpsBusinesRequest *request = [DLHttpRequestFactory fastLogin:[DNSession sharedSession].token];
     
     request.requestSuccess = ^(id response)

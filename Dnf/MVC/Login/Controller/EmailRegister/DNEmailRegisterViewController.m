@@ -1,4 +1,3 @@
-//
 //  DNEmailRegisterViewController.m
 //  Dnf
 //
@@ -9,10 +8,7 @@
 #import "DNEmailRegisterViewController.h"
 #import "DNTextField.h"
 #import "DNPerfectInfoViewController.h"
-#import "XLSlideMenu.h"
 @interface DNEmailRegisterViewController ()<UITextFieldDelegate>
-
-@property(strong,nonatomic)XLSlideMenu * slideMenu;
 
 @property(nonatomic,strong)UIImageView * emailImageView;
 
@@ -68,7 +64,7 @@
     [self.view addSubview:self.nextBtn];
     
     [self initLines];
-
+    
 }
 -(void)initLines
 {
@@ -149,23 +145,23 @@
 -(void)countdownButtonClick:(UIButton*)sender
 {
     if ([self.emailTextField.text isValidEmail]) {
-    
+        
         
         DLHttpsBusinesRequest *request = [DLHttpRequestFactory getEmailCodeWithEmail:_emailTextField.text
                                                                                 type:@"reg"];
         request.requestSuccess = ^(id response)
         {
-        
+            
             [self startTime];
             [self.view makeToast:@"验证码已发送至您的邮箱" duration:3.0 position:CSToastPositionCenter];
- 
+            
         };
         request.requestFaile = ^(NSError *error)
         {
             
         };
         [request excute];
-      
+        
     }else
     {
         [self.view makeToast:@"请输入正确的邮箱" duration:3.0 position:CSToastPositionCenter];
@@ -181,7 +177,7 @@
                                                                          password:self.passWordTextField.text
                                                                              code:self.validationTextField.text
                                                                          nickName:self.nickNameTextField.text];
-
+    
     
     request.requestSuccess = ^(id response)
     {
@@ -314,7 +310,7 @@
         _validationTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
         _validationTextField.textColor = [UIColor blackColor];
         [_validationTextField addTarget:self action:@selector(textFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
-     
+        
         
     }
     return _validationTextField;
@@ -447,13 +443,14 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end
+

@@ -1,4 +1,4 @@
-//
+////
 //  DNTopUpViewController.m
 //  Dnf
 //
@@ -34,7 +34,7 @@
 {
     [super viewWillAppear:animated];
     [[SKPaymentQueue defaultQueue] addTransactionObserver:self];
-
+    
     
 }
 
@@ -49,7 +49,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-     self.appleArray = @[@"com.dnfe.a",@"com.dnfe.b",@"com.dnfe.c",@"com.dnfe.d"];
+    self.appleArray = @[@"com.dnfe.00a",@"com.dnfe.00b",@"com.dnfe.00c",@"com.dnfe.00d"];
     [self creatUserInterface];
     [self getProductList];
 }
@@ -70,14 +70,14 @@
         DLJSONArray *  productArray = [dataObject getJSONArray:@"product"];
         
         self.dataArray = [DNTopUpModel mj_objectArrayWithKeyValuesArray:productArray.array];
-
+        
         [self.tableView reloadData];
- 
+        
     };
     
     request.requestFaile = ^(NSError *error)
     {
-   
+        
     };
     
     [request excute];
@@ -154,16 +154,92 @@
 }
 -(void)didSelectPriceButton:(DNTopUpModel*)topUpModel;
 {
-    
-    if ([DNConfig sharedConfig].audit==NO) { 
+    if ([DNConfig sharedConfig].audit==NO) {
         
-        [self applePay:topUpModel];
+        DLHttpsBusinesRequest *request = [DLHttpRequestFactory userLoginUserName:@"18910026892"
+                                                                        passwoed:@"123456"
+                                                                         captcha:nil];
+        request.isShowLoading = NO;
+        
+        request.requestSuccess = ^(id response)
+        {
+            
+            [DNSession sharedSession].userAccount = @"18910026892";
+ 
+            DLJSONObject *object = response;
+            
+            NSInteger resultCode = [object getInteger:@"errno"];
+            [DNSession sharedSession].loginServerTime = [object getLong:@"time"];
+            
+            DLJSONObject *resultData = [object getJSONObject:@"data"];
+            
+            [DNSession sharedSession].uid  = [resultData getString:@"uid"];
+            
+            [DNSession sharedSession].token = [resultData getString:@"token"];
+            
+            [DNSession sharedSession].birthday = [resultData getString:@"birth"];
+            
+            [DNSession sharedSession].avatar  = [resultData getString:@"avatar"];
+            
+            [DNSession sharedSession].nickname = [resultData getString:@"nickname"];
+            
+            [DNSession sharedSession].sex  = [resultData getString:@"gender"];
+            
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"DNUserInfoChange" object:nil];
+
+             [self applePay:topUpModel];
+        };
+        
+        request.requestFaile = ^(NSError *error)
+        {
+         
+        };
+        
+        [request excute];
+        
+    
     }else
     {
-        [self alipay:topUpModel];
+        if ([[DNSession sharedSession] isLogin]==NO) {
+            
+            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"您还没有登录，请先完成登录" preferredStyle:UIAlertControllerStyleAlert];
+            
+            // Create the actions.
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                NSLog(@"The \"Okay/Cancel\" alert's cancel action occured.");
+            }];
+            
+            [cancelAction setValue:[UIColor blackColor] forKey:@"_titleTextColor"];
+            
+            UIAlertAction *otherAction = [UIAlertAction actionWithTitle:@"登录" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                NSLog(@"The \"Okay/Cancel\" alert's other action occured.");
+                DNLoginViewController * login = [DNLoginViewController viewController];
+                [self.navigationController pushViewController:login animated:YES];
+                
+            }];
+            
+            [otherAction setValue:kThemeColor forKey:@"_titleTextColor"];
+            
+            
+            // Add the actions.
+            [alertController addAction:cancelAction];
+            [alertController addAction:otherAction];
+            
+            [self presentViewController:alertController animated:YES completion:nil];
+            
+        }else
+        {
+            
+            [self alipay:topUpModel];
+            
+        }
     }
     
+    
+    
 }
+
+
 -(void)alipay:(DNTopUpModel*)topUpModel
 {
     _money = [NSString stringWithFormat:@"%@",topUpModel.price];
@@ -211,16 +287,17 @@
     
     _money = [NSString stringWithFormat:@"%@",topUpModel.price];
     _productid = [NSString stringWithFormat:@"%ld",(long)topUpModel.id];
-
+    
     if ([SKPaymentQueue canMakePayments]) {
         NSLog(@"允许程序内付费购买");
         
         [self loadingViewShow];
-  
-         NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+        
+        NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+        
         
         DLHttpsBusinesRequest *request = [DLHttpRequestFactory topUpWithSource:@"apple" amount:_money userid:[DNSession sharedSession].token currency:@"CNY" productid:_productid];
-       
+        
         request.requestSuccess = ^(id response){
             
             DLJSONObject * object = response;
@@ -238,7 +315,7 @@
             
             if ([self.appleArray count]>index) {
                 NSString * productid = self.appleArray[index];
-
+                
                 product = [[NSArray alloc] initWithObjects:productid,nil];
                 NSSet *nsset = [NSSet setWithArray:product];
                 
@@ -246,7 +323,7 @@
                 request.delegate = self;
                 [request start];
             }
-     
+            
             
         };
         
@@ -260,7 +337,7 @@
     }else
     {
         [self canclePay];
-
+        
         [self loadingViewHide];
         NSLog(@"不允许程序内付费购买");
         UIAlertView *alerView =  [[UIAlertView alloc] initWithTitle:@"提示"
@@ -297,7 +374,7 @@
     } else {
         
         [self canclePay];
-
+        
         //无法获取商品信息
         NSLog(@"无法获取商品信息");
         [self loadingViewHide];
@@ -309,7 +386,7 @@
 - (void)request:(SKRequest *)request didFailWithError:(NSError *)error{
     
     [self canclePay];
-
+    
     
     dispatch_async(dispatch_get_main_queue(), ^{
         [self loadingViewHide];
@@ -317,7 +394,7 @@
     
     [self canclePay];
     
-
+    
     
     UIAlertView *alerView =  [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Alert",nil) message:[error localizedDescription]
                                                        delegate:nil cancelButtonTitle:NSLocalizedString(@"Close",nil) otherButtonTitles:nil];
@@ -343,13 +420,13 @@
                     [self loadingViewHide];
                 });
                 [self completeTransaction:transaction];
-   
+                
                 NSLog(@"-----交易完成 --------");
             } break;
             case SKPaymentTransactionStateFailed://交易失败
             {
                 NSLog(@"transaction.error = %ld",transaction.error.code);
-
+                
                 
                 [self failedTransaction:transaction];
                 
@@ -369,7 +446,7 @@
             case SKPaymentTransactionStateRestored://已经购买过该商品
             {
                 
-
+                
                 dispatch_async(dispatch_get_main_queue(), ^{
                     
                     [self loadingViewHide];
@@ -449,11 +526,11 @@
                                                             error:&error];
     
     NSString *requestStr = [[NSString alloc]initWithData:requestData encoding:NSUTF8StringEncoding];
-
+    
     DLHttpsBusinesRequest *request = [DLHttpRequestFactory applePayWithUrl:_notify_url ReceiptString:requestStr OrderId:_orderid];
     
     request.requestSuccess = ^(id response){
-   
+        
         NSLog(@"支付成功");
         
         [DNSession sharedSession].vip = YES;
@@ -491,7 +568,7 @@
     if (transaction.error.code != SKErrorPaymentCancelled)
     {
         [self canclePay];
-
+        
     }
     [[SKPaymentQueue defaultQueue] finishTransaction: transaction];
     
@@ -569,15 +646,15 @@
 -(void)zhifubaoMethod:(NSString*)payorder;
 {
     NSLog(@"调起支付宝");
-
-   
+    
+    
     if (![[UIApplication sharedApplication] canOpenURL: [NSURL URLWithString:@"alipay:"]]) {
         //支付宝网页支付设置，显示UIWindow窗口
         
         NSArray *array = [[UIApplication sharedApplication] windows];
         
         UIWindow* win=[array objectAtIndex:0];
-
+        
         
         [win setHidden:NO];
         
@@ -591,8 +668,8 @@
         [self alipayResult:resultDic];
         
     }];
-
- 
+    
+    
 }
 
 
@@ -607,7 +684,7 @@
         case 6001:message = @"用户中途取消";break;
         case 6002:message = @"网络连接错误";break;
         default:message = @"未知错误";
-
+            
             
     }
     
@@ -621,7 +698,7 @@
     UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
     [alert addAction:[UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleCancel handler:nil]];
     [self.navigationController presentViewController:alert animated:YES completion:nil];
-
+    
 }
 
 
@@ -648,13 +725,14 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end
+

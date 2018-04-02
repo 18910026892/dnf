@@ -78,23 +78,22 @@
     _window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
     _window.backgroundColor = [UIColor whiteColor];
     
-    if ([[DNSession sharedSession] isLogin]==YES) {
-        
-        UINavigationController * rootNav = [[UINavigationController alloc] initWithRootViewController:[DNMainTabBarViewController shareTabBarController]];
-        
-        _slideMenu = [[XLSlideMenu alloc] initWithRootViewController:rootNav];
-        
-        DNPersonalViewController * personalViewController = [DNPersonalViewController viewController];
-        //设置左侧菜单
-        _slideMenu.leftViewController = personalViewController;
-        _window.rootViewController = _slideMenu;
+    //配置NavigationBar
+    UINavigationController * rootNav   = [[UINavigationController alloc] initWithRootViewController:[DNMainTabBarViewController shareTabBarController]];
     
-    }else
-        
-    {
-        _window.rootViewController = [[UINavigationController alloc]initWithRootViewController:[DNLoginViewController viewController]];
-    }
-
+    
+    
+    _slideMenu = [[XLSlideMenu alloc] initWithRootViewController:rootNav];
+    
+    DNPersonalViewController * personalViewController = [DNPersonalViewController viewController];
+    //设置左侧菜单
+    _slideMenu.leftViewController = personalViewController;
+    
+    _window = [[UIWindow alloc]initWithFrame:[UIScreen mainScreen].bounds];
+    _window.backgroundColor = [UIColor whiteColor];
+    _window.rootViewController = _slideMenu;
+    [_window makeKeyAndVisible];
+    
     
     [_window makeKeyAndVisible];
     

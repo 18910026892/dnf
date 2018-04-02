@@ -9,11 +9,7 @@
 #import "DNPhoneRegisterViewController.h"
 #import "DNPerfectInfoViewController.h"
 #import "DNTextField.h"
-#import "XLSlideMenu.h"
-
 @interface DNPhoneRegisterViewController ()<UITextFieldDelegate>
-
-@property(strong,nonatomic)XLSlideMenu * slideMenu;
 
 @property(nonatomic,strong)UILabel * infoLabel;
 
@@ -94,7 +90,6 @@
     {
         self.nextBtn.enabled = NO;
         self.nextBtn.backgroundColor = [kThemeColor colorWithAlphaComponent:0.3];
-        
     }
     
 }
@@ -137,7 +132,7 @@
 
 -(void)nextBtnClick:(UIButton*)sender
 {
-
+    
     
     DLHttpsBusinesRequest *request = [DLHttpRequestFactory userRegisterMobile:self.phoneNumber
                                                                      password:self.passWordTextField.text
@@ -155,16 +150,16 @@
             DLJSONObject *resultData = [object getJSONObject:@"data"];
             
             [DNSession sharedSession].token = [resultData getString:@"token"];
-    
+            
             [DNSession sharedSession].userAccount = self.phoneNumber;
             
             [DNSession sharedSession].uid   = [resultData optString:@"uid"
-                                                            defaultValue:@"0"];
+                                                       defaultValue:@"0"];
             
-   
+            
             
             [DNSession sharedSession].nickname = [resultData optString:@"nickname"
-                                                            defaultValue:nil];
+                                                          defaultValue:nil];
             
             [DNSession sharedSession].avatar = [resultData getString:@"avatar"]; //大图
             
@@ -173,9 +168,9 @@
             [DNSession sharedSession].sex      = [resultData getString:@"gender"];
             
             [DNSession sharedSession].birthday    = [resultData getString:@"birth"];
-        
+            
             [DNSession sharedSession].regon      = [resultData getString:@"region"];
- 
+            
             [DNSession sharedSession].vip       = NO;
             
             if ([[resultData getString:@"channel"] length]) {
@@ -185,16 +180,10 @@
             }
             
             
-            UINavigationController * rootNav = [[UINavigationController alloc] initWithRootViewController:[DNMainTabBarViewController shareTabBarController]];
+            DNPerfectInfoViewController * perfectinfoVc = [DNPerfectInfoViewController viewController];
+            [self.navigationController pushViewController:perfectinfoVc animated:YES];
             
-            rootNav.navigationBar.hidden = YES;
-            _slideMenu = [[XLSlideMenu alloc] initWithRootViewController:rootNav];
-            DNPersonalViewController * personalViewController = [DNPersonalViewController viewController];
-            //设置左侧菜单
-            _slideMenu.leftViewController = personalViewController;
-            self.view.window.rootViewController = _slideMenu;
             
-   
         }else
         {
             if (1112 == resultCode) {
@@ -220,7 +209,7 @@
     
     [request excute];
     
-  
+    
 }
 
 -(void)countdownButtonClick:(UIButton*)sender
@@ -236,7 +225,7 @@
         NSInteger code = [obj getInteger:@"errno"];
         
         if (0 == code) {
-        
+            
             [self startTime];
             
         }
@@ -247,7 +236,7 @@
     
     request.requestFaile = ^(NSError *error)
     {
-    
+        
     };
     
     [request excute];
@@ -319,7 +308,7 @@
         [_validationTextField becomeFirstResponder];
         [_validationTextField addTarget:self action:@selector(checkRegisterInfo) forControlEvents:UIControlEventEditingChanged];
         
-     
+        
     }
     return _validationTextField;
     
@@ -446,13 +435,14 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end
+

@@ -25,7 +25,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-
+    
 }
 
 -(void)setupUI
@@ -53,7 +53,16 @@
 -(void)leftButtonClick:(UIButton*)sender
 {
     
-  [self.xl_sldeMenu showLeftViewControllerAnimated:true];
+    if ([[DNSession sharedSession] isLogin]==YES) {
+        
+        [self.xl_sldeMenu showLeftViewControllerAnimated:true];
+        
+    }else
+    {
+        DNLoginViewController * loginVc = [DNLoginViewController viewController];
+        [self.navigationController pushViewController:loginVc animated:YES];
+    }
+    
     
 }
 
@@ -68,13 +77,14 @@
 
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 @end
+

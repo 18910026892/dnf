@@ -60,7 +60,7 @@ static DNMainTabBarViewController* _myTabBarVC = nil;
 
 -(void)initSubView
 {
-    _viewControllerCount = 5;
+    _viewControllerCount = ([DNConfig sharedConfig].audit==NO)?4:5;
     
     //首页
     DNHomePageViewController * homePageViewController= [DNHomePageViewController viewController];
@@ -79,9 +79,15 @@ static DNMainTabBarViewController* _myTabBarVC = nil;
     DNPhotoViewController * photoViewController = [DNPhotoViewController viewController];
     [self setupItemWithViewController:photoViewController ItemData:@{@"title":@"写真",@"imageStr":@"tabbar_photo_normal",@"imageStr_s":@"tabbar_photo_hover"}];
     
-    //Vr
-    DNVRViewController  * vrViewController = [DNVRViewController viewController];
-    [self setupItemWithViewController:vrViewController ItemData:@{@"title":@"VR专区",@"imageStr":@"tabbar_vr_normal",@"imageStr_s":@"tabbar_vr_hover"}];
+    if ([DNConfig sharedConfig].audit==YES)
+    {
+        //Vr
+        DNVRViewController  * vrViewController = [DNVRViewController viewController];
+        [self setupItemWithViewController:vrViewController ItemData:@{@"title":@"VR专区",@"imageStr":@"tabbar_vr_normal",@"imageStr_s":@"tabbar_vr_hover"}];
+        
+    }
+    
+
 }
 
 #pragma mark - Event response
@@ -106,7 +112,7 @@ static DNMainTabBarViewController* _myTabBarVC = nil;
  
     [self addChildViewController:vc];
     
-    CGFloat SubItemWidth = self.tabBariew.frame.size.width/5;
+    CGFloat SubItemWidth = self.tabBariew.frame.size.width/_viewControllerCount;
     DNTabBarItem *subitem = [[DNTabBarItem alloc]initWithFrame:CGRectMake(SubItemWidth*number, 0,SubItemWidth, 54)];
     subitem.item = item;
     subitem.userInteractionEnabled = YES;

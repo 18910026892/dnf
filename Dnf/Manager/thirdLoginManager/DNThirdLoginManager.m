@@ -10,6 +10,7 @@
 
 #import "AppDelegate.h"
 
+
 static id _threeLoginManager = nil;
 
 
@@ -56,7 +57,7 @@ static id _threeLoginManager = nil;
              case SSDKPlatformTypeSinaWeibo:
              {
                  loginType=@"sina";
-            
+                 
              }
                  break;
              case SSDKPlatformTypeWechat:
@@ -69,7 +70,7 @@ static id _threeLoginManager = nil;
                  [parameterDic setValue:openid forKey:@"rid"];
                  [parameterDic setValue:unionid forKey:@"unionid"];
                  
-           
+                 
                  
              }
                  break;
@@ -78,13 +79,13 @@ static id _threeLoginManager = nil;
              {
                  loginType=@"qq";
                  
-                
+                 
                  
              }
                  
                  break;
                  
-         
+                 
                  
              default:
                  break;
@@ -102,7 +103,7 @@ static id _threeLoginManager = nil;
                        NSError *error)
      {
          
-        
+         
          if (state == SSDKResponseStateSuccess)
          {
              
@@ -110,7 +111,7 @@ static id _threeLoginManager = nil;
          
      }];
     
-
+    
 }
 
 /*** 第三方登陆 ***/
@@ -127,7 +128,7 @@ static id _threeLoginManager = nil;
         
         DLJSONObject *resultData = [object getJSONObject:@"data"];
         
-
+        
         [DNSession sharedSession].uid  = [resultData getString:@"uid"];
         
         [DNSession sharedSession].token = [resultData getString:@"token"];
@@ -150,13 +151,13 @@ static id _threeLoginManager = nil;
         
         [self cheakIsVip];
         [self changeRootVC];
-    
+        
         
     };
     
     request.requestFaile = ^(NSError *error)
     {
-      
+        
         
         
     };
@@ -238,15 +239,9 @@ static id _threeLoginManager = nil;
 -(void)changeRootVC
 {
     
-    UINavigationController * rootNav = [[UINavigationController alloc] initWithRootViewController:[DNMainTabBarViewController shareTabBarController]];
-    
-    rootNav.navigationBar.hidden = YES;
-    _slideMenu = [[XLSlideMenu alloc] initWithRootViewController:rootNav];
-    DNPersonalViewController * personalViewController = [DNPersonalViewController viewController];
-    //设置左侧菜单
-    _slideMenu.leftViewController = personalViewController;
-    self.viewController.view.window.rootViewController = _slideMenu;
+    [self.viewController.navigationController popToRootViewControllerAnimated:NO];
 }
 
 
 @end
+
